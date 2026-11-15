@@ -1,0 +1,547 @@
+{
+ "schema": "survey-clean-rules/1",
+ "title": "견본: 대학생 학업소진과 자기효능감(모의 데이터)",
+ "columns": [
+  {
+   "source": "타임스탬프",
+   "name": "응답시각",
+   "role": "timestamp",
+   "label": "설문 제출 시각"
+  },
+  {
+   "source": "1. 학년을 선택해 주세요",
+   "name": "학년",
+   "role": "category",
+   "label": "학년",
+   "valueMap": {
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "1학년": 1,
+    "1학년재학": 1,
+    "2학년": 2,
+    "2학년재학": 2,
+    "3학년": 3,
+    "3학년재학": 3,
+    "4학년": 4,
+    "4학년재학": 4
+   },
+   "valueLabels": {
+    "1": "1학년",
+    "2": "2학년",
+    "3": "3학년",
+    "4": "4학년"
+   }
+  },
+  {
+   "source": "성별",
+   "name": "성별",
+   "role": "category",
+   "label": "성별",
+   "valueMap": {
+    "남": 1,
+    "남자": 1,
+    "남성": 1,
+    "여": 2,
+    "여자": 2,
+    "여성": 2,
+    "응답하지 않음": 3
+   },
+   "valueLabels": {
+    "1": "남",
+    "2": "여",
+    "3": "기타·응답하지 않음"
+   }
+  },
+  {
+   "source": "3. 전공 계열",
+   "name": "전공계열",
+   "role": "category",
+   "label": "전공 계열",
+   "valueMap": {
+    "인문사회": 1,
+    "인문/사회": 1,
+    "자연공학": 2,
+    "의약보건": 3,
+    "예체능": 4
+   },
+   "valueLabels": {
+    "1": "인문사회",
+    "2": "자연공학",
+    "3": "의약보건",
+    "4": "예체능"
+   }
+  },
+  {
+   "source": "4. 한 주 평균 학습 시간(시간)",
+   "name": "주당학습시간",
+   "role": "number",
+   "label": "한 주 평균 학습 시간",
+   "range": [
+    0,
+    80
+   ],
+   "outOfRange": "flag"
+  },
+  {
+   "source": "소진_1",
+   "name": "소진_01",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진_2",
+   "name": "소진_02",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진_3",
+   "name": "소진_03",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진_4",
+   "name": "소진_04",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진_5",
+   "name": "소진_05",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진 06",
+   "name": "소진_06",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진 07",
+   "name": "소진_07",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진 08",
+   "name": "소진_08",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진 09",
+   "name": "소진_09",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진 10",
+   "name": "소진_10",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진-11",
+   "name": "소진_11",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진-12",
+   "name": "소진_12",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진-13",
+   "name": "소진_13",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진_14",
+   "name": "소진_14",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "소진_15",
+   "name": "소진_15",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감01",
+   "name": "효능감_01",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감02",
+   "name": "효능감_02",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감03",
+   "name": "효능감_03",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감04",
+   "name": "효능감_04",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감05",
+   "name": "효능감_05",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감06",
+   "name": "효능감_06",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감07",
+   "name": "효능감_07",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감08",
+   "name": "효능감_08",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "[주의] 이 문항은 4번을 선택해 주세요",
+   "name": "주의확인",
+   "role": "attention",
+   "label": "주의확인 문항(정답 4)",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5",
+   "pass": 4
+  },
+  {
+   "source": "효능감_09",
+   "name": "효능감_09",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감_10",
+   "name": "효능감_10",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감_11",
+   "name": "효능감_11",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감_12",
+   "name": "효능감_12",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감_13",
+   "name": "효능감_13",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감_14",
+   "name": "효능감_14",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  },
+  {
+   "source": "효능감_15",
+   "name": "효능감_15",
+   "role": "item",
+   "range": [
+    1,
+    5
+   ],
+   "dictionary": "agree5"
+  }
+ ],
+ "scales": [
+  {
+   "name": "소진_지침",
+   "label": "소진 척도 지침 하위요인",
+   "items": [
+    "소진_01",
+    "소진_02",
+    "소진_03",
+    "소진_04",
+    "소진_05"
+   ],
+   "reverse": [
+    "소진_04"
+   ],
+   "min": 1,
+   "max": 5,
+   "sum": true,
+   "mean": true,
+   "meanMinRatio": 0.8
+  },
+  {
+   "name": "소진_냉담",
+   "label": "소진 척도 냉담 하위요인",
+   "items": [
+    "소진_06",
+    "소진_07",
+    "소진_08",
+    "소진_09",
+    "소진_10"
+   ],
+   "reverse": [
+    "소진_09"
+   ],
+   "min": 1,
+   "max": 5,
+   "sum": true,
+   "mean": true,
+   "meanMinRatio": 0.8
+  },
+  {
+   "name": "소진_효능저하",
+   "label": "소진 척도 효능저하 하위요인",
+   "items": [
+    "소진_11",
+    "소진_12",
+    "소진_13",
+    "소진_14",
+    "소진_15"
+   ],
+   "reverse": [
+    "소진_14"
+   ],
+   "min": 1,
+   "max": 5,
+   "sum": true,
+   "mean": true,
+   "meanMinRatio": 0.8
+  },
+  {
+   "name": "소진_전체",
+   "label": "소진 척도 전체",
+   "items": [
+    "소진_01",
+    "소진_02",
+    "소진_03",
+    "소진_04",
+    "소진_05",
+    "소진_06",
+    "소진_07",
+    "소진_08",
+    "소진_09",
+    "소진_10",
+    "소진_11",
+    "소진_12",
+    "소진_13",
+    "소진_14",
+    "소진_15"
+   ],
+   "reverse": [
+    "소진_04",
+    "소진_09",
+    "소진_14"
+   ],
+   "min": 1,
+   "max": 5,
+   "sum": true,
+   "mean": true,
+   "meanMinRatio": 0.8
+  },
+  {
+   "name": "효능감",
+   "label": "효능감 척도 전체",
+   "items": [
+    "효능감_01",
+    "효능감_02",
+    "효능감_03",
+    "효능감_04",
+    "효능감_05",
+    "효능감_06",
+    "효능감_07",
+    "효능감_08",
+    "효능감_09",
+    "효능감_10",
+    "효능감_11",
+    "효능감_12",
+    "효능감_13",
+    "효능감_14",
+    "효능감_15"
+   ],
+   "reverse": [
+    "효능감_03",
+    "효능감_07",
+    "효능감_11"
+   ],
+   "min": 1,
+   "max": 5,
+   "sum": true,
+   "mean": true,
+   "meanMinRatio": 0.8
+  }
+ ],
+ "flags": {
+  "longstring": {
+   "on": true,
+   "min": 15
+  },
+  "attention": {
+   "on": true
+  },
+  "missingItems": {
+   "on": true,
+   "minRatio": 0.2,
+   "countAsCareless": true
+  },
+  "duplicateAll": {
+   "on": true,
+   "minAnswered": 20
+  },
+  "duplicateId": {
+   "on": false,
+   "column": null
+  },
+  "speed": {
+   "on": false,
+   "minSeconds": 60
+  }
+ }
+}
