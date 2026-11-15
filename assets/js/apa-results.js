@@ -105,6 +105,8 @@
     }
 
     S.show(true);
+    var pn = S.pNote(p); if (pn) warns.unshift(pn);
+    if (auto !== true) S.reveal();
     $('apa').innerHTML = apa;
     S.live('결과 문장을 만들었습니다.');
     $('apa').setAttribute('data-p', p);

@@ -46,15 +46,16 @@
     S.show(true);
     var ab = a * b;
     var base = b * b * sa * sa + a * a * sb * sb, cross = sa * sa * sb * sb;
-    $('ab').textContent = S.fmt(ab, 4); $('ab').setAttribute('data-value', ab);
+    $('ab').textContent = S.fmt(ab, 3); $('ab').setAttribute('data-value', ab);
     var sob = row('S', Math.sqrt(base), ab);
     row('A', Math.sqrt(base + cross), ab);
     row('G', base - cross > 0 ? Math.sqrt(base - cross) : NaN, ab);
     var ci = mcCI(a, sa, b, sb, 1000000);
-    $('mc').textContent = '[' + S.fmt(ci[0], 4) + ', ' + S.fmt(ci[1], 4) + ']';
+    $('mc').textContent = '[' + S.fmt(ci[0], 3) + ', ' + S.fmt(ci[1], 3) + ']';
     $('mc').setAttribute('data-lo', ci[0]); $('mc').setAttribute('data-hi', ci[1]);
     var sig = ci[0] > 0 || ci[1] < 0;
     S.live('간접효과와 신뢰구간을 계산했습니다.');
+    if (auto !== true) S.reveal();
     $('sentence').innerHTML = '간접효과의 유의성을 몬테카를로 방법(반복 1,000,000회; Preacher &amp; Selig, 2012)으로 검증한 결과, 간접효과(<i>ab</i> = ' + S.fmt(ab, 3) +
       ')의 95% 신뢰구간 [' + S.fmt(ci[0], 3) + ', ' + S.fmt(ci[1], 3) + ']이 0을 ' + (sig ? '포함하지 않아 매개효과가 통계적으로 유의하였다' : '포함하여 매개효과가 통계적으로 유의하지 않았다') +
       '. 참고로 Sobel 검정 결과는 ' + (sob.p < 0.05 ? '유의하였다' : '유의하지 않았다') + '(<i>z</i> = ' + S.fmt(sob.z, 2) + ', <i>p</i> ' + S.fmtP(sob.p) + ').';

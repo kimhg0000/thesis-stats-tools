@@ -27,16 +27,17 @@
       var outShare = vals.length ? vals.filter(function (v) { return v < lo || v > hi; }).length / vals.length : 1;
       var idLike = /^(id|no\.?|case|번호|순번|연번|학번|응답자|응답자번호|일련번호|성별|학년|나이|연령|gender|sex|age)$/i.test(h.trim()) || !allNum || outShare > 0.5;
       var tr = document.createElement('tr');
-      tr.innerHTML = '<td>' + S.esc(h) + '</td><td><input type="checkbox" id="rev-' + j + '" aria-label="' + S.esc(h) + ' 역채점"></td>' +
-        '<td><input type="checkbox" id="inc-' + j + '" aria-label="' + S.esc(h) + ' 척도에 포함"' + (idLike ? '' : ' checked') + '></td>';
+      tr.innerHTML = '<td>' + S.esc(h) + '</td><td><label><input type="checkbox" id="rev-' + j + '" aria-label="' + S.esc(h) + ' 역채점"></label></td>' +
+        '<td><label><input type="checkbox" id="inc-' + j + '" aria-label="' + S.esc(h) + ' 척도에 포함"' + (idLike ? '' : ' checked') + '></label></td>';
       tb.appendChild(tr);
     });
     $('cols').hidden = false;
   }
 
-  function run() {
+  function run(e) {
+    var byClick = !!(e && e.type === 'click');
     if (!table) load();
-    if (!table.rows.length) { S.show(false); return; }
+    if (!table.rows.length) { if (byClick) { $('err').textContent = '응답 자료를 붙여 넣으세요. "예시 자료로 채우기"로 먼저 해 볼 수 있습니다.'; } S.show(false); return; }
     $('err').textContent = '';
     var fail = function (m) { $('err').textContent = m; S.show(false); };
     var lo = Number($('min').value), hi = Number($('max').value);
@@ -82,6 +83,7 @@
     if (missingRows) warns.push('척도 문항에 빈 칸이 있는 응답자가 ' + missingRows + '명입니다. ' + (prorate ? '이들 중 문항의 ' + Math.round(minShare * 100) + '% 이상에 응답한 사람의 평균은 응답한 문항만으로 계산했고, 합계는 모두 비웠습니다.' : '이들의 합계와 평균은 비웠습니다.'));
     $('warns').innerHTML = warns.map(function (w) { return '<p style="margin:0 0 6px">' + S.esc(w) + '</p>'; }).join('');
     S.show(true);
+    if (byClick) S.reveal();
     S.live('역채점과 척도 점수를 계산했습니다.');
     $('out').value = lines.join('\n');
     $('mm').textContent = means.length ? S.fmt(S.mean(means), 2) : '–';
@@ -102,7 +104,10 @@
     run();
   }
 
-  $('load').addEventListener('click', load);
+  $('load').addEventListener('click', function () { load(); if (!table.rows.length) $('err').textContent = '응답 자료를 붙여 넣으세요. "예시 자료로 채우기"로 먼저 해 볼 수 있습니다.'; });
+  // 크론바흐 알파 계산기에서 넘어온 자료(같은 탭 안에서만)
+  try { var carried = sessionStorage.getItem('statsite-data'); if (carried && !$('data').value.trim()) { $('data').value = carried; sessionStorage.removeItem('statsite-data'); load(); run(); } } catch (err) { /* 저장소 없음 */ }
+  window.addEventListener('pageshow', function () { if ($('data').value.trim()) { load(); run(); } });
   $('run').addEventListener('click', run);
   $('example').addEventListener('click', example);
   var tm;

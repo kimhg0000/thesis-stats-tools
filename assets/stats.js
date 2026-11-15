@@ -171,18 +171,33 @@
   S.fmt0 = function (x, d) {
     return S.fmt(x, d).replace(/^(-?)0\./, '$1.');
   };
-  // p 값 표기: "= .017", "< .001". 셋째 자리 반올림이 .05/.01 경계에 닿으면(예: .0496 → .050)
-  // 경계보다 작게 보일 때까지 자릿수를 늘린다. 이 처리는 이 사이트의 표기 방식이다.
+  // p 값 표기: APA 7판처럼 소수 셋째 자리("= .017"), .001보다 작으면 "< .001".
   S.fmtP = function (p) {
     if (!isFinite(p)) return '= –';
     if (p < 0.001) return '< .001';
+    if (parseFloat(p.toFixed(3)) >= 1) return '> .999';
+    return '= ' + S.fmt0(p, 3);
+  };
+  // 반올림 때문에 유의 판단과 표기가 어긋나 보이는 경우(.0496 → .050)를 알려 주는 문장
+  S.pNote = function (p, label) {
     var cuts = [0.05, 0.01];
-    for (var d = 3; d <= 6; d++) {
-      var r = parseFloat(p.toFixed(d)), crossed = false;
-      for (var i = 0; i < cuts.length; i++) if (p < cuts[i] && r >= cuts[i]) crossed = true;
-      if (!crossed) { if (r >= 1) return '> .999'; return '= ' + S.fmt0(p, d); }
+    for (var i = 0; i < cuts.length; i++) {
+      if (p < cuts[i] && parseFloat(p.toFixed(3)) >= cuts[i]) return (label ? label + ': ' : '') + '셋째 자리로 반올림하면 p = ' + S.fmt0(p, 3) + '이지만 실제 값(' + S.fmt0(p, 5) + ')은 ' + S.fmt0(cuts[i], 2) + '보다 작습니다. 유의 여부는 실제 값으로 판단했습니다.';
     }
-    return p < 0.01 ? '< .01' : '< .05';
+    return '';
+  };
+  // 휴대폰처럼 좁은 화면에서는 버튼을 눌러 계산한 뒤 결과로 이동한다
+  S.reveal = function (id) {
+    if (window.innerWidth >= 960) return;
+    var el = document.getElementById(id || 'result');
+    if (!el || el.hidden) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setTimeout(function () { el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }, 60);
+  };
+  S.markEmpty = function (ids) {
+    var first = null;
+    ids.forEach(function (id) { var el = document.getElementById(id); if (!el) return; if (el.value === '') { el.setAttribute('aria-invalid', 'true'); if (!first) first = el; } else el.removeAttribute('aria-invalid'); });
+    return first;
   };
   // 표에 쓰는 음수 기호: 붙임표 대신 빼기 기호(−)
   S.minus = function (s) { return String(s).replace(/^-/, '−'); };

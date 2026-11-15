@@ -11,11 +11,12 @@
     return k / (k - 1) * (1 - sumVar / vt);
   }
 
-  function run() {
+  function run(e) {
+    var byClick = !!(e && e.type === 'click');
     $('err').textContent = ''; $('data').removeAttribute('aria-invalid');
     var t = S.parseTable($('data').value);
     var fail = function (m) { $('err').textContent = m; $('data').setAttribute('aria-invalid', 'true'); S.show(false); };
-    if (!t.rows.length) { S.show(false); return; }
+    if (!t.rows.length) { if (byClick) fail('문항 응답을 붙여 넣으세요. "예시 자료로 채우기"로 먼저 해 볼 수 있습니다.'); else S.show(false); return; }
     var k = t.header.length;
     if (k < 2) return fail('문항이 두 개 이상이어야 알파를 계산할 수 있습니다.');
     var rows = t.rows.filter(function (r) { return r.every(function (v) { return isFinite(v); }); });
@@ -40,7 +41,7 @@
       var tr = document.createElement('tr');
       tr.setAttribute('data-item', name);
       tr.innerHTML = '<td>' + S.esc(name) + '</td><td>' + S.fmt(S.mean(cols[j]), 2) + '</td><td>' + S.fmt(S.sd(cols[j]), 2) +
-        '</td><td class="rit" data-value="' + rit + '">' + S.fmt0(rit, 2) + '</td><td class="adel" data-value="' + aDel + '">' + (k > 2 ? S.fmt0(aDel, 3) : '–') + '</td>';
+        '</td><td class="rit" data-value="' + rit + '">' + S.fmt0(rit, 3) + '</td><td class="adel" data-value="' + aDel + '">' + (k > 2 ? S.fmt0(aDel, 3) : '–') + '</td>';
       tb.appendChild(tr);
     });
     if (negItems.length) warns.push('수정된 문항-총점 상관이 음수인 문항이 있습니다: ' + negItems.join(', ') + '. 역문항을 역채점하지 않았는지 먼저 확인하세요.');
@@ -48,17 +49,21 @@
     if (k <= 3) warns.push('문항이 ' + k + '개뿐입니다. α는 문항 수가 적으면 낮게 나오기 쉬우므로 문항 간 평균 상관을 함께 보고하는 방법도 있습니다.');
 
     S.show(true);
-    $('alpha').textContent = S.fmt0(a, 2) + ' (' + S.fmt0(a, 3) + ')';
+    $('alpha').textContent = S.fmt0(a, 2);
+    $('alpha3').textContent = '셋째 자리까지 ' + S.fmt0(a, 3) + ', ';
     $('alpha').setAttribute('data-value', a);
     $('n').textContent = rows.length; $('k').textContent = k;
     S.live('계산했습니다. 크론바흐 알파 ' + S.fmt0(a, 2));
+    if (byClick) S.reveal();
     $('dropped').textContent = dropped ? '빈 칸이 있는 응답자 ' + dropped + '명은 제외했습니다.' : '';
     $('warns').innerHTML = warns.map(function (w) { return '<p style="margin:0 0 6px">' + S.esc(w) + '</p>'; }).join('');
     var scale = $('scale').value.trim();
     var name = scale ? scale + ' 척도(' + k + '문항)' : '이 척도(' + k + '문항)';
     if (a <= 0 || negItems.length) {
       $('sentence').textContent = '문항-총점 상관이 음수인 문항이 있거나 α가 0 이하라서 문장을 만들지 않았습니다. 역채점 여부와 붙여 넣은 열을 먼저 확인하세요.';
+      document.querySelector('[data-copy="sentence"]').hidden = true;
     } else {
+      document.querySelector('[data-copy="sentence"]').hidden = false;
       $('sentence').innerHTML = '본 연구에서 ' + S.esc(name) + '의 내적 일관성 신뢰도는 Cronbach\'s α = ' + S.josa(S.fmt0(a, 2), '으로', '로', true) + ' 나타났다.';
     }
   }
@@ -69,8 +74,11 @@
   }
 
   $('run').addEventListener('click', run);
+  // 역채점 도구로 넘어갈 때 붙여 넣은 자료를 이 브라우저 탭 안에서만 넘긴다(sessionStorage)
+  document.querySelectorAll('a[href$="reverse-scoring/"]').forEach(function (a) { a.addEventListener('click', function () { try { sessionStorage.setItem('statsite-data', $('data').value); } catch (err) { /* 저장 불가 */ } }); });
+  window.addEventListener('pageshow', function () { if ($('data').value.trim()) run(); });
   S.auto('form', function () { if ($('data').value.trim()) run(); else { S.show(false); $('err').textContent = ''; } }, 400);
   $('reset').addEventListener('click', function () { S.resetForm('form'); $('err').textContent = ''; $('data').removeAttribute('aria-invalid'); S.show(false); $('data').focus(); });
-  $('example').addEventListener('click', example);
+  $('example').addEventListener('click', function () { example(); S.reveal(); });
   S.bindCopy();
 })();

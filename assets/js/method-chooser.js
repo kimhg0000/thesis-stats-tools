@@ -24,7 +24,7 @@
       ['3ind', '서로 다른 세 집단 이상', ''], ['3rep', '같은 사람의 세 시점 이상', '']] },
     { id: 'xtype', short: '다른 쪽 변수', text: '다른 쪽 변수는 어떤 값인가요?', opts: [
       ['cont', '연속형', ''], ['ord', '순서형', ''], ['cat', '범주형', '']] },
-    { id: 'lat', short: '변수 측정', text: '주요 변수를 어떻게 다루나요?', opts: [
+    { id: 'lat', short: '변수 측정', text: '주요 변수를 어떻게 다루나요?', hint: '잘 모르겠다면: 척도 평균으로 분석하는 연구(회귀, PROCESS)가 흔하고 설명하기 쉽습니다. 측정오차를 모형에 반영하려면 잠재변수(구조방정식)를 쓰는데, 대체로 표본이 더 필요하고 측정모형과 적합도를 함께 보고해야 합니다.', opts: [
       ['obs', '척도 평균이나 합계 같은 점수 하나(관측변수)', ''],
       ['lat', '여러 문항으로 재는 구성개념 그대로(잠재변수)', '측정오차를 모형에 반영']] },
     { id: 'nest', short: '자료 구조', text: '응답자가 더 큰 단위에 묶여 있나요?', opts: [
@@ -71,12 +71,12 @@
     var g = s.goal, dv = s.dv, r = function (key, note) { return { key: key, note: note || '' }; };
     if (g === 'diff') {
       var ind = s.gd === '2ind' || s.gd === '3ind', two = s.gd === '2ind' || s.gd === '2rep';
-      if (s.nest === 'nested') return r('mlm', '학급처럼 묶인 단위로 처치나 집단이 나뉘면 같은 학급 학생끼리 닮아 있어, 일반 t검정이나 분산분석은 표준오차를 작게 잡습니다. 집단 차이를 다층모형의 예측변수로 넣어 검정합니다.');
+      if (s.nest === 'nested') return r('mlm', '응답자가 학급처럼 묶여 있으면, 처치나 집단이 학급 단위든 개인 단위든 같은 학급 학생끼리 닮아 있어 일반 t검정이나 분산분석은 표준오차를 작게 잡습니다. 집단 변수를 다층모형의 예측변수로 넣어 검정합니다.');
       if (dv === 'cont') return r(s.gd === '2ind' ? 'indt' : s.gd === '2rep' ? 'pairedt' : s.gd === '3ind' ? 'anova' : 'rmanova');
       if (dv === 'skew' || dv === 'ord') return r(s.gd === '2ind' ? 'mwu' : s.gd === '2rep' ? 'wilcoxon' : s.gd === '3ind' ? 'kw' : 'friedman');
       if (ind) return r('chisq');
       if (dv === 'bin') return r(two ? 'mcnemar' : 'cochranq');
-      return r('bowker', two ? '' : '세 시점 이상이면 McNemar-Bowker 검정을 시점 쌍마다 하기보다 일반화추정방정식(GEE) 같은 모형을 검토합니다.');
+      return r(two ? 'bowker' : 'gee');
     }
     if (g === 'rel') {
       var x = s.xtype;
@@ -102,12 +102,12 @@
     }
     if (g === 'measure') return r(s.mpurpose === 'explore' ? 'efa' : s.mpurpose === 'confirm' ? 'cfa' : 'invariance');
     if (g === 'people') {
-      if (s.ptime === 'long') return r('lta');
+      if (s.ptime === 'long') return r('lta', s.ind === 'cont' ? '지표가 연속형이면 잠재프로파일 전이분석(LPTA)이라고도 부릅니다.' : '');
       return r(s.ind === 'cont' ? 'lpa' : 'lca', s.ind === 'cont' ? '거리 기반 군집분석(K-평균, Ward)과의 차이는 아래 "군집분석과 잠재프로파일분석" 글에 정리했습니다.' : '');
     }
     if (g === 'change') {
       var w = s.waves;
-      if (s.cgoal === 'avg') return w === '2' ? r('pairedt', '두 시점으로는 변화 궤적의 모양과 개인차를 함께 추정할 수 없어 잠재성장모형을 쓰지 못합니다. 3시점 이상이면 잠재성장모형을 쓸 수 있습니다.') : r('lgm', w === '3' ? '3시점이면 직선 변화만 추정할 수 있습니다.' : '');
+      if (s.cgoal === 'avg') return w === '2' ? r('pairedt', '평균 변화는 대응표본 t검정으로 봅니다. 두 시점으로는 잠재성장모형을 쓸 수 없지만, 변화의 개인차와 그 예측 요인은 사후 점수를 사전 점수로 통제한 회귀나 잠재변화점수 모형으로 볼 수 있습니다. 3시점 이상이면 잠재성장모형을 씁니다.') : r('lgm', w === '3' ? '3시점이면 직선 변화만 추정할 수 있습니다.' : '');
       if (s.cgoal === 'sub') return w === '2' ? r('lta', '두 시점으로는 궤적 유형을 추정하는 성장혼합모형을 쓸 수 없습니다. 시점마다 유형을 나누고 이동을 보는 잠재전이분석이 대안입니다.') : r('gmm', w === '3' ? '3시점은 최소 조건이라 수렴과 해석이 어려울 수 있습니다.' : '');
       if (s.cgoal === 'cross') return r('clpm', w === '2' ? '두 시점이면 전통적 교차지연 모형만 가능하고, 사람 사이 차이를 분리하는 RI-CLPM은 3시점 이상이 필요합니다.' : '');
       return r('lta');
@@ -138,7 +138,7 @@
     vis.forEach(function (id, n) {
       var q = QBY[id];
       var text = id === 'dv' && state.goal === 'rel' ? q.relText : q.text;
-      html += '<fieldset class="q" data-q="' + id + '"><legend><span class="qn">' + (n + 1) + '.</span> ' + esc(text) + '</legend><div class="opts">';
+      html += '<fieldset class="q" data-q="' + id + '"><legend><span class="qn">' + (n + 1) + '.</span> ' + esc(text) + '</legend>' + (q.hint ? '<p class="hint" style="margin:-4px 0 8px">' + esc(q.hint) + '</p>' : '') + '<div class="opts">';
       q.opts.forEach(function (o) {
         html += '<label class="opt"><input type="radio" name="' + id + '" value="' + o[0] + '"' + (state[id] === o[0] ? ' checked' : '') + '><span>' + esc(o[1]) + (o[2] ? '<small>' + esc(o[2]) + '</small>' : '') + '</span></label>';
       });
@@ -156,7 +156,7 @@
     $('mempty').hidden = !!d; $('result').hidden = !d;
     if (!d) {
       $('jump').hidden = true;
-      $('help').innerHTML = $('help').getAttribute('data-default');
+      $('help').innerHTML = ''; $('help').hidden = true;
       return;
     }
     var m = M[d.key];
@@ -174,6 +174,11 @@
     $('mtoolsWrap').hidden = !btns.length;
     var gl = (m.guides || []).filter(function (g) { return GUIDES[g]; }).map(function (g) { return '<li><a href="../../guides/' + g + '/">' + esc(GUIDES[g]) + '</a></li>'; });
     $('mguides').innerHTML = gl.join(''); $('mguidesWrap').hidden = !gl.length;
+    // 이 화면에 나온 용어 풀이
+    var blob = [m.name, m.q, d.note].concat(m.data, m.report, m.mistakes).join(' ');
+    var terms = (window.GLOSSARY || []).filter(function (g) { return blob.indexOf(g[0]) >= 0; });
+    $('mgloss').innerHTML = terms.map(function (g) { return '<dt>' + esc(g[0]) + '</dt><dd>' + esc(g[1]) + '</dd>'; }).join('');
+    $('mglossWrap').hidden = !terms.length;
     // 선택을 바꾸면
     var ch = [];
     visible(state).forEach(function (id) {
@@ -183,16 +188,18 @@
         var s2 = {}; Object.keys(state).forEach(function (k) { s2[k] = state[k]; }); s2[id] = o[0];
         s2 = clean(s2);
         var d2 = decide(s2);
-        var label = window.Stats.josa(q.short, '을', '를') + ' "' + o[1] + '"' + '(으)로 바꾸면';
+        var suf = window.Stats.josa(o[1], '이면', '면').slice(o[1].length);
+        var label = q.short + ': \'' + o[1] + '\'' + suf;
         if (!d2 || d2.key === d.key) return;
         ch.push('<li>' + esc(label) + ': <a href="' + query(s2) + '" data-state="' + esc(JSON.stringify(s2)) + '">' + esc(M[d2.key].name) + '</a></li>');
       });
     });
     $('changes').innerHTML = ch.join('') || '<li>다른 답을 골라도 같은 방법이 나옵니다. 연구 질문 자체를 바꾸려면 1번을 다시 고르세요.</li>';
     $('jump').hidden = false;
+    $('help').hidden = false;
     // 크몽 안내 한 줄: 고급 분석이면 그 분석 이름으로
     $('help').innerHTML = m.premium
-      ? esc(window.Stats.josa(m.name, '을', '를')) + ' 직접 하기 어렵다면 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">' + $('help').getAttribute('data-who') + '</span>'
+      ? '이 분석을 직접 하기 어렵다면 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">' + $('help').getAttribute('data-who') + '</span>'
       : $('help').getAttribute('data-default');
   }
 

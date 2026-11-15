@@ -10,11 +10,12 @@
     return '';
   }
 
-  function run() {
+  function run(e) {
+    var byClick = !!(e && e.type === 'click');
     $('err').textContent = ''; $('data').removeAttribute('aria-invalid');
     var fail = function (m) { $('err').textContent = m; $('data').setAttribute('aria-invalid', 'true'); S.show(false); };
     var t = S.parseTable($('data').value);
-    if (!t.rows.length) { S.show(false); return; }
+    if (!t.rows.length) { if (byClick) fail('변수 점수를 붙여 넣으세요. "예시 자료로 채우기"로 먼저 해 볼 수 있습니다.'); else S.show(false); return; }
     var v = t.header.length;
     if (v < 2) return fail('변수가 두 개 이상이어야 합니다.');
     var three = $('three').checked, pairwise = $('pairwise').checked;
@@ -64,6 +65,7 @@
       var tr = document.createElement('tr');
       tr.innerHTML = '<td>' + S.esc(t.header[j]) + ', ' + S.esc(t.header[i]) + '</td><td>' + S.fmt0(R[i][j], 3) + '</td><td>' + S.fmtP(P[i][j]).replace('= ', '') + '</td><td>' + N[i][j] + '</td>';
       tb.appendChild(tr);
+      var pn = S.pNote(P[i][j], t.header[j] + '와(과) ' + t.header[i]); if (pn) warns.push(pn);
       if (P[i][j] < 0.05) sig.push({ a: t.header[j], b: t.header[i], r: R[i][j], p: P[i][j], n: N[i][j] });
     }
     sig.sort(function (a, b) { return Math.abs(b.r) - Math.abs(a.r); });
@@ -73,6 +75,7 @@
       return S.josa(S.esc(s.a), '과', '와') + ' ' + S.josa(S.esc(s.b), '은', '는') + ' 유의한 ' + (s.r > 0 ? '정적' : '부적') + ' 상관을 보였다(<i>r</i>(' + (s.n - 2) + ') = ' + S.minus(S.fmt0(s.r, 2)) + ', <i>p</i> ' + S.fmtP(s.p) + ').';
     }).join(' ');
     $('sentence').innerHTML = sent;
+    if (byClick) S.reveal();
     S.live('상관표를 만들었습니다. 변수 ' + v + '개, 사례 ' + rows.length + '명.');
     $('warns').innerHTML = warns.map(function (w) { return '<p style="margin:0 0 6px">' + S.esc(w) + '</p>'; }).join('');
   }
@@ -83,8 +86,9 @@
   }
 
   $('run').addEventListener('click', run);
+  window.addEventListener('pageshow', function () { if ($('data').value.trim()) run(); });
   S.auto('form', function () { if ($('data').value.trim()) run(); else { S.show(false); $('err').textContent = ''; } }, 400);
   $('reset').addEventListener('click', function () { S.resetForm('form'); $('err').textContent = ''; $('data').removeAttribute('aria-invalid'); S.show(false); $('data').focus(); });
-  $('example').addEventListener('click', example);
+  $('example').addEventListener('click', function () { example(); S.reveal(); });
   S.bindCopy();
 })();

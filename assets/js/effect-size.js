@@ -20,12 +20,14 @@
     if (msg) { $(err).textContent = (AUTO && /채우세요|넣으세요/.test(msg)) ? '' : msg; $('empty').hidden = false; return; }
     $(err).textContent = ''; $('empty').hidden = true; $(res).hidden = false; $(ok).hidden = false;
     S.live('효과크기를 계산했습니다.');
+    if (!AUTO) S.reveal(res);
   }
   function set(id, x, text) { $(id).setAttribute('data-value', x); $(id).textContent = text; }
 
   function runA() {
     var m1 = val('m1'), s1 = val('s1'), n1 = val('n1'), m2 = val('m2'), s2 = val('s2'), n2 = val('n2');
-    if ([m1, s1, n1, m2, s2, n2].some(function (x) { return !isFinite(x); })) return show('resA', 'errA', 'okA', '여섯 칸을 모두 채우세요.');
+    if ([m1, s1, n1, m2, s2, n2].some(function (x) { return !isFinite(x); })) { if (!AUTO) { var f = S.markEmpty(['m1', 's1', 'n1', 'm2', 's2', 'n2']); if (f) f.focus(); } return show('resA', 'errA', 'okA', '빨간 칸을 채우세요. 여섯 칸이 모두 필요합니다.'); }
+    S.markEmpty([]); ['m1', 's1', 'n1', 'm2', 's2', 'n2'].forEach(function (id) { $(id).removeAttribute('aria-invalid'); });
     if (n1 < 2 || n2 < 2 || s1 < 0 || s2 < 0) return show('resA', 'errA', 'okA', '사례 수는 2 이상, 표준편차는 0 이상이어야 합니다.');
     var df = n1 + n2 - 2;
     var sp = Math.sqrt(((n1 - 1) * s1 * s1 + (n2 - 1) * s2 * s2) / df);
@@ -37,10 +39,10 @@
     var crit = Math.sqrt(S.fInvSf(0.05, 1, df));
     var lo = d - crit * se, hi = d + crit * se;
     var N = n1 + n2, r = d / Math.sqrt(d * d + (N * N - 2 * N) / (n1 * n2));
-    set('dA', d, S.fmt(d, 2) + ' (' + S.fmt(d, 3) + ')');
+    set('dA', d, S.fmt(d, 2));
     $('ciA').setAttribute('data-lo', lo); $('ciA').setAttribute('data-hi', hi);
     $('ciA').textContent = '[' + S.fmt(lo, 2) + ', ' + S.fmt(hi, 2) + ']';
-    set('gA', g, S.fmt(g, 2) + ' (' + S.fmt(g, 3) + ')');
+    set('gA', g, S.fmt(g, 2));
     set('rA', r, S.fmt0(r, 2));
     $('spA').textContent = S.fmt(sp, 3);
     $('interpA').textContent = interp(d, [0.2, 0.5, 0.8], 'd = ' + S.fmt(d, 2));
@@ -56,7 +58,7 @@
     if (design === 'ind') { d = t * Math.sqrt(1 / n1 + 1 / n2); df = n1 + n2 - 2; $('dBlabel').innerHTML = "Cohen's <i>d</i> = <i>t</i>√(1/<i>n</i>₁ + 1/<i>n</i>₂)"; $('noteB').textContent = ''; }
     else { d = t / Math.sqrt(n1); df = n1 - 1; $('dBlabel').innerHTML = '<i>d<sub>z</sub></i> = <i>t</i> / √<i>n</i>'; $('noteB').innerHTML = '<i>d<sub>z</sub></i>는 차이 점수의 표준편차로 나눈 값이라 독립집단의 <i>d</i>보다 크게 나오는 경우가 많습니다. 보고할 때 어떤 <i>d</i>인지 밝히세요.'; }
     var r = Math.sqrt(t * t / (t * t + df)) * (t < 0 ? -1 : 1);
-    set('dB', d, S.fmt(d, 2) + ' (' + S.fmt(d, 3) + ')');
+    set('dB', d, S.fmt(d, 2));
     set('rB', r, S.fmt0(r, 2));
     $('interpB').textContent = design === 'ind' ? interp(d, [0.2, 0.5, 0.8], 'd = ' + S.fmt(d, 2)) : 'Cohen의 d 기준(0.2, 0.5, 0.8)은 독립집단의 d를 위한 것이어서 dz에 그대로 대지 않습니다. dz는 사전·사후 상관이 높을수록 커지기 때문입니다.';
   }
