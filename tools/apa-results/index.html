@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APA 결과 문장 생성기 (t, F, r, χ², 회귀계수) | 논문 통계 도구</title>
+<meta name="description" content="t, F, r, χ², 회귀계수 값을 넣으면 p값을 다시 계산하고 APA 7판 표기에 맞춘 한국어 결과 문장과 표 머리를 만들어 줍니다. 앞자리 0, 기울임, p &lt; .001 규칙을 자동으로 맞춥니다.">
+<link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/tools/apa-results/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="APA 결과 문장 생성기 (t, F, r, χ², 회귀계수)">
+<meta property="og:description" content="t, F, r, χ², 회귀계수 값을 넣으면 p값을 다시 계산하고 APA 7판 표기에 맞춘 한국어 결과 문장과 표 머리를 만들어 줍니다. 앞자리 0, 기울임, p &lt; .001 규칙을 자동으로 맞춥니다.">
+<meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/tools/apa-results/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="논문 통계 도구">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"APA 결과 문장 생성기","description":"t, F, r, χ², 회귀계수 값을 넣으면 p값을 다시 계산하고 APA 7판 표기에 맞춘 한국어 결과 문장과 표 머리를 만들어 줍니다. 앞자리 0, 기울임, p < .001 규칙을 자동으로 맞춥니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/apa-results/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="../../">논문 통계 도구</a>
+<nav aria-label="주 메뉴"><a href="../../#tools" aria-current="page">도구</a><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="crumb"><a href="../../">처음</a> / 도구</p>
+<h1>APA 결과 문장 생성기</h1>
+<p class="lead">SPSS나 jamovi 출력에서 통계량과 자유도를 옮겨 넣으면 <i>p</i>값을 다시 계산해 APA 7판 형식의 문장을 만듭니다. 출력의 <i>p</i>와 다르면 옮겨 적는 과정에서 숫자가 틀렸을 가능성이 높으니 확인하세요.</p>
+
+<div class="panel">
+  <label for="type">분석</label>
+  <select id="type">
+    <option value="t">t검정 (독립표본, 대응표본, 일표본)</option>
+    <option value="F">분산분석 F</option>
+    <option value="r">Pearson 상관 r</option>
+    <option value="chi">카이제곱 검정 χ²</option>
+    <option value="reg">회귀계수 (B, SE, β)</option>
+  </select>
+
+  <div data-for="t">
+    <label for="t_kind">t검정 종류</label>
+    <select id="t_kind"><option value="ind">독립표본</option><option value="paired">대응표본 또는 일표본</option></select>
+    <div class="grid">
+      <div><label for="t_t"><i>t</i></label><input type="number" id="t_t" step="any"></div>
+      <div><label for="t_df">자유도 <i>df</i></label><input type="number" id="t_df" step="any" min="1"></div>
+      <div><label for="t_d">효과크기 <i>d</i> (대응표본이면 <i>d<sub>z</sub></i>, 선택)</label><input type="number" id="t_d" step="any"></div>
+    </div>
+    <p class="hint">Welch 검정(등분산 가정하지 않음)이면 소수 자유도를 그대로 넣으세요. 집단 정보는 선택입니다.</p>
+    <div class="grid">
+      <div><label for="t_g1">집단 1 이름</label><input type="text" id="t_g1" placeholder="예: 실험집단"></div>
+      <div><label for="t_m1">집단 1 <i>M</i></label><input type="number" id="t_m1" step="any"></div>
+      <div><label for="t_s1">집단 1 <i>SD</i></label><input type="number" id="t_s1" step="any"></div>
+      <div><label for="t_n1">집단 1 <i>n</i></label><input type="number" id="t_n1" step="1"></div>
+      <div><label for="t_g2">집단 2 이름</label><input type="text" id="t_g2" placeholder="예: 통제집단"></div>
+      <div><label for="t_m2">집단 2 <i>M</i></label><input type="number" id="t_m2" step="any"></div>
+      <div><label for="t_s2">집단 2 <i>SD</i></label><input type="number" id="t_s2" step="any"></div>
+      <div><label for="t_n2">집단 2 <i>n</i></label><input type="number" id="t_n2" step="1"></div>
+    </div>
+    <label for="t_dv">종속변수 이름</label><input type="text" id="t_dv" placeholder="예: 학업 흥미">
+  </div>
+
+  <div data-for="F" hidden>
+    <div class="grid">
+      <div><label for="F_F"><i>F</i></label><input type="number" id="F_F" step="any" min="0"></div>
+      <div><label for="F_df1"><i>df</i>₁ (효과)</label><input type="number" id="F_df1" step="any" min="1"></div>
+      <div><label for="F_df2"><i>df</i>₂ (오차)</label><input type="number" id="F_df2" step="any" min="1"></div>
+      <div><label for="F_eta">부분 η² (η²<sub>p</sub>, 선택, 비우면 계산)</label><input type="number" id="F_eta" step="any"></div>
+    </div>
+    <label for="F_iv">집단 변수 이름</label><input type="text" id="F_iv" placeholder="예: 학년">
+    <label for="F_dv">종속변수 이름</label><input type="text" id="F_dv" placeholder="예: 진로 결정 수준">
+  </div>
+
+  <div data-for="r" hidden>
+    <div class="grid">
+      <div><label for="r_r"><i>r</i></label><input type="number" id="r_r" step="any" min="-1" max="1"></div>
+      <div><label for="r_n">사례 수 <i>N</i></label><input type="number" id="r_n" step="1" min="3"></div>
+    </div>
+    <div class="grid">
+      <div><label for="r_a">변수 1 이름</label><input type="text" id="r_a" placeholder="예: 자기효능감"></div>
+      <div><label for="r_b">변수 2 이름</label><input type="text" id="r_b" placeholder="예: 학업성취"></div>
+    </div>
+  </div>
+
+  <div data-for="chi" hidden>
+    <div class="grid">
+      <div><label for="c_x">χ²</label><input type="number" id="c_x" step="any" min="0"></div>
+      <div><label for="c_df"><i>df</i></label><input type="number" id="c_df" step="1" min="1"></div>
+      <div><label for="c_n">전체 사례 수 <i>N</i></label><input type="number" id="c_n" step="1" min="1"></div>
+      <div><label for="c_k">행·열 중 작은 쪽 범주 수 (Cramér's V용, 선택)</label><input type="number" id="c_k" step="1" min="2"></div>
+    </div>
+    <div class="grid">
+      <div><label for="c_a">변수 1 이름</label><input type="text" id="c_a" placeholder="예: 성별"></div>
+      <div><label for="c_b">변수 2 이름</label><input type="text" id="c_b" placeholder="예: 전공 계열"></div>
+    </div>
+  </div>
+
+  <div data-for="reg" hidden>
+    <div class="grid">
+      <div><label for="g_B"><i>B</i> (비표준화 계수)</label><input type="number" id="g_B" step="any"></div>
+      <div><label for="g_SE"><i>SE</i></label><input type="number" id="g_SE" step="any" min="0"></div>
+      <div><label for="g_beta">β (표준화 계수, 선택)</label><input type="number" id="g_beta" step="any"></div>
+      <div><label for="g_df">잔차 자유도 (<i>N</i> − 예측변수 수 − 1)</label><input type="number" id="g_df" step="1" min="1"></div>
+    </div>
+    <div class="grid">
+      <div><label for="g_x">예측변수 이름</label><input type="text" id="g_x" placeholder="예: 사회적 지지"></div>
+      <div><label for="g_y">종속변수 이름</label><input type="text" id="g_y" placeholder="예: 삶의 만족"></div>
+    </div>
+  </div>
+
+  <button type="button" id="run">문장 만들기</button>
+</div>
+
+<div class="result panel" id="result" hidden>
+  <p class="error" id="err"></p>
+  <div id="ok">
+    <p>APA 표기: <span id="apa" class="big" data-p=""></span></p>
+    <div class="sentence"><span class="label">논문에 쓰는 문장</span><span id="sentence"></span></div>
+    <button type="button" class="secondary" data-copy="sentence">문장 복사</button>
+    <div class="warn" id="warns"></div>
+    <h3>표 머리 예시</h3>
+    <div class="table-scroll"><table class="apa" id="thead"></table></div>
+    <button type="button" class="secondary" data-copy="thead">표 머리 복사</button>
+    <p class="note" id="tnote"></p>
+  </div>
+</div>
+
+<details>
+  <summary>표기 규칙과 계산</summary>
+  <p>APA 7판(American Psychological Association, 2020)은 통계 기호를 기울여 쓰고, 1을 넘을 수 없는 값(<i>p</i>, <i>r</i>, 비율)은 앞자리 0을 쓰지 않습니다. <i>t</i>, <i>F</i>, χ², <i>M</i>, <i>SD</i>, <i>d</i>는 0을 씁니다. <i>p</i>는 소수 셋째 자리까지 정확히 쓰고 .001보다 작으면 <i>p</i> &lt; .001로 씁니다. 셋째 자리 반올림이 .05나 .01 경계에 닿을 때(예: .0496이 .050이 되는 경우) 이 도구는 경계보다 작게 보일 때까지 자릿수를 늘려 보여 줍니다. 이것은 APA 규정이 아니라 이 사이트의 표기 방식입니다.</p>
+  <p><i>p</i>값은 <i>t</i>분포(양측), <i>F</i>분포, χ²분포의 오른쪽 꼬리 확률로 계산하며, 상관은 <i>t</i> = <i>r</i>√(<i>N</i> − 2)/√(1 − <i>r</i>²), 회귀계수는 <i>t</i> = <i>B</i>/<i>SE</i>로 바꿔 계산합니다. Python scipy.stats와 대조해 시험했습니다. β는 이론상 1을 넘을 수 있어 앞자리 0을 쓰는 학술지도 있으니 투고 규정을 따르세요.</p>
+</details>
+
+<div class="related"><p>함께 읽을 글: <a href="../../guides/t-test-report/">t검정 결과를 표와 문장으로 쓰는 법</a>, <a href="../../guides/regression-table-report/">회귀분석 결과표에 B, SE, β를 어떻게 쓰나</a></p></div>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+</div></footer>
+<script src="../../assets/stats.js"></script>
+<script src="../../assets/js/apa-results.js"></script>
+</body>
+</html>

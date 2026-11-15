@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>매개효과 Sobel 검정과 간접효과 신뢰구간 계산기 | 논문 통계 도구</title>
+<meta name="description" content="경로계수 a, b와 표준오차를 넣으면 Sobel, Aroian, Goodman 검정과 몬테카를로 95% 신뢰구간으로 간접효과(ab)를 검정하고, 원자료가 있을 때 부트스트랩을 권하는 이유를 안내합니다.">
+<link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/tools/mediation-sobel/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="매개효과 Sobel 검정과 간접효과 신뢰구간 계산기">
+<meta property="og:description" content="경로계수 a, b와 표준오차를 넣으면 Sobel, Aroian, Goodman 검정과 몬테카를로 95% 신뢰구간으로 간접효과(ab)를 검정하고, 원자료가 있을 때 부트스트랩을 권하는 이유를 안내합니다.">
+<meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/tools/mediation-sobel/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="논문 통계 도구">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"매개효과 Sobel 검정·간접효과 신뢰구간","description":"경로계수 a, b와 표준오차를 넣으면 Sobel, Aroian, Goodman 검정과 몬테카를로 95% 신뢰구간으로 간접효과(ab)를 검정하고, 원자료가 있을 때 부트스트랩을 권하는 이유를 안내합니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/mediation-sobel/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="../../">논문 통계 도구</a>
+<nav aria-label="주 메뉴"><a href="../../#tools" aria-current="page">도구</a><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="crumb"><a href="../../">처음</a> / 도구</p>
+<h1>매개효과 Sobel 검정과 간접효과 신뢰구간</h1>
+<p class="lead">X → M → Y 단순매개모형에서 간접효과 <i>ab</i>를 검정합니다. <i>a</i>는 X가 M을 예측하는 회귀계수, <i>b</i>는 X를 통제한 상태에서 M이 Y를 예측하는 회귀계수입니다. 둘 다 비표준화 계수와 그 표준오차를 넣으세요.</p>
+
+<div class="panel">
+  <div class="grid">
+    <div><label for="a"><i>a</i> (X → M)</label><input type="number" id="a" step="any"></div>
+    <div><label for="sa"><i>a</i>의 표준오차</label><input type="number" id="sa" step="any" min="0"></div>
+    <div><label for="b"><i>b</i> (M → Y, X 통제)</label><input type="number" id="b" step="any"></div>
+    <div><label for="sb"><i>b</i>의 표준오차</label><input type="number" id="sb" step="any" min="0"></div>
+  </div>
+  <button type="button" id="run">계산하기</button>
+  <button type="button" class="secondary" id="example">예시 값 넣기</button>
+</div>
+
+<div class="result panel" id="result" hidden>
+  <p class="error" id="err"></p>
+  <div id="ok">
+    <p>간접효과 <i>ab</i> = <span class="big" id="ab" data-value=""></span></p>
+    <div class="table-scroll">
+      <table class="plain" id="tests">
+        <thead><tr><th>방법</th><th>표준오차</th><th><i>z</i></th><th><i>p</i></th></tr></thead>
+        <tbody>
+          <tr><td>Sobel (1982)</td><td id="seS"></td><td id="zS" data-value=""></td><td id="pS" data-value=""></td></tr>
+          <tr><td>Aroian</td><td id="seA"></td><td id="zA" data-value=""></td><td id="pA" data-value=""></td></tr>
+          <tr><td>Goodman</td><td id="seG"></td><td id="zG" data-value=""></td><td id="pG" data-value=""></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>몬테카를로 95% 신뢰구간 (반복 1,000,000회): <span class="big" id="mc" data-lo="" data-hi=""></span></p>
+    <p class="note">신뢰구간이 0을 포함하지 않으면 간접효과가 5% 수준에서 유의하다고 판단합니다.</p>
+    <div class="sentence"><span class="label">논문에 쓰는 문장</span><span id="sentence"></span></div>
+    <button type="button" class="secondary" data-copy="sentence">문장 복사</button>
+    <div class="warn">원자료가 있다면 부트스트랩 신뢰구간(SPSS·SAS의 PROCESS macro, R의 lavaan 등, 보통 5,000회 이상)을 쓰는 것이 표준입니다. Sobel 검정은 <i>ab</i>의 표집분포를 정규분포로 가정하는데 실제로는 치우쳐 있어 검정력이 낮습니다. 이 화면의 몬테카를로 구간은 논문에 계수와 표준오차만 있을 때 쓰는 대안입니다(Preacher &amp; Selig, 2012).</div>
+  </div>
+</div>
+
+<details>
+  <summary>계산 방법</summary>
+  <p class="formula">Sobel:   SE = √(b²·sa² + a²·sb²)
+Aroian:  SE = √(b²·sa² + a²·sb² + sa²·sb²)
+Goodman: SE = √(b²·sa² + a²·sb² − sa²·sb²)
+z = ab / SE,  p = 2 × (1 − Φ(|z|))</p>
+  <p>몬테카를로 구간은 <i>a</i> ~ N(<i>a</i>, <i>sa</i>²), <i>b</i> ~ N(<i>b</i>, <i>sb</i>²)에서 서로 독립으로 1,000,000번 뽑아 곱한 값의 2.5, 97.5 백분위수입니다. 같은 입력이면 같은 결과가 나오도록 난수 씨앗을 입력값으로 고정합니다. 단순매개모형에서 <i>a</i>와 <i>b</i>의 추정치는 서로 상관이 없으므로 독립 추출을 씁니다. Sobel 계열 값은 Python으로 계산한 값과, 몬테카를로 구간은 Python numpy로 4,000,000번 뽑은 구간과 비교해 차이가 Sobel 표준오차의 1% 이내인지 시험했습니다.</p>
+</details>
+
+<div class="related"><p>함께 읽을 글: <a href="../../guides/mediation-bootstrap-vs-sobel/">매개효과 검증, Sobel 검정보다 부트스트랩을 권하는 이유</a></p></div>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+</div></footer>
+<script src="../../assets/stats.js"></script>
+<script src="../../assets/js/mediation-sobel.js"></script>
+</body>
+</html>

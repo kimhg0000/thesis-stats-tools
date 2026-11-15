@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>소개와 검증 방법 | 논문 통계 도구</title>
+<meta name="description" content="논문 통계 도구의 운영 주체, 개인정보 처리 방식, 계산 검증 방법을 밝힙니다.">
+<link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/about/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="소개와 검증 방법">
+<meta property="og:description" content="논문 통계 도구의 운영 주체, 개인정보 처리 방식, 계산 검증 방법을 밝힙니다.">
+<meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/about/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="논문 통계 도구">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="../">논문 통계 도구</a>
+<nav aria-label="주 메뉴"><a href="../#tools">도구</a><a href="../guides/">안내 글</a><a href="../about/" aria-current="page">소개</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="crumb"><a href="../">처음</a> / 소개</p>
+<article>
+<h1>소개와 검증 방법</h1>
+<p>이 사이트는 논문을 쓰는 대학원생이 통계 분석 결과를 스스로 이해하고 바르게 보고하도록 돕는 계산기와 글을 모아 둔 곳입니다. 분석을 대신하거나 논문을 대신 쓰는 곳이 아닙니다. 도구가 만든 문장은 출발점일 뿐이니, 연구 맥락에 맞게 고쳐 쓰고 지도교수와 상의하세요.</p>
+<h2>운영</h2>
+<p>상담과연구에서 운영합니다. 크몽에서 논문 통계분석을 돕고 있습니다. 직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽 서비스 페이지</a>에서 문의할 수 있습니다.</p>
+<h2>개인정보와 입력 자료</h2>
+<p>이 사이트는 회원 가입, 쿠키, 방문 추적 스크립트, 광고, 외부 글꼴을 쓰지 않습니다. 붙여 넣은 응답 자료와 입력한 값은 브라우저 안의 자바스크립트로만 계산되고 서버로 보내지지 않습니다. 페이지를 닫으면 사라집니다. 사이트는 GitHub Pages에서 정적 파일로 제공되므로, GitHub가 일반적인 웹 서버로서 접속 기록을 남길 수 있습니다.</p>
+<h2>계산 검증</h2>
+<p>각 도구는 정답을 아는 시험 사례로 검증한 뒤 공개했습니다. 정답은 Python의 scipy, statsmodels, pingouin 패키지로 계산했고, 실제 브라우저(Playwright)로 이 사이트의 화면에 값을 입력해 나온 결과를 정답과 자동으로 대조했습니다. 근사를 쓰는 곳(상관분석 표본 크기, 효과크기 신뢰구간, 몬테카를로 구간)은 해당 화면의 "계산 방법"에 근사임과 허용 오차를 적었습니다.</p>
+<p>틀린 계산이나 설명을 발견하면 <a href="https://github.com/kimhg0000/thesis-stats-tools/issues" rel="noopener">GitHub 저장소의 Issues</a>에 남겨 주세요.</p>
+<p class="note">최종 수정: 2026-11-15</p>
+</article>
+
+</div></main>
+<footer class="site"><div class="wrap">
+<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../about/">소개와 검증 방법</a></p>
+</div></footer>
+
+</body>
+</html>

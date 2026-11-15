@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kimhg0000.github.io/thesis-stats-tools/sitemap.xml

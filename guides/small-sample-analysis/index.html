@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>표본이 작을 때 쓸 수 있는 분석 | 논문 통계 도구</title>
+<meta name="description" content="집단당 10~20명 정도의 작은 표본에서 쓸 수 있는 비모수 검정, Fisher 정확검정, 효과크기와 신뢰구간 보고, 피해야 할 분석과 한계 기술 방법을 정리했습니다.">
+<link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/guides/small-sample-analysis/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="표본이 작을 때 쓸 수 있는 분석">
+<meta property="og:description" content="집단당 10~20명 정도의 작은 표본에서 쓸 수 있는 비모수 검정, Fisher 정확검정, 효과크기와 신뢰구간 보고, 피해야 할 분석과 한계 기술 방법을 정리했습니다.">
+<meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/guides/small-sample-analysis/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="논문 통계 도구">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"표본이 작을 때 쓸 수 있는 분석","description":"집단당 10~20명 정도의 작은 표본에서 쓸 수 있는 비모수 검정, Fisher 정확검정, 효과크기와 신뢰구간 보고, 피해야 할 분석과 한계 기술 방법을 정리했습니다.","inLanguage":"ko","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Organization","name":"상담과연구"},"publisher":{"@type":"Organization","name":"상담과연구"},"mainEntityOfPage":"https://kimhg0000.github.io/thesis-stats-tools/guides/small-sample-analysis/"}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="../../">논문 통계 도구</a>
+<nav aria-label="주 메뉴"><a href="../../#tools">도구</a><a href="../../guides/" aria-current="page">안내 글</a><a href="../../about/">소개</a></nav>
+</div></header>
+<main><div class="wrap">
+<article>
+<p class="crumb"><a href="../../">처음</a> / <a href="../">안내 글</a></p>
+<h1>표본이 작을 때 쓸 수 있는 분석</h1>
+<p class="meta">상담과연구 · 2026-11-15</p>
+
+<p>특수교육, 임상, 현장 개입 연구처럼 모집 자체가 어려운 연구에서는 집단당 10~20명으로 분석해야 하는 경우가 많습니다. 어떤 분석을 고르든 작은 표본의 검정력 부족은 사라지지 않습니다. 할 수 있는 일은 가정을 덜 어기는 방법을 고르고, 효과의 크기와 불확실성을 함께 보고하는 것입니다.</p>
+<p>정규성을 확인하기 어려운 작은 표본에서는 순위에 기반한 검정을 많이 씁니다.</p>
+<div class="table-scroll"><table>
+<thead><tr><th>상황</th><th>모수 검정</th><th>비모수 대안</th></tr></thead>
+<tbody>
+<tr><td>독립된 두 집단</td><td>독립표본 <i>t</i>검정</td><td>Mann-Whitney <i>U</i> 검정</td></tr>
+<tr><td>같은 대상의 사전·사후</td><td>대응표본 <i>t</i>검정</td><td>Wilcoxon 부호순위 검정</td></tr>
+<tr><td>독립된 세 집단 이상</td><td>일원분산분석</td><td>Kruskal-Wallis 검정</td></tr>
+<tr><td>같은 대상의 세 시점 이상</td><td>반복측정 분산분석</td><td>Friedman 검정</td></tr>
+</tbody>
+</table></div>
+<p>순위 검정은 평균이 아니라 순위를 비교하므로 기술통계도 중앙값과 사분위범위를 함께 제시해야 결과와 맞습니다. 집단이 아주 작으면 순위 검정은 원리상 유의수준에 도달하지 못할 수도 있습니다. 예를 들어 3명 대 3명의 Mann-Whitney 검정에서 정확 양측 <i>p</i>값은 두 집단이 완전히 갈려도 .10보다 작아지지 않습니다. 이런 설계라면 검정보다 개별 자료와 효과크기를 보여 주는 쪽이 정직합니다.</p>
+<p>"30명 미만이면 비모수 검정"이라는 말이 널리 퍼져 있지만 출처가 분명한 규칙은 아닙니다. 분포 모양과 이상값을 직접 보고 판단합니다(<a href="../normality-skew-kurtosis/">정규성 판단</a>).</p>
+<p>교차표에서는 Cochran(1954)의 권고에서 나온 기준을 흔히 씁니다. 기대빈도가 5 미만인 칸이 전체의 20%를 넘거나 1 미만인 칸이 하나라도 있으면 카이제곱 근사가 부정확해진다는 것입니다. 이 경우 2×2 표는 Fisher 정확검정을, 그보다 큰 표는 Fisher-Freeman-Halton 정확검정을 보고합니다. SPSS는 2×2 표에서 Fisher 정확검정을 자동으로 함께 출력하고, 큰 표의 정확검정은 Exact Tests 옵션이 있어야 합니다.</p>
+<p>표본 50명으로 잠재변수가 여러 개인 구조방정식모형을 추정하거나 예측변수 8개를 넣은 회귀분석을 하는 것은 피합니다. 모형이 추정되더라도 결과가 불안정합니다. 연구문제나 변수를 줄이는 쪽을 먼저 검토합니다.</p>
+<p>유의하지 않은 결과가 나와도 효과크기와 신뢰구간을 보고하면 "차이가 없다"가 아니라 "이 표본으로는 판단하기 어렵다"는 정보를 줄 수 있습니다. 연구의 한계에는 표본 크기와 그로 인한 검정력 부족을 적고, 후속 연구에 필요한 표본 크기를 검정력 분석으로 계산해 제안할 수 있습니다.</p>
+
+<h2>참고문헌</h2>
+<ul class="refs">
+<li>Cochran, W. G. (1954). Some methods for strengthening the common χ² tests. <i>Biometrics, 10</i>(4), 417–451.</li>
+</ul>
+
+<div class="related"><p>관련 도구: <a href="../../tools/method-chooser/">통계 분석 방법 선택 도우미</a></p></div>
+</article>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+</div></footer>
+
+</body>
+</html>

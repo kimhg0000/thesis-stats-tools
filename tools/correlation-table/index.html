@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>상관행렬 APA 표 만들기 (평균, 표준편차, 유의 표시) | 논문 통계 도구</title>
+<meta name="description" content="엑셀에서 변수 점수를 복사해 붙여 넣으면 Pearson 상관계수, 평균, 표준편차와 유의 표시(*)를 담은 APA 7판 형식 상관표를 만들어 한글·워드에 붙여 넣을 수 있게 합니다.">
+<link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/tools/correlation-table/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="상관행렬 APA 표 만들기 (평균, 표준편차, 유의 표시)">
+<meta property="og:description" content="엑셀에서 변수 점수를 복사해 붙여 넣으면 Pearson 상관계수, 평균, 표준편차와 유의 표시(*)를 담은 APA 7판 형식 상관표를 만들어 한글·워드에 붙여 넣을 수 있게 합니다.">
+<meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/tools/correlation-table/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="논문 통계 도구">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"상관행렬 APA 표 만들기","description":"엑셀에서 변수 점수를 복사해 붙여 넣으면 Pearson 상관계수, 평균, 표준편차와 유의 표시(*)를 담은 APA 7판 형식 상관표를 만들어 한글·워드에 붙여 넣을 수 있게 합니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/correlation-table/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="../../">논문 통계 도구</a>
+<nav aria-label="주 메뉴"><a href="../../#tools" aria-current="page">도구</a><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="crumb"><a href="../../">처음</a> / 도구</p>
+<h1>상관행렬 APA 표 만들기</h1>
+<p class="lead">변수별 점수(척도 평균 등)를 머리글 줄과 함께 붙여 넣으세요. 한 행이 응답자 한 명, 한 열이 변수 하나입니다. 표는 APA 7판 관례대로 변수에 번호를 붙이고 아래 삼각형만 채웁니다.</p>
+
+<div class="panel">
+  <label for="data">변수 점수</label>
+  <textarea id="data" spellcheck="false" placeholder="자기효능감&#9;학업스트레스&#9;학업만족&#10;3.8&#9;2.4&#9;4.0&#10;..."></textarea>
+  <label class="inline"><input type="checkbox" id="three"> <i>p</i> &lt; .001에 *** 표시</label>
+  <label class="inline"><input type="checkbox" id="pairwise"> 쌍별 제외 (기본은 목록별 제외)</label>
+  <p class="hint">목록별 제외: 빈 칸이 하나라도 있는 응답자를 모든 계산에서 뺍니다. 쌍별 제외: 변수 쌍마다 두 값이 모두 있는 응답자만 씁니다. 그래서 칸마다 사례 수가 달라질 수 있습니다.</p>
+  <br>
+  <button type="button" id="run">표 만들기</button>
+  <button type="button" class="secondary" id="example">예시 자료 넣기</button>
+</div>
+
+<div class="result panel" id="result" hidden>
+  <p class="error" id="err"></p>
+  <div id="ok">
+    <p class="note" id="caption"></p>
+    <div class="table-scroll"><table class="apa" id="ctable"></table></div>
+    <p class="note" id="tnote"></p>
+    <button type="button" data-copy="ctable" data-copy-with="caption,tnote">표 복사 (한글·워드용, 제목과 주석 포함)</button>
+    <p class="note">휴대폰에서는 표를 옆으로 밀어 나머지 열을 볼 수 있습니다.</p>
+    <div class="warn" id="warns"></div>
+    <h3>본문에 쓰는 문장</h3>
+    <div class="sentence"><span class="label">유의한 상관만 골라 쓴 예</span><span id="sentence"></span></div>
+    <button type="button" class="secondary" data-copy="sentence">문장 복사</button>
+    <details>
+      <summary>모든 변수 쌍의 <i>r</i>, <i>p</i>, <i>n</i></summary>
+      <div class="table-scroll"><table class="plain" id="pairs"><thead><tr><th>변수 쌍</th><th><i>r</i></th><th><i>p</i></th><th><i>n</i></th></tr></thead><tbody></tbody></table></div>
+    </details>
+  </div>
+</div>
+
+<details>
+  <summary>계산 방법</summary>
+  <p>Pearson 상관계수 <i>r</i>을 구하고, <i>t</i> = <i>r</i>√(<i>n</i> − 2) / √(1 − <i>r</i>²), 자유도 <i>n</i> − 2인 <i>t</i>분포로 양측 <i>p</i>를 계산합니다. 평균과 표준편차(<i>n</i> − 1로 나눈 표본표준편차)는 상관 계산에 쓴 응답자로 구합니다. 목록별 제외는 한 변수라도 빈 칸인 응답자를 모든 계산에서 빼고, 쌍별 제외는 각 변수 쌍마다 두 값이 모두 있는 응답자를 씁니다. 결과는 Python scipy.stats.pearsonr과 대조해 시험했습니다.</p>
+</details>
+
+<div class="related"><p>함께 읽을 글: <a href="../../guides/correlation-table-apa/">상관분석 결과를 APA 표로 만드는 법</a></p></div>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+</div></footer>
+<script src="../../assets/stats.js"></script>
+<script src="../../assets/js/correlation-table.js"></script>
+</body>
+</html>

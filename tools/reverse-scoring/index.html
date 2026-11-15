@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>역채점·척도 점수 계산기 (리커트 역문항 변환) | 논문 통계 도구</title>
+<meta name="description" content="엑셀에서 복사한 리커트 응답을 붙여 넣고 역문항을 고르면 역채점한 값과 척도 합계·평균을 계산해 다시 엑셀에 붙여 넣을 수 있게 돌려줍니다.">
+<link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/tools/reverse-scoring/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="역채점·척도 점수 계산기 (리커트 역문항 변환)">
+<meta property="og:description" content="엑셀에서 복사한 리커트 응답을 붙여 넣고 역문항을 고르면 역채점한 값과 척도 합계·평균을 계산해 다시 엑셀에 붙여 넣을 수 있게 돌려줍니다.">
+<meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/tools/reverse-scoring/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="논문 통계 도구">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"역채점·척도 점수 계산기","description":"엑셀에서 복사한 리커트 응답을 붙여 넣고 역문항을 고르면 역채점한 값과 척도 합계·평균을 계산해 다시 엑셀에 붙여 넣을 수 있게 돌려줍니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/reverse-scoring/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="../../">논문 통계 도구</a>
+<nav aria-label="주 메뉴"><a href="../../#tools" aria-current="page">도구</a><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="crumb"><a href="../../">처음</a> / 도구</p>
+<h1>역채점·척도 점수 계산기</h1>
+<p class="lead">엑셀에서 응답 자료를 머리글 줄과 함께 복사해 붙여 넣고, 역문항과 척도에 넣을 문항을 고르세요. 결과는 탭으로 구분된 표라서 그대로 엑셀에 붙여 넣을 수 있습니다.</p>
+
+<div class="panel">
+  <label for="data">응답 자료</label>
+  <textarea id="data" spellcheck="false" placeholder="ID&#9;Q1&#9;Q2&#9;Q3&#10;1&#9;4&#9;2&#9;5&#10;..."></textarea>
+  <div class="grid">
+    <div><label for="min">응답 최솟값</label><input type="number" id="min" value="1" step="1"></div>
+    <div><label for="max">응답 최댓값</label><input type="number" id="max" value="5" step="1"></div>
+  </div>
+  <p class="hint">역채점 값 = (최솟값 + 최댓값) − 원점수. 5점 척도(1~5)라면 6 − 원점수, 0~4점이라면 4 − 원점수입니다.</p>
+  <p class="hint">붙여 넣은 뒤 "열 불러오기"를 누르면 역문항을 고르는 표와 "계산하기" 버튼이 나옵니다.</p>
+  <button type="button" id="load">열 불러오기</button>
+  <button type="button" class="secondary" id="example">예시 자료 넣기</button>
+  <div id="cols" hidden>
+    <h3>열 고르기</h3>
+    <p class="hint">ID나 성별처럼 척도에 들어가지 않는 열은 "척도에 포함"을 해제하세요.</p>
+    <div class="table-scroll"><table class="plain" id="colTable"><thead><tr><th>열</th><th>역채점</th><th>척도에 포함</th></tr></thead><tbody></tbody></table></div>
+    <label class="inline"><input type="checkbox" id="prorate"> 빈 칸이 있으면 응답한 문항만으로 평균 계산 (합계는 비움)</label>
+    <div><label for="minShare">이 경우 최소 응답 비율</label><select id="minShare"><option value="50">문항의 50% 이상 응답</option><option value="80" selected>문항의 80% 이상 응답</option><option value="100">모든 문항 응답</option></select></div>
+    <div><label for="scaleName">척도 이름 (결과 열 이름에 씁니다)</label><input type="text" id="scaleName" placeholder="예: 학업 스트레스"></div>
+    <button type="button" id="run">계산하기</button>
+  </div>
+</div>
+
+<div class="result panel" id="result" hidden>
+  <p class="error" id="err"></p>
+  <div id="ok">
+    <div class="warn" id="warns"></div>
+    <p>척도 평균의 평균 <i>M</i> = <span id="mm"></span>, <i>SD</i> = <span id="msd"></span> (<i>n</i> = <span id="mn"></span>)</p>
+    <div class="sentence"><span class="label">연구방법에 쓰는 문장</span><span id="sentence"></span></div>
+    <button type="button" class="secondary" data-copy="sentence">문장 복사</button>
+    <label for="out">결과 (엑셀에 붙여 넣기)</label>
+    <p class="hint">합계와 평균은 맨 오른쪽 두 열입니다. 휴대폰에서는 칸을 옆으로 밀어 보세요.</p>
+    <textarea id="out" readonly spellcheck="false"></textarea>
+    <button type="button" data-copy="out">결과 복사</button>
+  </div>
+</div>
+
+<details>
+  <summary>처리 규칙</summary>
+  <p>역채점한 열은 이름 뒤에 <code>_R</code>을 붙입니다. 원래 열은 남기지 않으므로 원자료 파일은 따로 보관하세요. 기본 설정에서는 척도 문항 중 하나라도 빈 칸이면 그 응답자의 합계와 평균을 비웁니다. "응답한 문항만으로 평균"을 고르면 평균은 응답한 문항으로 계산하고 합계는 비웁니다. 어느 규칙을 썼는지는 연구방법에 적어야 합니다.</p>
+  <p>최솟값보다 작거나 최댓값보다 큰 값, 소수 값이 있으면 경고합니다. 입력 오류일 가능성이 높기 때문입니다.</p>
+</details>
+
+<div class="related"><p>함께 읽을 글: <a href="../../guides/reverse-items-scale-score/">역문항 처리와 척도 점수, 합계와 평균 중 무엇을 쓰나</a></p></div>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+</div></footer>
+<script src="../../assets/stats.js"></script>
+<script src="../../assets/js/reverse-scoring.js"></script>
+</body>
+</html>

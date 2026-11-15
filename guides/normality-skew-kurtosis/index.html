@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정규성 검정, 왜도·첨도 기준은 무엇을 적나 | 논문 통계 도구</title>
+<meta name="description" content="Shapiro-Wilk 검정이 큰 표본에서 쉽게 유의해지는 이유, West 등(1995)과 Kline(2016)의 왜도·첨도 기준, 집단별·잔차 기준 점검, 연구방법에 쓰는 문장을 정리했습니다.">
+<link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/guides/normality-skew-kurtosis/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="정규성 검정, 왜도·첨도 기준은 무엇을 적나">
+<meta property="og:description" content="Shapiro-Wilk 검정이 큰 표본에서 쉽게 유의해지는 이유, West 등(1995)과 Kline(2016)의 왜도·첨도 기준, 집단별·잔차 기준 점검, 연구방법에 쓰는 문장을 정리했습니다.">
+<meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/guides/normality-skew-kurtosis/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="논문 통계 도구">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"정규성 검정, 왜도·첨도 기준은 무엇을 적나","description":"Shapiro-Wilk 검정이 큰 표본에서 쉽게 유의해지는 이유, West 등(1995)과 Kline(2016)의 왜도·첨도 기준, 집단별·잔차 기준 점검, 연구방법에 쓰는 문장을 정리했습니다.","inLanguage":"ko","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Organization","name":"상담과연구"},"publisher":{"@type":"Organization","name":"상담과연구"},"mainEntityOfPage":"https://kimhg0000.github.io/thesis-stats-tools/guides/normality-skew-kurtosis/"}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="../../">논문 통계 도구</a>
+<nav aria-label="주 메뉴"><a href="../../#tools">도구</a><a href="../../guides/" aria-current="page">안내 글</a><a href="../../about/">소개</a></nav>
+</div></header>
+<main><div class="wrap">
+<article>
+<p class="crumb"><a href="../../">처음</a> / <a href="../">안내 글</a></p>
+<h1>정규성 검정, 왜도·첨도 기준은 무엇을 적나</h1>
+<p class="meta">상담과연구 · 2026-11-15</p>
+
+<p>표본 300명의 설문 자료로 Shapiro-Wilk 검정을 하면 모든 변수가 <i>p</i> &lt; .001로 나오는 일이 흔합니다. 이 결과만 따르면 모수 검정을 쓸 수 없다는 결론이 나지만, 대부분의 연구에서는 그렇게 판단하지 않습니다.</p>
+<p>Shapiro-Wilk나 Kolmogorov-Smirnov 검정의 영가설은 "모집단 분포가 정규분포와 같다"입니다. 표본이 커지면 아주 작은 이탈도 유의하게 나오고, 표본이 작으면 큰 이탈도 잡아내지 못합니다. 정규성 판단이 가장 필요한 작은 표본에서는 검정의 힘이 약하고, 큰 표본에서는 실질적으로 문제없는 이탈까지 거부하는 셈입니다. 그래서 큰 표본에서는 왜도와 첨도의 크기, 그리고 그림을 함께 보고 판단합니다.</p>
+
+<h2>무엇의 정규성인가</h2>
+<p>자주 놓치는 부분입니다. <i>t</i>검정과 분산분석의 정규성 가정은 각 집단 안의 분포에 대한 것이고, 회귀분석의 가정은 잔차에 대한 것입니다. 집단을 합친 전체 변수나 회귀의 독립변수 분포를 점검하는 것은 가정과 맞지 않습니다. 두 집단의 평균이 크게 다르면 합친 분포는 봉우리가 둘인 모양이 될 수 있지만, 집단별로는 정규분포일 수 있습니다.</p>
+
+<h2>논문에 인용되는 기준</h2>
+<p>West 등(1995)은 왜도의 절댓값이 2, 첨도의 절댓값이 7을 넘지 않으면 정규성에서 크게 벗어나지 않은 것으로 보았습니다. Kline(2016)은 왜도의 절댓값이 3을 넘으면 심하게 치우친 것으로, 첨도의 절댓값이 10을 넘으면 문제가 있는 것으로 봅니다. 두 기준 모두 구조방정식모형의 추정을 염두에 둔 관례적인 상한입니다.</p>
+<p>여기서 첨도는 정규분포를 0으로 두는 초과 첨도이며, SPSS가 출력하는 값도 이것입니다. 정규분포의 첨도를 3으로 정의하는 프로그램도 있으니 다른 프로그램을 썼다면 설명서를 확인합니다. 숫자와 함께 Q-Q 도표에서 점이 대각선을 따라가는지, 극단값이 몇 개인지도 봅니다. <i>t</i>검정과 분산분석은 표본이 어느 정도 크고 집단 크기가 비슷하면 정규성 위반에 비교적 덜 민감하다고 알려져 있지만, 집단 크기와 분산이 함께 크게 다르면 그렇지 않습니다.</p>
+
+<h2>쓰는 문장</h2>
+<p>집단 비교라면 "두 집단 각각에서 학습몰입의 왜도는 -0.84와 -0.41, 첨도는 0.62와 1.35로, West 등(1995)의 기준(왜도 절댓값 2 미만, 첨도 절댓값 7 미만) 안에 있어 정규성 가정에 큰 무리가 없는 것으로 판단하였다."</p>
+<p>회귀분석이라면 "회귀모형 잔차의 왜도는 0.37, 첨도는 0.88이었고 Q-Q 도표에서 뚜렷한 이탈이 보이지 않았다."처럼 잔차를 기준으로 씁니다. Shapiro-Wilk 결과를 이미 표에 넣었다면 지우지 말고, 표본이 커서 검정이 민감하게 반응했다는 점과 위의 판단 근거를 함께 적습니다.</p>
+
+<h2>참고문헌</h2>
+<ul class="refs">
+<li>Kline, R. B. (2016). <i>Principles and practice of structural equation modeling</i> (4th ed.). Guilford Press.</li>
+<li>West, S. G., Finch, J. F., &amp; Curran, P. J. (1995). Structural equation models with nonnormal variables: Problems and remedies. In R. H. Hoyle (Ed.), <i>Structural equation modeling: Concepts, issues, and applications</i> (pp. 56–75). Sage.</li>
+</ul>
+
+<div class="related"><p>관련 도구: <a href="../../tools/method-chooser/">통계 분석 방법 선택 도우미</a></p></div>
+</article>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+</div></footer>
+
+</body>
+</html>

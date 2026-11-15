@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>t검정 결과를 표와 문장으로 쓰는 법 | 논문 통계 도구</title>
+<meta name="description" content="독립표본 t검정 결과를 APA 7판 형식의 표와 문장으로 옮기는 방법. 평균과 표준편차, 자유도, 정확한 p값, 효과크기 d, Welch 검정의 소수 자유도까지 다룹니다.">
+<link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/guides/t-test-report/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="t검정 결과를 표와 문장으로 쓰는 법">
+<meta property="og:description" content="독립표본 t검정 결과를 APA 7판 형식의 표와 문장으로 옮기는 방법. 평균과 표준편차, 자유도, 정확한 p값, 효과크기 d, Welch 검정의 소수 자유도까지 다룹니다.">
+<meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/guides/t-test-report/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="논문 통계 도구">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"t검정 결과를 표와 문장으로 쓰는 법","description":"독립표본 t검정 결과를 APA 7판 형식의 표와 문장으로 옮기는 방법. 평균과 표준편차, 자유도, 정확한 p값, 효과크기 d, Welch 검정의 소수 자유도까지 다룹니다.","inLanguage":"ko","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Organization","name":"상담과연구"},"publisher":{"@type":"Organization","name":"상담과연구"},"mainEntityOfPage":"https://kimhg0000.github.io/thesis-stats-tools/guides/t-test-report/"}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="../../">논문 통계 도구</a>
+<nav aria-label="주 메뉴"><a href="../../#tools">도구</a><a href="../../guides/" aria-current="page">안내 글</a><a href="../../about/">소개</a></nav>
+</div></header>
+<main><div class="wrap">
+<article>
+<p class="crumb"><a href="../../">처음</a> / <a href="../">안내 글</a></p>
+<h1>t검정 결과를 표와 문장으로 쓰는 법</h1>
+<p class="meta">상담과연구 · 2026-11-15</p>
+
+<p>독립표본 <i>t</i>검정을 보고할 때 들어갈 값은 집단별 사례 수, 평균(<i>M</i>), 표준편차(<i>SD</i>), <i>t</i>와 자유도, 정확한 <i>p</i>값, 효과크기입니다. APA 7판은 <i>p</i>값을 소수 둘째나 셋째 자리까지 정확히 쓰고, .001보다 작으면 <i>p</i> &lt; .001로 쓰도록 안내합니다(American Psychological Association, 2020). "<i>p</i> &lt; .05"만 적으면 정보가 줄어듭니다.</p>
+<p>통계 기호(<i>t</i>, <i>p</i>, <i>M</i>, <i>SD</i>, <i>d</i>, <i>n</i>)는 기울임체로 씁니다. 1을 넘을 수 없는 <i>p</i>는 소수점 앞 0을 빼고, 1을 넘을 수 있는 <i>t</i>, <i>M</i>, <i>SD</i>, <i>d</i>는 0을 씁니다.</p>
+
+<h2>SPSS 출력의 두 줄 중 어느 것을 쓰나</h2>
+<p>SPSS는 "등분산을 가정함"과 "등분산을 가정하지 않음" 두 줄을 함께 출력합니다. 아래 줄이 Welch(1947)의 검정입니다. 예전에는 Levene 검정 결과를 보고 줄을 고르는 방식이 흔했지만, 이렇게 예비검정 결과에 따라 본검정을 바꾸는 절차는 오류율을 오히려 흐트러뜨린다는 이유로 권하지 않는 방법론자가 많습니다. Welch 검정은 분산이 같을 때도 손실이 작으므로, 처음부터 Welch 검정을 쓰기로 정하고 연구방법에 밝혀 두는 것이 무난한 선택입니다.</p>
+<p>Welch 검정의 자유도는 소수로 나오며 소수 둘째 자리까지 그대로 적습니다. 예: <i>t</i>(45.32) = 2.18, <i>p</i> = .034. 자유도를 정수로 반올림하면 어느 검정을 썼는지 독자가 알 수 없습니다.</p>
+
+<h2>표와 문장</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>집단</th><th><i>n</i></th><th><i>M</i></th><th><i>SD</i></th><th><i>t</i></th><th><i>p</i></th><th><i>d</i></th></tr></thead>
+<tbody>
+<tr><td>프로그램 참여</td><td>30</td><td>3.62</td><td>0.71</td><td rowspan="2">2.45</td><td rowspan="2">.017</td><td rowspan="2">0.63</td></tr>
+<tr><td>비참여</td><td>30</td><td>3.18</td><td>0.68</td></tr>
+</tbody>
+</table></div>
+<p>종속변수가 여러 개면 행을 변수로, 열을 집단별 <i>M</i>(<i>SD</i>)로 바꿔 한 표에 모읍니다. 모든 행의 자유도가 같다면 열 머리에 <i>t</i>(58)처럼 한 번만 적어도 됩니다.</p>
+<p>"프로그램 참여 집단의 학습몰입(<i>M</i> = 3.62, <i>SD</i> = 0.71)은 비참여 집단(<i>M</i> = 3.18, <i>SD</i> = 0.68)보다 높았으며, 그 차이는 통계적으로 유의하였다(<i>t</i>(58) = 2.45, <i>p</i> = .017, <i>d</i> = 0.63)."</p>
+<p>유의하지 않은 결과도 같은 형식으로 씁니다. 표현은 "차이가 없었다"보다 "통계적으로 유의한 차이가 나타나지 않았다"가 정확합니다. 표본이 작으면 실제 차이가 있어도 유의하지 않게 나올 수 있습니다. 효과크기를 읽는 법은 <a href="../effect-size-interpretation/">효과크기 안내</a>에 따로 정리했습니다.</p>
+
+<h2>참고문헌</h2>
+<ul class="refs">
+<li>American Psychological Association. (2020). <i>Publication manual of the American Psychological Association</i> (7th ed.).</li>
+<li>Welch, B. L. (1947). The generalization of "Student's" problem when several different population variances are involved. <i>Biometrika, 34</i>(1–2), 28–35.</li>
+</ul>
+
+<div class="related"><p>관련 도구: <a href="../../tools/apa-results/">APA 결과 문장 생성기</a></p></div>
+</article>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+</div></footer>
+
+</body>
+</html>

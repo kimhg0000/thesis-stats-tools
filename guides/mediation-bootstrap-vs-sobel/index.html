@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>매개효과 검증, Sobel 검정보다 부트스트랩을 권하는 이유 | 논문 통계 도구</title>
+<meta name="description" content="Baron과 Kenny의 단계 검증, Sobel 검정, 부트스트랩 신뢰구간, 몬테카를로 신뢰구간의 차이와 간접효과를 논문에 보고하는 형식을 정리했습니다.">
+<link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/guides/mediation-bootstrap-vs-sobel/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="매개효과 검증, Sobel 검정보다 부트스트랩을 권하는 이유">
+<meta property="og:description" content="Baron과 Kenny의 단계 검증, Sobel 검정, 부트스트랩 신뢰구간, 몬테카를로 신뢰구간의 차이와 간접효과를 논문에 보고하는 형식을 정리했습니다.">
+<meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/guides/mediation-bootstrap-vs-sobel/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="논문 통계 도구">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"매개효과 검증, Sobel 검정보다 부트스트랩을 권하는 이유","description":"Baron과 Kenny의 단계 검증, Sobel 검정, 부트스트랩 신뢰구간, 몬테카를로 신뢰구간의 차이와 간접효과를 논문에 보고하는 형식을 정리했습니다.","inLanguage":"ko","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Organization","name":"상담과연구"},"publisher":{"@type":"Organization","name":"상담과연구"},"mainEntityOfPage":"https://kimhg0000.github.io/thesis-stats-tools/guides/mediation-bootstrap-vs-sobel/"}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="brand" href="../../">논문 통계 도구</a>
+<nav aria-label="주 메뉴"><a href="../../#tools">도구</a><a href="../../guides/" aria-current="page">안내 글</a><a href="../../about/">소개</a></nav>
+</div></header>
+<main><div class="wrap">
+<article>
+<p class="crumb"><a href="../../">처음</a> / <a href="../">안내 글</a></p>
+<h1>매개효과 검증, Sobel 검정보다 부트스트랩을 권하는 이유</h1>
+<p class="meta">상담과연구 · 2026-11-15</p>
+
+<p>국내 학위논문에는 Baron과 Kenny(1986)의 3단계 회귀로 매개효과를 검증하고 Sobel 검정을 덧붙이는 구성이 아직 많습니다. 반면 최근 학술지에서는 간접효과의 부트스트랩 신뢰구간을 제시하는 방식이 일반적입니다.</p>
+
+<h2>단계 검증의 문제</h2>
+<p>Baron과 Kenny의 방식은 X가 Y를, X가 M을, X를 통제한 상태에서 M이 Y를 유의하게 예측하는지를 차례로 봅니다. 걸리는 곳은 첫 단계입니다. X와 Y의 총효과가 유의하지 않아도 간접효과는 있을 수 있는데, 단계 검증은 이런 경우를 처음부터 걸러 냅니다. Hayes(2009)와 Zhao 등(2010)은 이런 이유로 단계별 유의성 대신 간접효과 ab 자체를 검정하라고 제안했습니다. "완전매개"와 "부분매개"의 구분도 직접효과가 유의한지에 달려 있어 같은 효과라도 표본이 크면 부분매개, 작으면 완전매개로 결론이 바뀌기 쉽다는 비판을 받았습니다(Rucker et al., 2011).</p>
+
+<h2>Sobel 검정의 가정</h2>
+<p>Sobel(1982) 검정은 a와 b의 곱인 ab를 그 표준오차로 나눠 <i>z</i>값을 구합니다. 이 계산은 ab의 표집분포가 정규분포라고 가정하는데, 두 계수의 곱은 대개 한쪽으로 치우친 분포를 따릅니다. 그래서 표본이 크지 않으면 Sobel 검정은 실제로 있는 간접효과를 놓치기 쉽습니다.</p>
+<p>부트스트랩은 원자료에서 복원추출로 수천 개의 표본을 다시 만들고, 각 표본에서 ab를 계산한 뒤 그 분포의 2.5번째와 97.5번째 백분위수를 95% 신뢰구간으로 씁니다(Preacher &amp; Hayes, 2008). 분포 모양을 가정하지 않으므로 치우친 분포에도 맞고, 신뢰구간이 0을 포함하지 않으면 간접효과가 유의하다고 봅니다. SPSS의 PROCESS 매크로(Hayes, 2018)나 R의 lavaan으로 할 수 있습니다.</p>
+<p>원자료 없이 선행연구의 계수만 있을 때는 부트스트랩을 할 수 없습니다. 이때는 a, b와 각각의 표준오차로 정규분포에서 난수를 뽑아 ab의 분포를 만드는 몬테카를로 신뢰구간을 쓸 수 있습니다(Preacher &amp; Selig, 2012). 원자료가 있다면 부트스트랩을 씁니다.</p>
+
+<h2>보고 형식</h2>
+<p>"학업 스트레스는 학업 소진을 거쳐 학업 지속 의향과 간접적으로 관련되었다. 간접효과는 <i>ab</i> = -0.12였으며, 5,000개 부트스트랩 표본으로 구한 95% 신뢰구간이 0을 포함하지 않았다(95% CI [-0.21, -0.05])."</p>
+<p>부트스트랩 표본 수, 신뢰구간 종류(백분위수 또는 편향 보정), 비표준화 계수인지를 함께 적습니다. 횡단 설문 자료에서 얻은 간접효과는 인과 경로를 확인한 것이 아니라는 점도 논의에 밝혀 둡니다.</p>
+
+<h2>참고문헌</h2>
+<ul class="refs">
+<li>Baron, R. M., &amp; Kenny, D. A. (1986). The moderator-mediator variable distinction in social psychological research: Conceptual, strategic, and statistical considerations. <i>Journal of Personality and Social Psychology, 51</i>(6), 1173–1182.</li>
+<li>Hayes, A. F. (2009). Beyond Baron and Kenny: Statistical mediation analysis in the new millennium. <i>Communication Monographs, 76</i>(4), 408–420.</li>
+<li>Hayes, A. F. (2018). <i>Introduction to mediation, moderation, and conditional process analysis: A regression-based approach</i> (2nd ed.). Guilford Press.</li>
+<li>Preacher, K. J., &amp; Hayes, A. F. (2008). Asymptotic and resampling strategies for assessing and comparing indirect effects in multiple mediator models. <i>Behavior Research Methods, 40</i>(3), 879–891.</li>
+<li>Preacher, K. J., &amp; Selig, J. P. (2012). Advantages of Monte Carlo confidence intervals for indirect effects. <i>Communication Methods and Measures, 6</i>(2), 77–98.</li>
+<li>Rucker, D. D., Preacher, K. J., Tormala, Z. L., &amp; Petty, R. E. (2011). Mediation analysis in social psychology: Current practices and new recommendations. <i>Social and Personality Psychology Compass, 5</i>(6), 359–371.</li>
+<li>Sobel, M. E. (1982). Asymptotic confidence intervals for indirect effects in structural equation models. <i>Sociological Methodology, 13</i>, 290–312.</li>
+<li>Zhao, X., Lynch, J. G., Jr., &amp; Chen, Q. (2010). Reconsidering Baron and Kenny: Myths and truths about mediation analysis. <i>Journal of Consumer Research, 37</i>(2), 197–206.</li>
+</ul>
+
+<div class="related"><p>관련 도구: <a href="../../tools/mediation-sobel/">매개효과 Sobel 검정·간접효과 신뢰구간</a></p></div>
+</article>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+</div></footer>
+
+</body>
+</html>
