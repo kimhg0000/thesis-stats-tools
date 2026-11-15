@@ -11,15 +11,17 @@
   }
 
   function run() {
-    $('result').hidden = false; $('err').textContent = ''; $('ok').hidden = false;
-    var fail = function (m) { $('err').textContent = m; $('ok').hidden = true; };
+    $('err').textContent = ''; $('data').removeAttribute('aria-invalid');
+    var fail = function (m) { $('err').textContent = m; $('data').setAttribute('aria-invalid', 'true'); S.show(false); };
     var t = S.parseTable($('data').value);
-    if (!t.rows.length) return fail('붙여 넣은 자료가 없습니다.');
+    if (!t.rows.length) { S.show(false); return; }
     var v = t.header.length;
     if (v < 2) return fail('변수가 두 개 이상이어야 합니다.');
     var three = $('three').checked, pairwise = $('pairwise').checked;
     var rows = pairwise ? t.rows : t.rows.filter(function (r) { return r.every(isFinite); });
+    if (t.bad && t.bad.length > rows.length) return fail('숫자가 아닌 값이 많습니다(예: ' + t.bad.slice(0, 3).join(', ') + '). 점수 열만 골라 다시 붙여 넣으세요.');
     if (rows.length < 3) return fail('빈 칸 없이 응답한 사람이 세 명 이상이어야 합니다.');
+    S.show(true);
     var col = function (j) { return rows.map(function (r) { return r[j]; }); };
     var warns = [];
     if (t.bad && t.bad.length) warns.push('숫자가 아닌 값은 빈 칸으로 처리했습니다: ' + t.bad.slice(0, 5).join(', '));
@@ -71,6 +73,7 @@
       return S.josa(S.esc(s.a), '과', '와') + ' ' + S.josa(S.esc(s.b), '은', '는') + ' 유의한 ' + (s.r > 0 ? '정적' : '부적') + ' 상관을 보였다(<i>r</i>(' + (s.n - 2) + ') = ' + S.minus(S.fmt0(s.r, 2)) + ', <i>p</i> ' + S.fmtP(s.p) + ').';
     }).join(' ');
     $('sentence').innerHTML = sent;
+    S.live('상관표를 만들었습니다. 변수 ' + v + '개, 사례 ' + rows.length + '명.');
     $('warns').innerHTML = warns.map(function (w) { return '<p style="margin:0 0 6px">' + S.esc(w) + '</p>'; }).join('');
   }
 
@@ -80,6 +83,8 @@
   }
 
   $('run').addEventListener('click', run);
+  S.auto('form', function () { if ($('data').value.trim()) run(); else { S.show(false); $('err').textContent = ''; } }, 400);
+  $('reset').addEventListener('click', function () { S.resetForm('form'); $('err').textContent = ''; $('data').removeAttribute('aria-invalid'); S.show(false); $('data').focus(); });
   $('example').addEventListener('click', example);
   S.bindCopy();
 })();

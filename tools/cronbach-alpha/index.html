@@ -12,64 +12,103 @@
 <meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/tools/cronbach-alpha/">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="논문 통계 도구">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/style.css">
+<link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../assets/site.css?v=dd25398d">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"크론바흐 알파 계산기","description":"엑셀에서 문항 응답을 복사해 붙여 넣으면 Cronbach's α, 문항별 수정된 문항-총점 상관, 문항 삭제 시 α를 바로 계산하고 논문에 쓸 문장을 만들어 줍니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/cronbach-alpha/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
 </head>
 <body>
-<header class="site"><div class="wrap">
-<a class="brand" href="../../">논문 통계 도구</a>
-<nav aria-label="주 메뉴"><a href="../../#tools" aria-current="page">도구</a><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
-</div></header>
-<main><div class="wrap">
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="site-header">
+<div class="wrap bar">
+<a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="7" fill="#2445a6"/><path d="M8 23h16M8 9h16" stroke="#fff" stroke-width="2"/><path d="M8 15.5h16" stroke="#fff" stroke-width="1" opacity=".75"/></svg>논문 통계 도구</a>
+<nav class="top-links" aria-label="사이트"><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
+<button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <line x1="4" x2="20" y1="12" y2="12" /> <line x1="4" x2="20" y1="6" y2="6" /> <line x1="4" x2="20" y1="18" y2="18" /> </svg><span class="lbl">메뉴</span></button>
+</div>
+<div class="wrap"><nav class="tool-tabs" aria-label="도구"><a href="../../tools/cronbach-alpha/" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a><a href="../../tools/correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a><a href="../../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a><a href="../../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a><a href="../../tools/method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a><a href="../../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a><a href="../../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a><a href="../../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></nav></div>
+<div class="wrap mobile-menu" id="mobile-menu" data-open="false">
+<h2>도구</h2><ul><li><a href="../../tools/cronbach-alpha/" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a></li><li><a href="../../tools/correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a></li><li><a href="../../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a></li><li><a href="../../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a></li><li><a href="../../tools/method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a></li><li><a href="../../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a></li><li><a href="../../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a></li><li><a href="../../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></li></ul>
+<h2>그 밖에</h2><ul><li><a href="../../"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /> <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> </svg>처음 화면</a></li><li><a href="../../guides/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg>안내 글</a></li><li><a href="../../about/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /> <path d="M12 17h.01" /> </svg>소개</a></li></ul>
+</div>
+</header>
+<main id="main" tabindex="-1"><div class="wrap">
 <p class="crumb"><a href="../../">처음</a> / 도구</p>
+<div class="tool-head">
 <h1>크론바흐 알파 계산기</h1>
-<p class="lead">엑셀에서 한 척도의 문항 열만 골라 복사한 뒤 아래 칸에 붙여 넣으세요. 한 행이 응답자 한 명, 한 열이 문항 하나입니다. 첫 줄이 문항 이름이면 그대로 머리글로 씁니다.</p>
-
-<div class="panel">
-  <label for="data">문항 응답</label>
-  <p class="hint">역문항은 먼저 역채점한 값을 넣어야 합니다. 빈 칸이 있는 응답자는 계산에서 뺍니다(목록별 제외).</p>
-  <textarea id="data" spellcheck="false" placeholder="문항1&#9;문항2&#9;문항3&#9;문항4&#10;4&#9;5&#9;4&#9;4&#10;3&#9;3&#9;2&#9;3&#10;..."></textarea>
-  <label for="scale">척도 이름 (문장에 들어갑니다)</label>
-  <input type="text" id="scale" placeholder="예: 학업적 자기효능감">
-  <button type="button" id="run">계산하기</button>
-  <button type="button" class="secondary" id="example">예시 자료 넣기</button>
+<p class="lead">엑셀에서 한 척도의 문항 열만 머리글과 함께 복사해 붙여 넣으면 바로 계산합니다.</p>
 </div>
-
-<div class="result panel" id="result" hidden>
-  <p class="error" id="err"></p>
-  <div id="ok">
-    <p>Cronbach's α = <span class="big" id="alpha" data-value=""></span></p>
-    <p class="note">응답자 <span id="n"></span>명, 문항 <span id="k"></span>개로 계산했습니다. <span id="dropped"></span></p>
-    <div class="warn" id="warns"></div>
-    <div class="sentence"><span class="label">논문에 쓰는 문장</span><span id="sentence"></span></div>
-    <button type="button" class="secondary" data-copy="sentence">문장 복사</button>
-    <h3>문항 분석</h3>
-    <div class="table-scroll">
-      <table class="plain" id="items">
-        <thead><tr><th>문항</th><th><i>M</i></th><th><i>SD</i></th><th>수정된<br>문항-총점 상관</th><th>문항 삭제 시<br>α</th></tr></thead>
-        <tbody></tbody>
-      </table>
+<div class="tool-grid">
+<section class="pane" id="form" aria-labelledby="in-h">
+  <h2 class="pane-title" id="in-h"><span class="step" aria-hidden="true">1</span>문항 응답 붙여 넣기</h2>
+  <div class="field">
+    <label for="data">한 행 = 응답자 한 명, 한 열 = 문항 하나</label>
+    <div class="paste-zone">
+      <textarea id="data" spellcheck="false" aria-describedby="data-hint" placeholder="문항1&#9;문항2&#9;문항3&#9;문항4&#10;4&#9;5&#9;4&#9;4&#10;3&#9;3&#9;2&#9;3"></textarea>
+      <span class="paste-tag" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>Ctrl+V</span>
     </div>
-    <button type="button" class="secondary" data-copy="items">표 복사</button>
-    <p class="note">수정된 문항-총점 상관은 그 문항을 뺀 나머지 문항 합계와의 상관입니다. 문항 삭제 시 α가 전체 α보다 높다고 해서 바로 문항을 지우지는 않습니다. 문항 내용이 구성개념을 대표하는지, 원척도 연구에서 그 문항이 어떻게 쓰였는지를 함께 봅니다.</p>
+    <p class="hint" id="data-hint">역문항은 역채점한 값을 넣으세요. 빈 칸이 있는 응답자는 계산에서 뺍니다.</p>
+    <p class="error" id="err" role="alert"></p>
   </div>
+  <div class="field">
+    <label for="scale">척도 이름 <span class="note">(선택, 문장에 들어갑니다)</span></label>
+    <input type="text" id="scale" placeholder="예: 학업적 자기효능감">
+  </div>
+  <div class="btn-row">
+    <button type="button" class="btn" id="run"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>계산하기</button>
+    <button type="button" class="btn ghost" id="example"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /> <path d="M20 3v4" /> <path d="M22 5h-4" /> <path d="M4 17v2" /> <path d="M5 18H3" /> </svg>예시 자료로 채우기</button>
+    <button type="button" class="btn quiet" id="reset"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /> </svg>초기화</button>
+  </div>
+</section>
+
+<section class="out" aria-labelledby="out-h">
+  <h2 class="sr-only" id="out-h">결과</h2>
+  <div class="empty" id="empty">
+    <svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>
+    <p>문항 응답을 붙여 넣으면 여기에 α와 문항 분석, 논문 문장이 나옵니다.</p>
+  </div>
+  <div class="result" id="result" hidden>
+    <div id="ok" class="result">
+      <div class="stats">
+        <div class="stat"><span class="k">Cronbach's α</span><span class="v" id="alpha" data-value=""></span><span class="s">응답자 <span id="n"></span>명, 문항 <span id="k"></span>개 <span id="dropped"></span></span></div>
+      </div>
+      <div class="warn" id="warns"></div>
+      <div class="paper">
+        <div class="paper-head"><span>논문에 쓰는 문장</span><button type="button" class="copy" data-copy="sentence"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /> </svg>문장 복사</button></div>
+        <p class="sentence" id="sentence"></p>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>문항 분석</h3><button type="button" class="copy" data-copy="items"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /> </svg>표 복사</button></div>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="표, 좁은 화면에서는 옆으로 밀어 보기">
+          <table class="plain" id="items">
+            <thead><tr><th>문항</th><th><i>M</i></th><th><i>SD</i></th><th>수정된 문항-총점 상관</th><th>문항 삭제 시 α</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="note">문항 삭제 시 α가 전체 α보다 높다고 바로 문항을 지우지는 않습니다. 문항 내용이 구성개념을 대표하는지, 원척도에서 그 문항이 어떻게 쓰였는지를 함께 봅니다.</p>
+      </div>
+    </div>
+  </div>
+  <p class="sr-only" aria-live="polite" id="live"></p>
+</section>
 </div>
 
-<details>
+<details class="method">
   <summary>계산 방법</summary>
-  <p>문항 수를 <i>k</i>, 문항 <i>i</i>의 분산을 <i>s</i><sub>i</sub>², 문항 합계의 분산을 <i>s</i><sub>X</sub>²라 할 때 다음 식을 씁니다. 분산은 <i>n</i> − 1로 나눈 표본분산입니다.</p>
-  <p class="formula">α = k / (k − 1) × (1 − Σ s_i² / s_X²)</p>
-  <p>문항 삭제 시 α는 해당 문항을 빼고 남은 <i>k</i> − 1개 문항으로 같은 식을 다시 계산한 값입니다. 결과는 Python pingouin 패키지의 cronbach_alpha 함수와 소수 넷째 자리 이상 일치하는지 시험했습니다.</p>
+  <p>문항 수를 <i>k</i>, 문항 <i>i</i>의 분산을 <i>s</i><sub><i>i</i></sub>², 문항 합계의 분산을 <i>s</i><sub><i>X</i></sub>²라 할 때 다음 식을 씁니다. 분산은 <i>n</i> − 1로 나눈 표본분산입니다.</p>
+  <div class="formula"><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">(</span></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6787em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7959em;"><span style="top:-2.4065em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07847em;">X</span></span></span><span style="top:-3.0448em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2935em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.6897em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.989em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-2.4413em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2587em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9795em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size4">)</span></span></span></span></span></span></span></div>
+  <p>문항 삭제 시 α는 해당 문항을 빼고 남은 <i>k</i> − 1개 문항으로 같은 식을 다시 계산한 값이고, 수정된 문항-총점 상관은 그 문항과 나머지 문항 합계의 상관입니다. 결과는 Python pingouin 패키지의 cronbach_alpha 함수와 대조해 시험했습니다.</p>
 </details>
 
-<div class="related"><p>함께 읽을 글: <a href="../../guides/cronbach-alpha-60s/">크론바흐 알파가 .60대일 때 논문에 쓰는 법</a></p></div>
-<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+<section class="next" aria-labelledby="next-h"><h2 id="next-h">이어서 쓸 도구</h2><ul><li><a href="../reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg><span><strong>역채점·척도 점수 계산기</strong><span>음수 상관 문항이 있으면 역채점부터 하세요</span></span></a></li><li><a href="../correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg><span><strong>상관행렬 APA 표 만들기</strong><span>척도 점수를 만든 뒤 변수 간 상관표로</span></span></a></li></ul></section>
+<section class="next" aria-labelledby="rel-h"><h2 id="rel-h">함께 읽을 글</h2><ul><li><a href="../../guides/cronbach-alpha-60s/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>크론바흐 알파가 .60대일 때 논문에 쓰는 법</strong></span></a></li></ul></section>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">운영: 상담과연구, 대학 상담센터 전임상담원 경력 3년, 교육학(교육상담) 전공</span></p>
 </div></main>
 <footer class="site"><div class="wrap">
-<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
-<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+<p>운영: 상담과연구. 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산은 시험 사례로 검증했지만, 논문에 쓰기 전에 쓰고 있는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
 </div></footer>
+<script src="../../assets/nav.js"></script>
 <script src="../../assets/stats.js"></script>
 <script src="../../assets/js/cronbach-alpha.js"></script>
 </body>

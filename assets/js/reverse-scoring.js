@@ -9,11 +9,17 @@
     return String(Math.round(x * 10000) / 10000);
   }
 
+  var lastSig = '';
   function load() {
     table = S.parseTable($('data').value);
-    var tb = $('colTable').tBodies[0]; tb.innerHTML = '';
-    if (!table.rows.length) { $('cols').hidden = true; $('result').hidden = false; $('err').textContent = '붙여 넣은 자료가 없습니다.'; $('ok').hidden = true; return; }
-    $('result').hidden = true;
+    var tb = $('colTable').tBodies[0];
+    // 같은 열 구성을 다시 불러오면 사용자가 고른 체크 상태를 유지한다
+    var sig = table.header.join('\t') + '|' + $('min').value + '|' + $('max').value;
+    if (sig === lastSig && tb.rows.length === table.header.length) { $('cols').hidden = !table.rows.length; return; }
+    lastSig = sig;
+    tb.innerHTML = '';
+    $('err').textContent = '';
+    if (!table.rows.length) { $('cols').hidden = true; S.show(false); return; }
     table.header.forEach(function (h, j) {
       var allNum = table.rows.every(function (r, i) { return isFinite(r[j]) || table.raw[i][j] === ''; });
       var lo = Number($('min').value), hi = Number($('max').value);
@@ -30,8 +36,9 @@
 
   function run() {
     if (!table) load();
-    var res = $('result'); res.hidden = false; $('err').textContent = ''; $('ok').hidden = false;
-    var fail = function (m) { $('err').textContent = m; $('ok').hidden = true; };
+    if (!table.rows.length) { S.show(false); return; }
+    $('err').textContent = '';
+    var fail = function (m) { $('err').textContent = m; S.show(false); };
     var lo = Number($('min').value), hi = Number($('max').value);
     if (!isFinite(lo) || !isFinite(hi) || hi <= lo) return fail('응답 최솟값과 최댓값을 확인하세요.');
     var rev = [], inc = [];
@@ -74,6 +81,8 @@
     if (badNum.length) warns.push('정수가 아닌 응답이 있습니다: ' + badNum.slice(0, 6).join(', ') + '.');
     if (missingRows) warns.push('척도 문항에 빈 칸이 있는 응답자가 ' + missingRows + '명입니다. ' + (prorate ? '이들 중 문항의 ' + Math.round(minShare * 100) + '% 이상에 응답한 사람의 평균은 응답한 문항만으로 계산했고, 합계는 모두 비웠습니다.' : '이들의 합계와 평균은 비웠습니다.'));
     $('warns').innerHTML = warns.map(function (w) { return '<p style="margin:0 0 6px">' + S.esc(w) + '</p>'; }).join('');
+    S.show(true);
+    S.live('역채점과 척도 점수를 계산했습니다.');
     $('out').value = lines.join('\n');
     $('mm').textContent = means.length ? S.fmt(S.mean(means), 2) : '–';
     $('msd').textContent = means.length > 1 ? S.fmt(S.sd(means), 2) : '–';
@@ -96,6 +105,11 @@
   $('load').addEventListener('click', load);
   $('run').addEventListener('click', run);
   $('example').addEventListener('click', example);
-  $('data').addEventListener('change', function () { table = null; });
+  var tm;
+  $('data').addEventListener('input', function () { table = null; clearTimeout(tm); tm = setTimeout(function () { load(); if (table && table.rows.length) run(); }, 450); });
+  ['min', 'max'].forEach(function (id) { $(id).addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(function () { if ($('data').value.trim()) { load(); run(); } }, 450); }); });
+  $('form').addEventListener('change', function (e) { if (e.target.closest('#cols')) run(); });
+  $('scaleName').addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(run, 400); });
+  $('reset').addEventListener('click', function () { S.resetForm('form'); table = null; lastSig = ''; $('cols').hidden = true; $('err').textContent = ''; S.show(false); $('data').focus(); });
   S.bindCopy();
 })();

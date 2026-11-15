@@ -38,8 +38,9 @@
   }
 
   function run() {
-    $('result').hidden = false; $('err').textContent = ''; $('ok').hidden = false;
-    var fail = function (m) { $('err').textContent = m; $('ok').hidden = true; };
+    $('err').textContent = '';
+    var fail = function (m) { $('err').textContent = m; S.show(false); };
+    S.show(true);
     var design = $('design').value, es = val('es'), alpha = val('alpha'), target = val('power');
     var k = val('k'), p = val('p'), q = val('q'), drop = val('drop') || 0;
     if (!isFinite(es) || es === 0) return fail('효과크기를 0이 아닌 값으로 넣으세요.');
@@ -91,9 +92,14 @@
     } else $('dropOut').textContent = '';
     $('sentence').innerHTML = sent;
     $('approxNote').textContent = note;
+    $('dropOut').hidden = !$('dropOut').textContent;
+    S.live('필요한 표본 수 ' + nTot + '명');
   }
 
-  $('design').addEventListener('change', setDesign);
+  $('design').addEventListener('change', function () { setDesign(); run(); });
   $('run').addEventListener('click', run);
+  S.auto('form', function () { run(); }, 350);
+  $('reset').addEventListener('click', function () { S.resetForm('form'); setDesign(); run(); });
+  run();
   S.bindCopy();
 })();

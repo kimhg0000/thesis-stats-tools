@@ -1,82 +1,225 @@
 (function () {
   'use strict';
+  var M = window.METHODS;
   var $ = function (id) { return document.getElementById(id); };
-  var get = function (name) { var el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : null; };
-  var Q = function (name) { return document.querySelector('[data-q="' + name + '"]'); };
-  var T = '../'; // 도구 경로 기준
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
 
-  function visible() {
-    var goal = get('goal'), dv = get('dv');
-    var show = { dv: !!goal, groups: false, design: false, xtype: false, normal: false };
-    if (goal === 'diff') { show.groups = !!dv; show.design = !!dv; show.normal = dv === 'cont'; }
-    if (goal === 'rel') { show.xtype = !!dv; show.normal = dv === 'cont' && get('xtype') === 'cont'; }
-    var dvLabel = document.getElementById('dvLabel');
-    if (dvLabel) dvLabel.textContent = goal === 'rel' ? '두 변수 중 한쪽(결과로 보는 쪽)은 어떤 값인가요?' : '결과(종속)변수는 어떤 값인가요?';
-    Object.keys(show).forEach(function (k) { Q(k).hidden = !show[k]; });
-    return show;
+  var Q = [
+    { id: 'goal', short: '알고 싶은 것', text: '무엇을 알고 싶나요?', opts: [
+      ['diff', '집단이나 시점 사이의 차이', '예: 실험집단과 통제집단의 점수 차이, 학년별 비율 차이'],
+      ['rel', '두 변수가 함께 변하는지(관계)', '예: 자기효능감과 학업성취의 상관'],
+      ['pred', '여러 변수로 결과를 설명·예측', '예: 사회적 지지, 스트레스로 삶의 만족을 설명'],
+      ['mech', '효과가 왜(매개), 언제(조절) 나타나는지', '예: 스트레스가 소진을 거쳐 이탈 의도에 이르는가'],
+      ['measure', '척도(문항)의 요인 구조', '예: 번안한 척도가 원척도와 같은 요인으로 묶이는가'],
+      ['people', '응답자를 비슷한 유형으로 나누기', '사람 중심 접근. 예: 학습동기 수준과 모양이 다른 학생 유형'],
+      ['change', '같은 사람의 시간에 따른 변화', '종단 자료. 예: 1학년부터 3학년까지 매년 잰 점수']] },
+    { id: 'dv', short: '결과변수', text: '결과(종속)변수는 어떤 값인가요?', relText: '두 변수 중 한쪽(결과로 보는 쪽)은 어떤 값인가요?', opts: [
+      ['cont', '연속형, 분포가 크게 치우치지 않음', '점수, 척도 평균 등'],
+      ['skew', '연속형, 심하게 치우치거나 이상값이 많음', ''],
+      ['ord', '순서형', '순위, 3~4단계 등급'],
+      ['bin', '두 범주', '예/아니오, 합격/불합격'],
+      ['cat', '세 범주 이상(순서 없음)', '전공 계열, 선택한 진로']] },
+    { id: 'gd', short: '비교 설계', text: '무엇을 비교하나요?', opts: [
+      ['2ind', '서로 다른 두 집단', ''], ['2rep', '같은 사람의 두 시점(사전·사후)', ''],
+      ['3ind', '서로 다른 세 집단 이상', ''], ['3rep', '같은 사람의 세 시점 이상', '']] },
+    { id: 'xtype', short: '다른 쪽 변수', text: '다른 쪽 변수는 어떤 값인가요?', opts: [
+      ['cont', '연속형', ''], ['ord', '순서형', ''], ['cat', '범주형', '']] },
+    { id: 'lat', short: '변수 측정', text: '주요 변수를 어떻게 다루나요?', opts: [
+      ['obs', '척도 평균이나 합계 같은 점수 하나(관측변수)', ''],
+      ['lat', '여러 문항으로 재는 구성개념 그대로(잠재변수)', '측정오차를 모형에 반영']] },
+    { id: 'nest', short: '자료 구조', text: '응답자가 더 큰 단위에 묶여 있나요?', opts: [
+      ['flat', '아니요, 각자 따로 모은 응답', ''],
+      ['nested', '예, 학생이 학급·학교에, 직원이 조직에 속함', '같은 단위 사람끼리 닮을 수 있음']] },
+    { id: 'mtype', short: '모형', text: '어떤 모형인가요?', opts: [
+      ['med', '매개: X가 M을 거쳐 Y에 영향', ''], ['mod', '조절: X의 효과가 W에 따라 달라짐', ''],
+      ['modmed', '조절된 매개: 간접효과가 W에 따라 달라짐', '']] },
+    { id: 'mpurpose', short: '목적', text: '척도 분석의 목적은 무엇인가요?', opts: [
+      ['explore', '구조를 모름: 몇 개 요인으로 묶이는지 찾기', '새로 만든 척도, 처음 번안한 척도'],
+      ['confirm', '정해진 구조가 맞는지 확인', '원척도의 요인 구조가 있음'],
+      ['compare', '집단 간에 같은 의미로 재는지 확인', '집단 평균이나 경로를 비교하기 전']] },
+    { id: 'ind', short: '유형 지표', text: '유형을 나눌 지표는 어떤 값인가요?', opts: [
+      ['cont', '연속형(척도 점수 등)', ''], ['cat', '범주형(예/아니오, 경험 유무)', '']] },
+    { id: 'ptime', short: '자료 시점', text: '자료가 한 시점인가요, 여러 시점인가요?', opts: [
+      ['cross', '한 시점(횡단)', ''], ['long', '같은 사람을 여러 시점(종단)', '유형 사이의 이동을 봄']] },
+    { id: 'waves', short: '시점 수', text: '같은 사람을 몇 번 쟀나요?', opts: [
+      ['2', '2번', ''], ['3', '3번', ''], ['4', '4번 이상', '']] },
+    { id: 'cgoal', short: '종단 질문', text: '변화에 대해 무엇을 알고 싶나요?', opts: [
+      ['avg', '평균적인 변화와 사람마다의 차이', '초기값과 변화율'],
+      ['sub', '변화 모양이 다른 하위집단', '꾸준히 오름, 떨어짐 같은 궤적 유형'],
+      ['cross', '두 변수 중 무엇이 먼저인지', '앞 시점 X가 다음 시점 Y를 예측하는지'],
+      ['types', '유형 사이의 이동', '시점마다 유형을 나누고 옮겨 감을 봄']] }
+  ];
+  var QBY = {}; Q.forEach(function (q) { QBY[q.id] = q; });
+
+  function visible(s) {
+    var v = ['goal'];
+    var g = s.goal;
+    if (g === 'diff') { v.push('dv'); if (s.dv) v.push('gd'); if ((s.dv === 'cont' || s.dv === 'skew') && (s.gd === '2ind' || s.gd === '3ind')) v.push('nest'); }
+    if (g === 'rel') { v.push('dv'); if (s.dv) v.push('xtype'); }
+    if (g === 'pred') { v.push('dv'); if (s.dv === 'cont' || s.dv === 'skew') v.push('lat', 'nest'); if (s.dv === 'bin') v.push('nest'); }
+    if (g === 'mech') v.push('mtype', 'lat');
+    if (g === 'measure') v.push('mpurpose');
+    if (g === 'people') v.push('ind', 'ptime');
+    if (g === 'change') v.push('waves', 'cgoal');
+    return v;
   }
 
-  function decide() {
-    var goal = get('goal'), dv = get('dv'), g = get('groups'), des = get('design'), x = get('xtype'), nonnorm = get('normal') === 'yes';
-    var r = null;
-    if (goal === 'diff') {
-      if (!dv || !g || !des || (dv === 'cont' && !get('normal'))) return null;
-      var rank = dv === 'ord' || nonnorm;
-      if (dv === 'cont' || dv === 'ord') {
-        if (g === '2' && des === 'ind') r = rank
-          ? ['Mann-Whitney U 검정', '두 독립집단의 값을 순위로 바꿔, 한 집단의 값이 다른 집단보다 큰 경향이 있는지 검정합니다. 정규성을 가정하지 않습니다. 두 분포의 모양이 비슷할 때에만 중앙값 차이로 해석할 수 있습니다.', '분포 문제가 심하지 않고 집단별 사례가 충분하면 독립표본 t검정도 결과가 크게 다르지 않습니다. 두 결과를 함께 보고하는 연구도 있습니다.', '중앙값과 사분위범위, <i>U</i>, <i>z</i>, <i>p</i>, 효과크기 <i>r</i> = <i>z</i>/√<i>N</i>을 씁니다.']
-          : ['독립표본 t검정', '서로 다른 두 집단의 평균을 비교합니다. 두 집단의 분산이 다를 수 있으면 등분산을 가정하지 않는 Welch의 t검정을 기본으로 쓰는 편이 안전합니다(Welch, 1947).', '정규성이 크게 깨지면 Mann-Whitney U 검정을 씁니다.', '집단별 <i>M</i>, <i>SD</i>, <i>t</i>(<i>df</i>), <i>p</i>, Cohen\'s <i>d</i>를 씁니다.', 'apa-results', 'effect-size'];
-        if (g === '2' && des === 'rep') r = rank
-          ? ['Wilcoxon 부호순위 검정', '같은 사람의 두 측정값 차이를 순위로 검정합니다. 차이 점수의 정규성을 가정하지 않습니다.', '차이 점수가 대체로 대칭이면 대응표본 t검정도 쓸 수 있습니다.', '중앙값, <i>z</i>, <i>p</i>, 효과크기 <i>r</i>을 씁니다.']
-          : ['대응표본 t검정', '같은 사람의 사전·사후처럼 짝지은 두 측정값의 평균 차이를 검정합니다. 가정은 차이 점수의 정규성입니다.', '차이 점수가 심하게 치우치면 Wilcoxon 부호순위 검정을 씁니다.', '시점별 <i>M</i>, <i>SD</i>, <i>t</i>(<i>df</i>), <i>p</i>, <i>d<sub>z</sub></i>를 씁니다.', 'apa-results', 'effect-size'];
-        if (g === '3' && des === 'ind') r = rank
-          ? ['Kruskal-Wallis 검정', '셋 이상의 독립집단을 순위로 비교합니다. 유의하면 Dunn 검정처럼 다중비교를 보정한 사후검정을 합니다.', '분포 문제가 심하지 않으면 일원분산분석(등분산이 아니면 Welch의 분산분석)을 씁니다.', '집단별 중앙값, <i>H</i>(<i>df</i>), <i>p</i>, 사후검정 결과를 씁니다.']
-          : ['일원분산분석 (one-way ANOVA)', '셋 이상의 독립집단 평균을 한 번에 비교합니다. t검정을 여러 번 하면 1종 오류가 늘어나기 때문입니다. 유의하면 Tukey HSD(등분산이 아니면 Games-Howell) 같은 사후검정으로 어느 집단 사이에 차이가 있는지 봅니다.', '정규성이 크게 깨지면 Kruskal-Wallis 검정, 등분산이 깨지면 Welch의 분산분석을 씁니다.', '집단별 <i>M</i>, <i>SD</i>, <i>F</i>(<i>df</i>₁, <i>df</i>₂), <i>p</i>, η², 사후검정 결과를 씁니다.', 'apa-results', 'effect-size'];
-        if (g === '3' && des === 'rep') r = rank
-          ? ['Friedman 검정', '같은 사람을 세 번 이상 측정한 값을 순위로 비교합니다.', '분포 문제가 심하지 않으면 반복측정 분산분석을 씁니다.', 'χ²(<i>df</i>), <i>p</i>, Kendall의 <i>W</i>, 사후검정(Wilcoxon 검정에 다중비교 보정)을 씁니다.']
-          : ['반복측정 분산분석', '같은 사람을 세 번 이상 측정한 평균을 비교합니다. 구형성 가정이 깨지는 경우가 많아, Mauchly 검정 결과와 상관없이 Greenhouse-Geisser 보정값을 함께 보고하는 방식이 무난합니다.', '정규성이 크게 깨지면 Friedman 검정을 씁니다. 결측이 많으면 혼합모형도 검토합니다.', '시점별 <i>M</i>, <i>SD</i>, <i>F</i>, <i>p</i>, η²<sub><i>p</i></sub>, 구형성 보정 여부를 씁니다.', 'apa-results', 'effect-size'];
-      } else {
-        if (des === 'ind') r = ['카이제곱(χ²) 독립성 검정', '집단(범주)에 따라 범주형 결과의 비율이 다른지 교차표로 검정합니다.', '기대빈도가 5 미만인 칸이 20%를 넘거나 1 미만인 칸이 있으면(Cochran, 1954) 정확검정(2×2 표는 Fisher의 정확검정, 더 큰 표는 Fisher-Freeman-Halton 검정)을 씁니다.', '교차표(빈도와 백분율), χ²(<i>df</i>, <i>N</i>), <i>p</i>, Cramér\'s <i>V</i>를 씁니다.', 'apa-results'];
-        else if (dv === 'bin' && g === '2') r = ['McNemar 검정', '같은 사람의 두 시점(또는 짝지은 두 측정)에서 예/아니오 비율이 달라졌는지 검정합니다. 일반 χ² 검정은 독립 표본을 가정하므로 쓰지 않습니다.', '사례가 적으면 McNemar 정확검정(이항검정)을 씁니다.', '2×2 교차표, χ² 또는 정확 <i>p</i>를 씁니다.'];
-        else if (dv === 'bin') r = ['Cochran의 Q 검정', '같은 사람을 세 번 이상 측정한 이분 결과의 비율이 같은지 검정합니다.', '공변량을 함께 다루려면 일반화추정방정식(GEE)이나 혼합 로지스틱 모형을 검토합니다.', '시점별 비율, <i>Q</i>(<i>df</i>), <i>p</i>를 씁니다.'];
-        else r = ['McNemar-Bowker 검정 또는 모형 기반 분석', '같은 사람의 두 시점에서 세 범주 이상 결과의 분포가 달라졌는지는 McNemar-Bowker 대칭성 검정으로 봅니다. 세 시점 이상이면 일반화추정방정식(GEE) 같은 모형이 필요합니다.', '범주를 둘로 묶을 수 있다면 McNemar 검정을 쓸 수 있습니다.', '시점별 교차표와 검정 결과를 씁니다.'];
+  // 반환: { key, note } 또는 null(답이 덜 됨)
+  function decide(s) {
+    var need = visible(s);
+    for (var i = 0; i < need.length; i++) if (!s[need[i]]) return null;
+    var g = s.goal, dv = s.dv, r = function (key, note) { return { key: key, note: note || '' }; };
+    if (g === 'diff') {
+      var ind = s.gd === '2ind' || s.gd === '3ind', two = s.gd === '2ind' || s.gd === '2rep';
+      if (s.nest === 'nested') return r('mlm', '학급처럼 묶인 단위로 처치나 집단이 나뉘면 같은 학급 학생끼리 닮아 있어, 일반 t검정이나 분산분석은 표준오차를 작게 잡습니다. 집단 차이를 다층모형의 예측변수로 넣어 검정합니다.');
+      if (dv === 'cont') return r(s.gd === '2ind' ? 'indt' : s.gd === '2rep' ? 'pairedt' : s.gd === '3ind' ? 'anova' : 'rmanova');
+      if (dv === 'skew' || dv === 'ord') return r(s.gd === '2ind' ? 'mwu' : s.gd === '2rep' ? 'wilcoxon' : s.gd === '3ind' ? 'kw' : 'friedman');
+      if (ind) return r('chisq');
+      if (dv === 'bin') return r(two ? 'mcnemar' : 'cochranq');
+      return r('bowker', two ? '' : '세 시점 이상이면 McNemar-Bowker 검정을 시점 쌍마다 하기보다 일반화추정방정식(GEE) 같은 모형을 검토합니다.');
+    }
+    if (g === 'rel') {
+      var x = s.xtype;
+      if ((dv === 'cont' || dv === 'skew' || dv === 'ord') && x !== 'cat') return r(dv === 'cont' && x === 'cont' ? 'pearson' : 'spearman');
+      if ((dv === 'cont' || dv === 'skew') && x === 'cat') return r('groupcmp');
+      if (dv === 'ord' && x === 'cat') return r('rankgroups');
+      if (x === 'cat') return r('chisq');
+      return r(dv === 'bin' ? 'logit' : 'mlogit');
+    }
+    if (g === 'pred') {
+      if (dv === 'cont' || dv === 'skew') {
+        if (s.nest === 'nested') return r('mlm', s.lat === 'lat' ? '잠재변수와 위계 구조를 함께 다루려면 다층 구조방정식(Mplus 등)이 필요합니다.' : '');
+        if (s.lat === 'lat') return r('sem');
+        return r('regression', dv === 'skew' ? '잔차가 크게 치우치면 변환이나 강건 표준오차를 검토합니다.' : '');
       }
+      if (dv === 'bin') return r(s.nest === 'nested' ? 'mlm' : 'logit', s.nest === 'nested' ? '결과가 두 범주이므로 다층 로지스틱 회귀(일반화 선형 혼합모형)를 씁니다.' : '');
+      return r(dv === 'ord' ? 'ologit' : 'mlogit');
     }
-    if (goal === 'rel') {
-      if (!dv || !x || (dv === 'cont' && x === 'cont' && !get('normal'))) return null;
-      if ((dv === 'cont' || dv === 'ord') && (x === 'cont' || x === 'ord')) r = (dv === 'ord' || x === 'ord' || nonnorm)
-        ? ['Spearman 순위상관', '두 변수의 순위가 함께 움직이는지 봅니다. 순서형 변수나 이상값이 많은 자료에 맞습니다.', '두 변수가 연속형이고 분포가 크게 치우치지 않으면 Pearson 상관을 씁니다.', '<i>r<sub>s</sub></i>(<i>df</i>), <i>p</i>를 씁니다.']
-        : ['Pearson 상관분석', '두 연속형 변수의 선형 관계의 방향과 크기를 봅니다. 산점도로 관계가 직선에 가까운지, 이상값이 결과를 끌고 가지 않는지 먼저 확인합니다.', '관계가 곡선이거나 이상값이 많으면 Spearman 순위상관을 씁니다.', '변수가 여럿이면 <i>M</i>, <i>SD</i>와 상관계수를 한 표에 담습니다.', 'correlation-table', 'apa-results'];
-      else if (dv === 'ord' && x === 'cat') r = ['Mann-Whitney U 검정 또는 Kruskal-Wallis 검정', '한쪽이 범주형이면 "관계"는 곧 집단 간 차이입니다. 결과가 순서형이므로 범주가 둘이면 Mann-Whitney U 검정, 셋 이상이면 Kruskal-Wallis 검정으로 순위를 비교합니다.', '범주형 결과로 묶어도 된다면 카이제곱 검정을 쓸 수 있지만 순서 정보가 사라집니다.', '집단별 중앙값과 검정통계량, <i>p</i>를 씁니다.'];
-      else if (dv === 'cont' && x === 'cat') r = ['집단 차이 검정 (t검정 또는 분산분석)', '한쪽이 범주형이면 "관계"는 곧 집단 간 차이입니다. 범주가 둘이면 독립표본 t검정, 셋 이상이면 일원분산분석을 씁니다. 1번 질문에서 "차이"를 골라 다시 확인해 보세요.', '두 범주와 연속형 변수의 관계를 상관으로 나타내려면 점이연 상관을 씁니다. 값은 독립표본 t검정과 같은 정보를 줍니다.', '', 'apa-results'];
-      else if ((dv === 'bin' || dv === 'cat') && x === 'cat') r = ['카이제곱(χ²) 독립성 검정', '두 범주형 변수가 서로 관련되어 있는지 교차표로 검정합니다.', '기대빈도가 5 미만인 칸이 20%를 넘거나 1 미만인 칸이 있으면(Cochran, 1954) 정확검정(2×2 표는 Fisher의 정확검정, 더 큰 표는 Fisher-Freeman-Halton 검정)을 씁니다.', '교차표, χ²(<i>df</i>, <i>N</i>), <i>p</i>, Cramér\'s <i>V</i>를 씁니다.', 'apa-results'];
-      else r = [dv === 'bin' ? '로지스틱 회귀분석 (또는 점이연 상관)' : '다항 로지스틱 회귀분석', '결과가 범주형이고 설명하는 변수가 연속형·순서형이면, 그 변수 값에 따라 각 범주에 속할 확률이 어떻게 달라지는지를 로지스틱 회귀로 봅니다.', dv === 'bin' ? '단순히 관련의 크기만 보려면 점이연 상관을 쓸 수도 있습니다.' : '범주를 둘로 묶을 수 있으면 이항 로지스틱 회귀를 씁니다.', '승산비(<i>OR</i>)와 95% 신뢰구간, <i>p</i>를 씁니다.'];
+    if (g === 'mech') {
+      if (s.mtype === 'med') return r(s.lat === 'lat' ? 'sem' : 'medobs');
+      if (s.mtype === 'mod') return r(s.lat === 'lat' ? 'latmod' : 'modobs');
+      return r('modmed', s.lat === 'lat' ? '잠재변수를 쓰면 구조방정식 안에서 조절된 매개를 추정합니다(Mplus, lavaan).' : '');
     }
-    if (goal === 'pred') {
-      if (!dv) return null;
-      if (dv === 'cont') r = ['다중회귀분석', '여러 예측변수가 연속형 결과 변수를 얼마나 설명하는지(<i>R</i>²), 다른 변수를 통제했을 때 각 변수의 고유한 기여(<i>B</i>, β)가 있는지 봅니다. 예측변수가 하나면 단순회귀입니다. 범주형 예측변수는 더미변수로 바꿔 넣습니다.', '잔차가 크게 치우치거나 이상값이 많으면 변환이나 강건 회귀를 검토합니다. 예측변수끼리 상관이 높으면 VIF로 다중공선성을 확인합니다.', '<i>B</i>, <i>SE</i>, β, <i>t</i>, <i>p</i>와 <i>R</i>², 수정된 <i>R</i>², <i>F</i>를 표로 씁니다.', 'apa-results', 'sample-size'];
-      if (dv === 'ord') r = ['순서형 로지스틱 회귀분석', '결과가 순서가 있는 범주(예: 낮음·보통·높음)일 때 씁니다. 비례 승산 가정을 확인합니다.', '범주가 5개 이상이고 간격이 비슷하다고 볼 수 있으면 다중회귀를 쓰는 연구도 있으나, 그 근거를 밝혀야 합니다.', '승산비(<i>OR</i>)와 95% 신뢰구간을 씁니다.'];
-      if (dv === 'bin') r = ['이항 로지스틱 회귀분석', '예/아니오 같은 두 범주 결과가 일어날 확률을 여러 예측변수로 설명합니다. 일반 회귀분석은 예측값이 0과 1 범위를 벗어날 수 있어 맞지 않습니다.', '사건 수가 적으면 예측변수 수를 줄이거나 Firth 보정 로지스틱 회귀를 검토합니다.', '<i>B</i>, <i>SE</i>, Wald χ², <i>p</i>, 승산비(<i>OR</i>)와 95% 신뢰구간, 모형 적합도를 씁니다.', 'sample-size'];
-      if (dv === 'cat') r = ['다항 로지스틱 회귀분석', '세 범주 이상의 결과(순서 없음)를 기준 범주와 비교하며 예측변수의 효과를 봅니다.', '범주를 둘로 묶을 수 있으면 이항 로지스틱 회귀가 해석이 쉽습니다.', '기준 범주를 밝히고, 범주별 승산비와 95% 신뢰구간을 씁니다.'];
+    if (g === 'measure') return r(s.mpurpose === 'explore' ? 'efa' : s.mpurpose === 'confirm' ? 'cfa' : 'invariance');
+    if (g === 'people') {
+      if (s.ptime === 'long') return r('lta');
+      return r(s.ind === 'cont' ? 'lpa' : 'lca', s.ind === 'cont' ? '거리 기반 군집분석(K-평균, Ward)과의 차이는 아래 "군집분석과 잠재프로파일분석" 글에 정리했습니다.' : '');
     }
-    return r;
+    if (g === 'change') {
+      var w = s.waves;
+      if (s.cgoal === 'avg') return w === '2' ? r('pairedt', '두 시점으로는 변화 궤적의 모양과 개인차를 함께 추정할 수 없어 잠재성장모형을 쓰지 못합니다. 3시점 이상이면 잠재성장모형을 쓸 수 있습니다.') : r('lgm', w === '3' ? '3시점이면 직선 변화만 추정할 수 있습니다.' : '');
+      if (s.cgoal === 'sub') return w === '2' ? r('lta', '두 시점으로는 궤적 유형을 추정하는 성장혼합모형을 쓸 수 없습니다. 시점마다 유형을 나누고 이동을 보는 잠재전이분석이 대안입니다.') : r('gmm', w === '3' ? '3시점은 최소 조건이라 수렴과 해석이 어려울 수 있습니다.' : '');
+      if (s.cgoal === 'cross') return r('clpm', w === '2' ? '두 시점이면 전통적 교차지연 모형만 가능하고, 사람 사이 차이를 분리하는 RI-CLPM은 3시점 이상이 필요합니다.' : '');
+      return r('lta');
+    }
+    return null;
   }
 
-  var NAMES = { 'apa-results': 'APA 결과 문장 생성기', 'effect-size': '효과크기 계산기', 'correlation-table': '상관행렬 APA 표 만들기', 'sample-size': '표본 크기·검정력 계산기' };
+  // 상태: 주소의 검색어(?goal=...)에 담아, 뒤로 가기로 돌아와도 선택이 남게 한다
+  function readState() {
+    var p = new URLSearchParams(location.search), s = {};
+    Q.forEach(function (q) { var v = p.get(q.id); if (v && q.opts.some(function (o) { return o[0] === v; })) s[q.id] = v; });
+    return s;
+  }
+  function clean(s) { // 보이지 않는 질문의 답은 버린다
+    var v = visible(s), out = {};
+    v.forEach(function (k) { if (s[k]) out[k] = s[k]; });
+    // 새로 보이게 된 질문이 생길 수 있어 한 번 더
+    visible(out).forEach(function (k) { if (s[k]) out[k] = s[k]; });
+    return out;
+  }
+  function query(s) { var p = new URLSearchParams(); Q.forEach(function (q) { if (s[q.id]) p.set(q.id, s[q.id]); }); var t = p.toString(); return t ? '?' + t : location.pathname; }
 
-  function update() {
-    visible();
-    var r = decide();
-    $('result').hidden = !r;
-    if (!r) return;
-    $('method').textContent = r[0];
-    $('why').innerHTML = r[1];
-    $('alt').innerHTML = '대안: ' + r[2];
-    $('report').innerHTML = r[3] ? '보고할 값: ' + r[3] : '';
-    var links = r.slice(4).filter(Boolean).map(function (k) { return '<a href="' + T + k + '/">' + NAMES[k] + '</a>'; });
-    $('links').innerHTML = links.length ? '이어서 쓸 도구: ' + links.join(', ') : '';
+  var state = clean(readState());
+
+  function renderForm() {
+    var html = '';
+    var vis = visible(state);
+    vis.forEach(function (id, n) {
+      var q = QBY[id];
+      var text = id === 'dv' && state.goal === 'rel' ? q.relText : q.text;
+      html += '<fieldset class="q" data-q="' + id + '"><legend><span class="qn">' + (n + 1) + '.</span> ' + esc(text) + '</legend><div class="opts">';
+      q.opts.forEach(function (o) {
+        html += '<label class="opt"><input type="radio" name="' + id + '" value="' + o[0] + '"' + (state[id] === o[0] ? ' checked' : '') + '><span>' + esc(o[1]) + (o[2] ? '<small>' + esc(o[2]) + '</small>' : '') + '</span></label>';
+      });
+      html += '</div></fieldset>';
+    });
+    $('qs').innerHTML = html;
   }
 
-  document.querySelectorAll('#form input[type=radio]').forEach(function (el) { el.addEventListener('change', update); });
-  update();
+  function list(arr) { return '<ul>' + arr.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; }
+  var TOOLS = { 'apa-results': 'APA 결과 문장 생성기', 'effect-size': '효과크기 계산기', 'correlation-table': '상관행렬 APA 표', 'sample-size': '표본 크기 계산기', 'cronbach-alpha': '크론바흐 알파 계산기', 'mediation-sobel': '매개효과 간접효과 검정', 'reverse-scoring': '역채점 계산기' };
+  var GUIDES = window.GUIDE_TITLES || {};
+
+  function renderResult() {
+    var d = decide(state);
+    $('mempty').hidden = !!d; $('result').hidden = !d;
+    if (!d) {
+      $('jump').hidden = true;
+      $('help').innerHTML = $('help').getAttribute('data-default');
+      return;
+    }
+    var m = M[d.key];
+    $('method').textContent = m.name;
+    $('method').setAttribute('data-key', d.key);
+    $('kind').textContent = m.level === '고급' ? '고급 분석' : '기초 분석';
+    $('mq').textContent = m.q;
+    $('mnote').textContent = d.note; $('mnote').hidden = !d.note;
+    $('mdata').innerHTML = list(m.data);
+    $('mprog').textContent = m.prog;
+    $('mreport').innerHTML = list(m.report);
+    $('mmist').innerHTML = list(m.mistakes);
+    var btns = (m.tools || []).map(function (t) { return '<a class="btn" href="../' + t + '/">' + esc(TOOLS[t] || t) + ' 열기</a>'; });
+    $('mtools').innerHTML = btns.join('');
+    $('mtoolsWrap').hidden = !btns.length;
+    var gl = (m.guides || []).filter(function (g) { return GUIDES[g]; }).map(function (g) { return '<li><a href="../../guides/' + g + '/">' + esc(GUIDES[g]) + '</a></li>'; });
+    $('mguides').innerHTML = gl.join(''); $('mguidesWrap').hidden = !gl.length;
+    // 선택을 바꾸면
+    var ch = [];
+    visible(state).forEach(function (id) {
+      var q = QBY[id];
+      q.opts.forEach(function (o) {
+        if (o[0] === state[id]) return;
+        var s2 = {}; Object.keys(state).forEach(function (k) { s2[k] = state[k]; }); s2[id] = o[0];
+        s2 = clean(s2);
+        var d2 = decide(s2);
+        var label = window.Stats.josa(q.short, '을', '를') + ' "' + o[1] + '"' + '(으)로 바꾸면';
+        if (!d2 || d2.key === d.key) return;
+        ch.push('<li>' + esc(label) + ': <a href="' + query(s2) + '" data-state="' + esc(JSON.stringify(s2)) + '">' + esc(M[d2.key].name) + '</a></li>');
+      });
+    });
+    $('changes').innerHTML = ch.join('') || '<li>다른 답을 골라도 같은 방법이 나옵니다. 연구 질문 자체를 바꾸려면 1번을 다시 고르세요.</li>';
+    $('jump').hidden = false;
+    // 크몽 안내 한 줄: 고급 분석이면 그 분석 이름으로
+    $('help').innerHTML = m.premium
+      ? esc(window.Stats.josa(m.name, '을', '를')) + ' 직접 하기 어렵다면 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">' + $('help').getAttribute('data-who') + '</span>'
+      : $('help').getAttribute('data-default');
+  }
+
+  function update(push) {
+    state = clean(state);
+    var url = query(state);
+    try { history.replaceState(state, '', url); } catch (e) { /* 파일로 열었을 때 */ }
+    renderForm(); renderResult();
+    if (push) { var r = decide(state); if (r) { var el = $('live'); el.textContent = ''; setTimeout(function () { el.textContent = '추천 분석: ' + M[r.key].name; }, 30); } }
+  }
+
+  $('qs').addEventListener('change', function (e) {
+    var t = e.target; if (t.type !== 'radio') return;
+    var focusName = t.name, focusVal = t.value;
+    state[t.name] = t.value;
+    update(true);
+    var again = document.querySelector('input[name="' + focusName + '"][value="' + focusVal + '"]');
+    if (again) again.focus();
+  });
+  $('changes').addEventListener('click', function (e) {
+    var a = e.target.closest('a[data-state]'); if (!a) return;
+    e.preventDefault(); state = JSON.parse(a.getAttribute('data-state')); update(true);
+    $('result').scrollIntoView({ block: 'start' });
+  });
+  $('restart').addEventListener('click', function () { state = {}; update(false); var f = document.querySelector('input[name="goal"]'); if (f) f.focus(); });
+  window.addEventListener('pageshow', function () { var s = clean(readState()); if (JSON.stringify(s) !== JSON.stringify(state)) { state = s; update(false); } });
+  // 시험용: 결정 함수를 밖에서 확인할 수 있게
+  window.__chooser = { decide: decide, visible: visible };
+  update(false);
 })();

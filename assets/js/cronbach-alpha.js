@@ -12,11 +12,10 @@
   }
 
   function run() {
-    var res = $('result'); res.hidden = false;
-    $('err').textContent = ''; $('ok').hidden = false;
+    $('err').textContent = ''; $('data').removeAttribute('aria-invalid');
     var t = S.parseTable($('data').value);
-    var fail = function (m) { $('err').textContent = m; $('ok').hidden = true; };
-    if (!t.rows.length) return fail('붙여 넣은 자료가 없습니다.');
+    var fail = function (m) { $('err').textContent = m; $('data').setAttribute('aria-invalid', 'true'); S.show(false); };
+    if (!t.rows.length) { S.show(false); return; }
     var k = t.header.length;
     if (k < 2) return fail('문항이 두 개 이상이어야 알파를 계산할 수 있습니다.');
     var rows = t.rows.filter(function (r) { return r.every(function (v) { return isFinite(v); }); });
@@ -48,9 +47,11 @@
     if (a < 0) warns.push('α가 음수입니다. 문항 간 공분산의 평균이 음수라는 뜻으로, 대부분 역문항 처리 누락이나 잘못 고른 열 때문입니다.');
     if (k <= 3) warns.push('문항이 ' + k + '개뿐입니다. α는 문항 수가 적으면 낮게 나오기 쉬우므로 문항 간 평균 상관을 함께 보고하는 방법도 있습니다.');
 
+    S.show(true);
     $('alpha').textContent = S.fmt0(a, 2) + ' (' + S.fmt0(a, 3) + ')';
     $('alpha').setAttribute('data-value', a);
     $('n').textContent = rows.length; $('k').textContent = k;
+    S.live('계산했습니다. 크론바흐 알파 ' + S.fmt0(a, 2));
     $('dropped').textContent = dropped ? '빈 칸이 있는 응답자 ' + dropped + '명은 제외했습니다.' : '';
     $('warns').innerHTML = warns.map(function (w) { return '<p style="margin:0 0 6px">' + S.esc(w) + '</p>'; }).join('');
     var scale = $('scale').value.trim();
@@ -68,6 +69,8 @@
   }
 
   $('run').addEventListener('click', run);
+  S.auto('form', function () { if ($('data').value.trim()) run(); else { S.show(false); $('err').textContent = ''; } }, 400);
+  $('reset').addEventListener('click', function () { S.resetForm('form'); $('err').textContent = ''; $('data').removeAttribute('aria-invalid'); S.show(false); $('data').focus(); });
   $('example').addEventListener('click', example);
   S.bindCopy();
 })();

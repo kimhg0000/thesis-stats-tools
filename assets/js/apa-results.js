@@ -20,9 +20,12 @@
     document.querySelectorAll('[data-for]').forEach(function (el) { el.hidden = el.getAttribute('data-for') !== t; });
   }
 
-  function run() {
-    $('result').hidden = false; $('err').textContent = ''; $('ok').hidden = false;
-    var fail = function (m) { $('err').textContent = m; $('ok').hidden = true; };
+  function run(auto) {
+    $('err').textContent = '';
+    var box = document.querySelector('[data-for="' + $('type').value + '"]');
+    var anyFilled = Array.prototype.some.call(box.querySelectorAll('input[type=number]'), function (el) { return el.value !== ''; });
+    var fail = function (m) { S.show(false); $('err').textContent = (auto === true && /채우세요/.test(m)) ? '' : m; };
+    if (auto === true && !anyFilled) { S.show(false); return; }
     var type = $('type').value, p, apa, sent, head = '', note = '', warns = [];
     var E = S.esc;
 
@@ -101,7 +104,9 @@
       note = '표 아래에 <i>R</i>², 수정된 <i>R</i>², <i>F</i>(<i>df</i>₁, <i>df</i>₂)를 함께 적습니다.';
     }
 
+    S.show(true);
     $('apa').innerHTML = apa;
+    S.live('결과 문장을 만들었습니다.');
     $('apa').setAttribute('data-p', p);
     $('sentence').innerHTML = sent;
     $('thead').innerHTML = head;
@@ -109,8 +114,18 @@
     $('warns').innerHTML = warns.map(function (w) { return '<p style="margin:0 0 6px">' + S.esc(w) + '</p>'; }).join('');
   }
 
-  $('type').addEventListener('change', showType);
-  $('run').addEventListener('click', run);
+  $('type').addEventListener('change', function () { showType(); run(true); });
+  $('run').addEventListener('click', function () { run(false); });
+  var t;
+  $('form').querySelectorAll('input').forEach(function (el) { el.addEventListener('input', function () { clearTimeout(t); t = setTimeout(function () { run(true); }, 450); }); });
+  $('t_kind').addEventListener('change', function () { run(true); });
+  $('example').addEventListener('click', function () {
+    $('type').value = 't'; showType(); $('t_kind').value = 'ind';
+    var ex = { t_t: 2.45, t_df: 58, t_d: 0.63, t_g1: '프로그램 참여 집단', t_m1: 3.62, t_s1: 0.71, t_n1: 30, t_g2: '비참여 집단', t_m2: 3.18, t_s2: 0.68, t_n2: 30, t_dv: '학습몰입' };
+    Object.keys(ex).forEach(function (k) { $(k).value = ex[k]; });
+    run(false);
+  });
+  $('reset').addEventListener('click', function () { S.resetForm('form'); showType(); $('err').textContent = ''; S.show(false); });
   showType();
   S.bindCopy();
 })();

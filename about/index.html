@@ -4,43 +4,67 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>소개와 검증 방법 | 논문 통계 도구</title>
-<meta name="description" content="논문 통계 도구의 운영 주체, 개인정보 처리 방식, 계산 검증 방법을 밝힙니다.">
+<meta name="description" content="논문 통계 도구의 운영자, 개인정보 처리 방식, 계산 검증 방법, 사용한 오픈소스를 밝힙니다.">
 <link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/about/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="소개와 검증 방법">
-<meta property="og:description" content="논문 통계 도구의 운영 주체, 개인정보 처리 방식, 계산 검증 방법을 밝힙니다.">
+<meta property="og:description" content="논문 통계 도구의 운영자, 개인정보 처리 방식, 계산 검증 방법, 사용한 오픈소스를 밝힙니다.">
 <meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/about/">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="논문 통계 도구">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/site.css?v=dd25398d">
 
 </head>
 <body>
-<header class="site"><div class="wrap">
-<a class="brand" href="../">논문 통계 도구</a>
-<nav aria-label="주 메뉴"><a href="../#tools">도구</a><a href="../guides/">안내 글</a><a href="../about/" aria-current="page">소개</a></nav>
-</div></header>
-<main><div class="wrap">
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="site-header">
+<div class="wrap bar">
+<a class="brand" href="../"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="7" fill="#2445a6"/><path d="M8 23h16M8 9h16" stroke="#fff" stroke-width="2"/><path d="M8 15.5h16" stroke="#fff" stroke-width="1" opacity=".75"/></svg>논문 통계 도구</a>
+<nav class="top-links" aria-label="사이트"><a href="../guides/">안내 글</a><a href="../about/" aria-current="page">소개</a></nav>
+<button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <line x1="4" x2="20" y1="12" y2="12" /> <line x1="4" x2="20" y1="6" y2="6" /> <line x1="4" x2="20" y1="18" y2="18" /> </svg><span class="lbl">메뉴</span></button>
+</div>
+<div class="wrap"><nav class="tool-tabs" aria-label="도구"><a href="../tools/cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a><a href="../tools/correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a><a href="../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a><a href="../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a><a href="../tools/method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a><a href="../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a><a href="../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a><a href="../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></nav></div>
+<div class="wrap mobile-menu" id="mobile-menu" data-open="false">
+<h2>도구</h2><ul><li><a href="../tools/cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a></li><li><a href="../tools/correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a></li><li><a href="../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a></li><li><a href="../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a></li><li><a href="../tools/method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a></li><li><a href="../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a></li><li><a href="../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a></li><li><a href="../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></li></ul>
+<h2>그 밖에</h2><ul><li><a href="../"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /> <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> </svg>처음 화면</a></li><li><a href="../guides/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg>안내 글</a></li><li><a href="../about/" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /> <path d="M12 17h.01" /> </svg>소개</a></li></ul>
+</div>
+</header>
+<main id="main" tabindex="-1"><div class="wrap">
 <p class="crumb"><a href="../">처음</a> / 소개</p>
-<article>
+<div class="article-wrap"><article class="guide">
 <h1>소개와 검증 방법</h1>
-<p>이 사이트는 논문을 쓰는 대학원생이 통계 분석 결과를 스스로 이해하고 바르게 보고하도록 돕는 계산기와 글을 모아 둔 곳입니다. 분석을 대신하거나 논문을 대신 쓰는 곳이 아닙니다. 도구가 만든 문장은 출발점일 뿐이니, 연구 맥락에 맞게 고쳐 쓰고 지도교수와 상의하세요.</p>
-<h2>운영</h2>
-<p>상담과연구에서 운영합니다. 크몽에서 논문 통계분석을 돕고 있습니다. 직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽 서비스 페이지</a>에서 문의할 수 있습니다.</p>
+<p>이 사이트는 논문을 쓰는 대학원생이 통계 분석 결과를 스스로 이해하고 바르게 보고하도록 돕는 계산기와 글을 모아 둔 곳입니다. 분석을 대신하거나 논문을 대신 쓰는 곳이 아닙니다. 도구가 만든 문장은 출발점이니, 연구 맥락에 맞게 고쳐 쓰고 지도교수와 상의하세요.</p>
+<h2>운영자</h2>
+<p>크몽 판매자 "상담과연구"이 운영합니다. 크몽에서 논문 통계분석 서비스를 운영하고 있으며, 크몽 판매자 프로필에 공개된 이력은 다음과 같습니다.</p>
+<ul>
+<li>대학 상담센터 전임상담원 경력 3년</li>
+<li>교육학(교육상담) 전공</li>
+<li>자격: 청소년상담사 2급, 임상심리사 2급, 전문상담교사 2급, 직업상담사 2급</li>
+</ul>
+<p>직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽 서비스 페이지</a>에서 문의할 수 있습니다.</p>
 <h2>개인정보와 입력 자료</h2>
-<p>이 사이트는 회원 가입, 쿠키, 방문 추적 스크립트, 광고, 외부 글꼴을 쓰지 않습니다. 붙여 넣은 응답 자료와 입력한 값은 브라우저 안의 자바스크립트로만 계산되고 서버로 보내지지 않습니다. 페이지를 닫으면 사라집니다. 사이트는 GitHub Pages에서 정적 파일로 제공되므로, GitHub가 일반적인 웹 서버로서 접속 기록을 남길 수 있습니다.</p>
+<p>회원 가입, 쿠키, 방문 추적 스크립트, 광고가 없습니다. 글꼴과 아이콘도 이 사이트 안에 두고 씁니다. 붙여 넣은 응답 자료와 입력한 값은 브라우저 안의 자바스크립트로만 계산되고 서버로 보내지지 않으며, 페이지를 닫으면 사라집니다. 방법 선택 도우미는 고른 답을 주소(URL) 뒤에 붙여 두는데, 이 역시 브라우저 안에만 남습니다. 사이트는 GitHub Pages에서 정적 파일로 제공되므로 GitHub가 일반적인 웹 서버로서 접속 기록을 남길 수 있습니다.</p>
 <h2>계산 검증</h2>
-<p>각 도구는 정답을 아는 시험 사례로 검증한 뒤 공개했습니다. 정답은 Python의 scipy, statsmodels, pingouin 패키지로 계산했고, 실제 브라우저(Playwright)로 이 사이트의 화면에 값을 입력해 나온 결과를 정답과 자동으로 대조했습니다. 근사를 쓰는 곳(상관분석 표본 크기, 효과크기 신뢰구간, 몬테카를로 구간)은 해당 화면의 "계산 방법"에 근사임과 허용 오차를 적었습니다.</p>
+<p>각 도구는 정답을 아는 시험 사례로 검증한 뒤 공개했습니다. 정답은 Python의 scipy, statsmodels, pingouin 패키지로 계산했고, 실제 브라우저(Playwright)로 이 사이트 화면에 값을 입력해 나온 결과를 정답과 자동으로 대조했습니다. 근사를 쓰는 곳(상관분석 표본 크기, 효과크기 신뢰구간, 몬테카를로 구간)은 해당 화면의 "계산 방법"에 근사임과 허용 오차를 적었습니다. 방법 선택 도우미는 선택 조합마다 기대하는 방법이 나오는지 자동 시험으로 확인합니다.</p>
 <p>틀린 계산이나 설명을 발견하면 <a href="https://github.com/kimhg0000/thesis-stats-tools/issues" rel="noopener">GitHub 저장소의 Issues</a>에 남겨 주세요.</p>
-<p class="note">최종 수정: 2026-11-15</p>
-</article>
+<h2>사용한 오픈소스</h2>
+<ul>
+<li>Pretendard 1.3.9 (길형진, SIL Open Font License 1.1): 본문 글꼴</li>
+<li>Lucide 0.460.0 (ISC License): 아이콘</li>
+<li>Open Props 1.7.7 (MIT License): 간격·그림자 값</li>
+<li>KaTeX 0.16.11 (MIT License): 계산식 표기</li>
+</ul>
+<p class="note">라이선스 전문은 <a href="../assets/vendor/licenses/">assets/vendor/licenses</a> 폴더에 있습니다. 최종 수정: 2026-11-15</p>
+</article></div>
 
 </div></main>
 <footer class="site"><div class="wrap">
-<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
-<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../about/">소개와 검증 방법</a></p>
+<p>운영: 상담과연구. 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산은 시험 사례로 검증했지만, 논문에 쓰기 전에 쓰고 있는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../about/">소개와 검증 방법</a></p>
 </div></footer>
+<script src="../assets/nav.js"></script>
 
 </body>
 </html>

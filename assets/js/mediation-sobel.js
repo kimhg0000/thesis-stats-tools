@@ -38,11 +38,12 @@
     return { z: z, p: p };
   }
 
-  function run() {
-    $('result').hidden = false; $('err').textContent = ''; $('ok').hidden = false;
+  function run(auto) {
+    $('err').textContent = '';
     var a = val('a'), sa = val('sa'), b = val('b'), sb = val('sb');
-    if (![a, sa, b, sb].every(isFinite)) { $('err').textContent = '네 칸을 모두 채우세요.'; $('ok').hidden = true; return; }
-    if (sa <= 0 || sb <= 0) { $('err').textContent = '표준오차는 0보다 커야 합니다.'; $('ok').hidden = true; return; }
+    if (![a, sa, b, sb].every(isFinite)) { if (auto !== true) $('err').textContent = '네 칸을 모두 채우세요.'; S.show(false); return; }
+    if (sa <= 0 || sb <= 0) { $('err').textContent = '표준오차는 0보다 커야 합니다.'; S.show(false); return; }
+    S.show(true);
     var ab = a * b;
     var base = b * b * sa * sa + a * a * sb * sb, cross = sa * sa * sb * sb;
     $('ab').textContent = S.fmt(ab, 4); $('ab').setAttribute('data-value', ab);
@@ -53,12 +54,15 @@
     $('mc').textContent = '[' + S.fmt(ci[0], 4) + ', ' + S.fmt(ci[1], 4) + ']';
     $('mc').setAttribute('data-lo', ci[0]); $('mc').setAttribute('data-hi', ci[1]);
     var sig = ci[0] > 0 || ci[1] < 0;
+    S.live('간접효과와 신뢰구간을 계산했습니다.');
     $('sentence').innerHTML = '간접효과의 유의성을 몬테카를로 방법(반복 1,000,000회; Preacher &amp; Selig, 2012)으로 검증한 결과, 간접효과(<i>ab</i> = ' + S.fmt(ab, 3) +
       ')의 95% 신뢰구간 [' + S.fmt(ci[0], 3) + ', ' + S.fmt(ci[1], 3) + ']이 0을 ' + (sig ? '포함하지 않아 매개효과가 통계적으로 유의하였다' : '포함하여 매개효과가 통계적으로 유의하지 않았다') +
       '. 참고로 Sobel 검정 결과는 ' + (sob.p < 0.05 ? '유의하였다' : '유의하지 않았다') + '(<i>z</i> = ' + S.fmt(sob.z, 2) + ', <i>p</i> ' + S.fmtP(sob.p) + ').';
   }
 
-  $('run').addEventListener('click', run);
+  $('run').addEventListener('click', function () { run(false); });
+  S.auto('form', function () { run(true); }, 500);
+  $('reset').addEventListener('click', function () { S.resetForm('form'); $('err').textContent = ''; S.show(false); });
   $('example').addEventListener('click', function () { $('a').value = 0.42; $('sa').value = 0.11; $('b').value = 0.35; $('sb').value = 0.09; run(); });
   S.bindCopy();
 })();

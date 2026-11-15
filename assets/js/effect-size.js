@@ -14,8 +14,12 @@
   function interp(x, cuts, shown) {
     return S.josa(shown, '은', '는') + ' Cohen(1988)의 관례적 기준으로 ' + label(x, cuts) + (Math.abs(x) < cuts[0] ? ' 크기입니다.' : ' 크기의 효과에 해당합니다.') + ' 같은 분야 선행연구의 값과 비교해 해석하는 편이 더 정확합니다.';
   }
+  var AUTO = false;
   function show(res, err, ok, msg) {
-    $(res).hidden = false; $(err).textContent = msg || ''; $(ok).hidden = !!msg;
+    ['resA', 'resB', 'resC', 'resD'].forEach(function (r) { $(r).hidden = true; });
+    if (msg) { $(err).textContent = (AUTO && /채우세요|넣으세요/.test(msg)) ? '' : msg; $('empty').hidden = false; return; }
+    $(err).textContent = ''; $('empty').hidden = true; $(res).hidden = false; $(ok).hidden = false;
+    S.live('효과크기를 계산했습니다.');
   }
   function set(id, x, text) { $(id).setAttribute('data-value', x); $(id).textContent = text; }
 
@@ -69,14 +73,15 @@
 
   function runD() {
     var from = $('convFrom').value, x = val('convVal');
-    $('resD').hidden = false; $('errD').textContent = ''; $('outD').textContent = '';
-    if (!isFinite(x)) { $('errD').textContent = '값을 넣으세요.'; return; }
+    $('outD').textContent = '';
+    if (!isFinite(x)) return show('resD', 'errD', 'resD', '값을 넣으세요.');
+    show('resD', 'errD', 'resD');
     if (from === 'd') {
       var r = x / Math.sqrt(x * x + 4);
       $('outD').setAttribute('data-value', r);
       $('outD').innerHTML = '<i>d</i> = ' + S.josa(S.fmt(x, 2), '은', '는') + ' <i>r</i> = ' + S.fmt0(r, 3) + '에 해당합니다.';
     } else {
-      if (Math.abs(x) >= 1) { $('errD').textContent = 'r은 −1과 1 사이여야 합니다.'; return; }
+      if (Math.abs(x) >= 1) return show('resD', 'errD', 'resD', 'r은 −1과 1 사이여야 합니다.');
       var d = 2 * x / Math.sqrt(1 - x * x);
       $('outD').setAttribute('data-value', d);
       $('outD').innerHTML = '<i>r</i> = ' + S.josa(S.fmt0(x, 2), '은', '는') + ' <i>d</i> = ' + S.fmt(d, 3) + '에 해당합니다.';
@@ -84,6 +89,32 @@
   }
 
   $('tDesign').addEventListener('change', function () { $('tN2wrap').hidden = $('tDesign').value !== 'ind'; });
+  // 탭
+  var tabs = ['A', 'B', 'C', 'D'], RUN = { A: runA, B: runB, C: runC, D: runD };
+  function select(k, focus) {
+    tabs.forEach(function (x) {
+      var on = x === k;
+      $('tab-' + x).setAttribute('aria-selected', on ? 'true' : 'false');
+      $('tab-' + x).tabIndex = on ? 0 : -1;
+      $('tab-' + x).classList.toggle('on', on);
+      $('panel-' + x).hidden = !on;
+    });
+    if (focus) $('tab-' + k).focus();
+    AUTO = true; RUN[k](); AUTO = false;
+  }
+  tabs.forEach(function (k, i) {
+    $('tab-' + k).addEventListener('click', function () { select(k); });
+    $('tab-' + k).addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) { e.preventDefault(); select(tabs[(i + d + tabs.length) % tabs.length], true); }
+    });
+    var t;
+    $('panel-' + k).querySelectorAll('input, select').forEach(function (el) {
+      el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', function () { clearTimeout(t); t = setTimeout(function () { AUTO = true; RUN[k](); AUTO = false; }, 400); });
+    });
+  });
+  $('exA').addEventListener('click', function () { var ex = { m1: 3.62, s1: 0.71, n1: 30, m2: 3.18, s2: 0.68, n2: 30 }; Object.keys(ex).forEach(function (k) { $(k).value = ex[k]; }); runA(); });
+  $('reset').addEventListener('click', function () { S.resetForm('form'); ['errA', 'errB', 'errC', 'errD'].forEach(function (e) { $(e).textContent = ''; }); ['resA', 'resB', 'resC', 'resD'].forEach(function (r) { $(r).hidden = true; }); $('empty').hidden = false; $('tN2wrap').hidden = false; });
   $('runA').addEventListener('click', runA);
   $('runB').addEventListener('click', runB);
   $('runC').addEventListener('click', runC);

@@ -245,7 +245,16 @@
 
   // 복사 버튼: data-copy-target 의 텍스트(또는 표의 HTML)를 클립보드로
   S.copyText = function (text, html, btn) {
-    var done = function () { if (btn) { var t = btn.textContent; btn.textContent = '복사했습니다'; setTimeout(function () { btn.textContent = t; }, 1500); } };
+    var done = function () {
+      if (!btn) return;
+      var orig = btn.getAttribute('data-orig') || btn.innerHTML;
+      btn.setAttribute('data-orig', orig);
+      btn.classList.add('copied');
+      btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>복사됨';
+      S.live('클립보드에 복사했습니다.');
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function () { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1800);
+    };
     try {
       if (html && global.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
         navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) })]).then(done, function () { fallback(); });
@@ -262,6 +271,52 @@
       document.body.removeChild(ta);
     }
   };
+
+  // 화면 도우미: 빈 상태와 결과 전환, 화면 낭독기 알림, 입력 즉시 계산, 칸 옆 오류
+  S.live = function (msg) {
+    var el = document.getElementById('live');
+    if (!el) return;
+    el.textContent = ''; setTimeout(function () { el.textContent = msg; }, 30);
+  };
+  S.show = function (on, emptyId, resultId) {
+    var e = document.getElementById(emptyId || 'empty'), r = document.getElementById(resultId || 'result');
+    if (e) e.hidden = !!on; if (r) r.hidden = !on;
+  };
+  S.fieldError = function (id, msg) {
+    var input = document.getElementById(id);
+    if (!input) return;
+    var box = document.getElementById(id + '-msg');
+    if (!box) {
+      box = document.createElement('p'); box.className = 'field-error'; box.id = id + '-msg'; box.setAttribute('role', 'alert');
+      var host = input.closest('.field') || input.parentNode;
+      host.appendChild(box);
+      var d = input.getAttribute('aria-describedby') || '';
+      if (d.indexOf(box.id) < 0) input.setAttribute('aria-describedby', (d + ' ' + box.id).trim());
+    }
+    box.textContent = msg || '';
+    if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+  };
+  S.clearErrors = function (root) {
+    (root || document).querySelectorAll('[aria-invalid="true"]').forEach(function (el) { S.fieldError(el.id, ''); });
+  };
+  S.auto = function (root, fn, delay) {
+    var t;
+    var h = function () { clearTimeout(t); t = setTimeout(fn, delay || 350); };
+    (typeof root === 'string' ? document.getElementById(root) : root).querySelectorAll('input, select, textarea').forEach(function (el) {
+      el.addEventListener(el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'radio' ? 'change' : 'input', h);
+    });
+  };
+  S.resetForm = function (root, after) {
+    var r = typeof root === 'string' ? document.getElementById(root) : root;
+    r.querySelectorAll('input, textarea, select').forEach(function (el) {
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = el.defaultChecked;
+      else if (el.tagName === 'SELECT') el.selectedIndex = Array.prototype.findIndex.call(el.options, function (o) { return o.defaultSelected; }) < 0 ? 0 : Array.prototype.findIndex.call(el.options, function (o) { return o.defaultSelected; });
+      else el.value = el.defaultValue;
+    });
+    S.clearErrors(r);
+    if (after) after();
+  };
+
   S.bindCopy = function (root) {
     (root || document).querySelectorAll('[data-copy]').forEach(function (btn) {
       if (btn._bound) return; btn._bound = true;

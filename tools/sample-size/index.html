@@ -12,21 +12,35 @@
 <meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/tools/sample-size/">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="논문 통계 도구">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/style.css">
+<link rel="stylesheet" href="../../assets/site.css?v=dd25398d">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"표본 크기·검정력 계산기","description":"t검정, 상관분석, 일원분산분석, 다중회귀에서 효과크기, 유의수준, 검정력을 넣으면 필요한 표본 수를 계산합니다. G*Power와 같은 비중심 분포 방식이며 근사가 들어가는 곳은 밝혀 둡니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/sample-size/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
 </head>
 <body>
-<header class="site"><div class="wrap">
-<a class="brand" href="../../">논문 통계 도구</a>
-<nav aria-label="주 메뉴"><a href="../../#tools" aria-current="page">도구</a><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
-</div></header>
-<main><div class="wrap">
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="site-header">
+<div class="wrap bar">
+<a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="7" fill="#2445a6"/><path d="M8 23h16M8 9h16" stroke="#fff" stroke-width="2"/><path d="M8 15.5h16" stroke="#fff" stroke-width="1" opacity=".75"/></svg>논문 통계 도구</a>
+<nav class="top-links" aria-label="사이트"><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
+<button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <line x1="4" x2="20" y1="12" y2="12" /> <line x1="4" x2="20" y1="6" y2="6" /> <line x1="4" x2="20" y1="18" y2="18" /> </svg><span class="lbl">메뉴</span></button>
+</div>
+<div class="wrap"><nav class="tool-tabs" aria-label="도구"><a href="../../tools/cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a><a href="../../tools/correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a><a href="../../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a><a href="../../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a><a href="../../tools/method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a><a href="../../tools/sample-size/" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a><a href="../../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a><a href="../../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></nav></div>
+<div class="wrap mobile-menu" id="mobile-menu" data-open="false">
+<h2>도구</h2><ul><li><a href="../../tools/cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a></li><li><a href="../../tools/correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a></li><li><a href="../../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a></li><li><a href="../../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a></li><li><a href="../../tools/method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a></li><li><a href="../../tools/sample-size/" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a></li><li><a href="../../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a></li><li><a href="../../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></li></ul>
+<h2>그 밖에</h2><ul><li><a href="../../"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /> <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> </svg>처음 화면</a></li><li><a href="../../guides/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg>안내 글</a></li><li><a href="../../about/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /> <path d="M12 17h.01" /> </svg>소개</a></li></ul>
+</div>
+</header>
+<main id="main" tabindex="-1"><div class="wrap">
 <p class="crumb"><a href="../../">처음</a> / 도구</p>
+<div class="tool-head">
 <h1>표본 크기·검정력 계산기</h1>
-<p class="lead">연구계획서나 연구방법의 "표본 크기 산정" 문단을 쓸 때 씁니다. 사전 검정력 분석으로 필요한 최소 표본 수를 구합니다.</p>
-
-<div class="panel">
+<p class="lead">연구계획서나 연구방법의 "표본 크기 산정" 문단을 쓸 때 씁니다. 사전 검정력 분석으로 필요한 최소 표본 수를 구합니다. 값을 바꾸면 바로 다시 계산합니다.</p>
+</div>
+<div class="tool-grid">
+<section class="pane" id="form" aria-labelledby="in-h">
+  <h2 class="pane-title" id="in-h"><span class="step" aria-hidden="true">1</span>분석과 조건 고르기</h2>
+  <div class="field">
   <label for="design">분석</label>
   <select id="design">
     <option value="ind">독립표본 t검정 (두 집단, 같은 크기)</option>
@@ -35,7 +49,8 @@
     <option value="anova">일원분산분석 (집단 크기 같음)</option>
     <option value="reg">다중회귀 (R² 또는 R² 증가량 검정)</option>
   </select>
-  <div class="grid">
+  </div>
+  <div class="grid field">
     <div><label for="es" id="esLabel">효과크기 <i>d</i></label><input type="number" id="es" step="any" value="0.5"></div>
     <div><label for="alpha">유의수준 α (양측)</label><input type="number" id="alpha" step="any" value="0.05" min="0.0001" max="0.5"></div>
     <div><label for="power">목표 검정력 (1 − β)</label><input type="number" id="power" step="any" value="0.8" min="0.5" max="0.999"></div>
@@ -46,25 +61,35 @@
     <div><label for="drop">예상 탈락률 % (선택)</label><input type="number" id="drop" step="any" value="0" min="0" max="90"></div>
   </div>
   <p class="hint" id="esHint">Cohen(1988)의 관례적 기준: <i>d</i> 0.2 작음, 0.5 중간, 0.8 큼.</p>
-  <button type="button" id="run">계산하기</button>
-</div>
-
-<div class="result panel" id="result" hidden>
-  <p class="error" id="err"></p>
-  <div id="ok">
-    <p>필요한 표본 수: <span class="big" id="nTotal" data-value=""></span> <span id="nGroup" data-value=""></span></p>
-    <p>이 표본 수에서의 검정력: <span id="achieved" data-value=""></span></p>
-    <p id="dropOut"></p>
-    <div class="sentence"><span class="label">연구방법에 쓰는 문장</span><span id="sentence"></span></div>
-    <button type="button" class="secondary" data-copy="sentence">문장 복사</button>
-    <p class="note" id="approxNote"></p>
+  <p class="error" id="err" role="alert"></p>
+  <div class="btn-row">
+    <button type="button" class="btn" id="run"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>계산하기</button>
+    <button type="button" class="btn quiet" id="reset"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /> </svg>기본값으로</button>
   </div>
+</section>
+
+<section class="out" aria-labelledby="out-h">
+  <h2 class="sr-only" id="out-h">결과</h2>
+  <div class="empty" id="empty" hidden><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg><p>조건을 넣으면 여기에 필요한 표본 수가 나옵니다.</p></div>
+  <div class="result" id="result">
+    <div id="ok" class="result">
+      <div class="stats">
+        <div class="stat"><span class="k">필요한 표본 수</span><span class="v"><span id="nTotal" data-value=""></span></span><span class="s" id="nGroup" data-value=""></span></div>
+        <div class="stat"><span class="k">이 표본 수의 검정력</span><span class="v" id="achieved" data-value=""></span></div>
+      </div>
+      <p class="card" id="dropOut"></p>
+      <div class="paper"><div class="paper-head"><span>연구방법에 쓰는 문장</span><button type="button" class="copy" data-copy="sentence"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /> </svg>문장 복사</button></div><p class="sentence" id="sentence"></p></div>
+      <p class="note" id="approxNote"></p>
+    </div>
+  </div>
+  <p class="sr-only" aria-live="polite" id="live"></p>
+</section>
 </div>
 
-<details>
+<details class="method">
   <summary>계산 방법과 오차</summary>
   <p>t검정, 분산분석, 회귀는 G*Power 3.1(Faul et al., 2007, 2009)과 같은 비중심 <i>F</i>분포로 검정력을 계산하고, 목표 검정력에 처음 도달하는 표본 수를 찾습니다. 양측 <i>t</i>검정은 <i>t</i>² = <i>F</i>(1, <i>df</i>)이므로 같은 방식으로 정확히 계산됩니다.</p>
-  <p class="formula">독립 t검정: df = 2n − 2,  λ = d² · n / 2   (n: 집단별 사례 수)
+  <p class="formula-text">독립 t검정: df = 2n − 2,  λ = d² · n / 2   (n: 집단별 사례 수)
 대응·일표본: df = n − 1,  λ = d² · n
 일원분산분석: df1 = k − 1, df2 = N − k,  λ = f² · N
 다중회귀:   df1 = q, df2 = N − p − 1,  λ = f² · N
@@ -74,13 +99,15 @@
   <p>비중심 <i>F</i>분포 계산은 Python scipy.stats.ncf와 대조해 검정력이 소수 넷째 자리까지, 필요 표본 수가 정확히 일치하는지 시험했습니다.</p>
 </details>
 
-<div class="related"><p>함께 읽을 글: <a href="../../guides/sample-size-justification/">연구방법에 표본 크기 근거를 쓰는 법</a></p></div>
-<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+<section class="next" aria-labelledby="next-h"><h2 id="next-h">이어서 쓸 도구</h2><ul><li><a href="../effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg><span><strong>효과크기 계산기</strong><span>선행연구의 t, F로 효과크기 구하기</span></span></a></li><li><a href="../method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg><span><strong>통계 분석 방법 선택 도우미</strong><span>어떤 분석을 할지 먼저 정하기</span></span></a></li></ul></section>
+<section class="next" aria-labelledby="rel-h"><h2 id="rel-h">함께 읽을 글</h2><ul><li><a href="../../guides/sample-size-justification/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>연구방법에 표본 크기 근거를 쓰는 법</strong></span></a></li></ul></section>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">운영: 상담과연구, 대학 상담센터 전임상담원 경력 3년, 교육학(교육상담) 전공</span></p>
 </div></main>
 <footer class="site"><div class="wrap">
-<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
-<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+<p>운영: 상담과연구. 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산은 시험 사례로 검증했지만, 논문에 쓰기 전에 쓰고 있는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
 </div></footer>
+<script src="../../assets/nav.js"></script>
 <script src="../../assets/stats.js"></script>
 <script src="../../assets/js/sample-size.js"></script>
 </body>

@@ -12,62 +12,120 @@
 <meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/tools/correlation-table/">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="논문 통계 도구">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/style.css">
+<link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../assets/site.css?v=dd25398d">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"상관행렬 APA 표 만들기","description":"엑셀에서 변수 점수를 복사해 붙여 넣으면 Pearson 상관계수, 평균, 표준편차와 유의 표시(*)를 담은 APA 7판 형식 상관표를 만들어 한글·워드에 붙여 넣을 수 있게 합니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/correlation-table/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
 </head>
 <body>
-<header class="site"><div class="wrap">
-<a class="brand" href="../../">논문 통계 도구</a>
-<nav aria-label="주 메뉴"><a href="../../#tools" aria-current="page">도구</a><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
-</div></header>
-<main><div class="wrap">
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="site-header">
+<div class="wrap bar">
+<a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="7" fill="#2445a6"/><path d="M8 23h16M8 9h16" stroke="#fff" stroke-width="2"/><path d="M8 15.5h16" stroke="#fff" stroke-width="1" opacity=".75"/></svg>논문 통계 도구</a>
+<nav class="top-links" aria-label="사이트"><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
+<button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <line x1="4" x2="20" y1="12" y2="12" /> <line x1="4" x2="20" y1="6" y2="6" /> <line x1="4" x2="20" y1="18" y2="18" /> </svg><span class="lbl">메뉴</span></button>
+</div>
+<div class="wrap"><nav class="tool-tabs" aria-label="도구"><a href="../../tools/cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a><a href="../../tools/correlation-table/" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a><a href="../../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a><a href="../../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a><a href="../../tools/method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a><a href="../../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a><a href="../../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a><a href="../../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></nav></div>
+<div class="wrap mobile-menu" id="mobile-menu" data-open="false">
+<h2>도구</h2><ul><li><a href="../../tools/cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a></li><li><a href="../../tools/correlation-table/" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a></li><li><a href="../../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a></li><li><a href="../../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a></li><li><a href="../../tools/method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a></li><li><a href="../../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a></li><li><a href="../../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a></li><li><a href="../../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></li></ul>
+<h2>그 밖에</h2><ul><li><a href="../../"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /> <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> </svg>처음 화면</a></li><li><a href="../../guides/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg>안내 글</a></li><li><a href="../../about/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /> <path d="M12 17h.01" /> </svg>소개</a></li></ul>
+</div>
+</header>
+<main id="main" tabindex="-1"><div class="wrap">
 <p class="crumb"><a href="../../">처음</a> / 도구</p>
+<div class="tool-head">
 <h1>상관행렬 APA 표 만들기</h1>
-<p class="lead">변수별 점수(척도 평균 등)를 머리글 줄과 함께 붙여 넣으세요. 한 행이 응답자 한 명, 한 열이 변수 하나입니다. 표는 APA 7판 관례대로 변수에 번호를 붙이고 아래 삼각형만 채웁니다.</p>
-
-<div class="panel">
-  <label for="data">변수 점수</label>
-  <textarea id="data" spellcheck="false" placeholder="자기효능감&#9;학업스트레스&#9;학업만족&#10;3.8&#9;2.4&#9;4.0&#10;..."></textarea>
-  <label class="inline"><input type="checkbox" id="three"> <i>p</i> &lt; .001에 *** 표시</label>
-  <label class="inline"><input type="checkbox" id="pairwise"> 쌍별 제외 (기본은 목록별 제외)</label>
-  <p class="hint">목록별 제외: 빈 칸이 하나라도 있는 응답자를 모든 계산에서 뺍니다. 쌍별 제외: 변수 쌍마다 두 값이 모두 있는 응답자만 씁니다. 그래서 칸마다 사례 수가 달라질 수 있습니다.</p>
-  <br>
-  <button type="button" id="run">표 만들기</button>
-  <button type="button" class="secondary" id="example">예시 자료 넣기</button>
+<p class="lead">변수별 점수를 머리글과 함께 붙여 넣으면 APA 7판 형식의 상관표가 바로 만들어집니다. 한글이나 워드에 붙여 넣으면 가로선까지 그대로 옮겨집니다.</p>
 </div>
-
-<div class="result panel" id="result" hidden>
-  <p class="error" id="err"></p>
-  <div id="ok">
-    <p class="note" id="caption"></p>
-    <div class="table-scroll"><table class="apa" id="ctable"></table></div>
-    <p class="note" id="tnote"></p>
-    <button type="button" data-copy="ctable" data-copy-with="caption,tnote">표 복사 (한글·워드용, 제목과 주석 포함)</button>
-    <p class="note">휴대폰에서는 표를 옆으로 밀어 나머지 열을 볼 수 있습니다.</p>
-    <div class="warn" id="warns"></div>
-    <h3>본문에 쓰는 문장</h3>
-    <div class="sentence"><span class="label">유의한 상관만 골라 쓴 예</span><span id="sentence"></span></div>
-    <button type="button" class="secondary" data-copy="sentence">문장 복사</button>
-    <details>
-      <summary>모든 변수 쌍의 <i>r</i>, <i>p</i>, <i>n</i></summary>
-      <div class="table-scroll"><table class="plain" id="pairs"><thead><tr><th>변수 쌍</th><th><i>r</i></th><th><i>p</i></th><th><i>n</i></th></tr></thead><tbody></tbody></table></div>
-    </details>
+<div class="tool-grid">
+<section class="pane" id="form" aria-labelledby="in-h">
+  <h2 class="pane-title" id="in-h"><span class="step" aria-hidden="true">1</span>변수 점수 붙여 넣기</h2>
+  <div class="field">
+    <label for="data">한 행 = 응답자 한 명, 한 열 = 변수 하나</label>
+    <div class="paste-zone">
+      <textarea id="data" spellcheck="false" aria-describedby="data-hint" placeholder="자기효능감&#9;학업스트레스&#9;학업만족&#10;3.8&#9;2.4&#9;4.0&#10;3.2&#9;3.1&#9;3.3"></textarea>
+      <span class="paste-tag" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>Ctrl+V</span>
+    </div>
+    <p class="hint" id="data-hint">첫 줄의 변수 이름이 표의 변수 이름이 됩니다.</p>
+    <p class="error" id="err" role="alert"></p>
   </div>
+  <fieldset class="field" style="border:0;padding:0;margin:0 0 12px">
+    <legend class="label">표시 방법</legend>
+    <label class="check"><input type="checkbox" id="three"> <i>p</i> &lt; .001에 *** 표시</label>
+    <label class="check"><input type="checkbox" id="pairwise" aria-describedby="pw-hint"> 쌍별 제외</label>
+    <p class="hint" id="pw-hint">기본은 목록별 제외(빈 칸이 하나라도 있는 응답자를 모든 계산에서 뺌)입니다. 쌍별 제외는 변수 쌍마다 두 값이 모두 있는 응답자만 써서, 칸마다 사례 수가 다를 수 있습니다.</p>
+  </fieldset>
+  <div class="btn-row">
+    <button type="button" class="btn" id="run"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>표 만들기</button>
+    <button type="button" class="btn ghost" id="example"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /> <path d="M20 3v4" /> <path d="M22 5h-4" /> <path d="M4 17v2" /> <path d="M5 18H3" /> </svg>예시 자료로 채우기</button>
+    <button type="button" class="btn quiet" id="reset"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /> </svg>초기화</button>
+  </div>
+</section>
+
+<section class="out" aria-labelledby="out-h">
+  <h2 class="sr-only" id="out-h">결과</h2>
+  <div class="empty" id="empty"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg><p>점수를 붙여 넣으면 여기에 상관표와 본문 문장이 나옵니다.</p></div>
+  <div class="result" id="result" hidden>
+    <div id="ok" class="result">
+      <div class="paper">
+        <div class="paper-head"><span>상관표</span><button type="button" class="copy" data-copy="ctable" data-copy-with="caption,tnote"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /> </svg>표 복사 (제목·주석 포함)</button></div>
+        <p class="caption" id="caption"></p>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="표, 좁은 화면에서는 옆으로 밀어 보기"><table class="apa" id="ctable"></table></div>
+        <p class="tnote" id="tnote"></p>
+      </div>
+      <div class="warn" id="warns"></div>
+      <div class="paper">
+        <div class="paper-head"><span>본문에 쓰는 문장 (유의한 상관만)</span><button type="button" class="copy" data-copy="sentence"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /> </svg>문장 복사</button></div>
+        <p class="sentence" id="sentence"></p>
+      </div>
+      <details class="card">
+        <summary>모든 변수 쌍의 <i>r</i>, <i>p</i>, <i>n</i> 보기</summary>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="표, 좁은 화면에서는 옆으로 밀어 보기"><table class="plain" id="pairs"><thead><tr><th>변수 쌍</th><th><i>r</i></th><th><i>p</i></th><th><i>n</i></th></tr></thead><tbody></tbody></table></div>
+      </details>
+    </div>
+  </div>
+  <p class="sr-only" aria-live="polite" id="live"></p>
+</section>
 </div>
 
-<details>
+<details class="method">
   <summary>계산 방법</summary>
-  <p>Pearson 상관계수 <i>r</i>을 구하고, <i>t</i> = <i>r</i>√(<i>n</i> − 2) / √(1 − <i>r</i>²), 자유도 <i>n</i> − 2인 <i>t</i>분포로 양측 <i>p</i>를 계산합니다. 평균과 표준편차(<i>n</i> − 1로 나눈 표본표준편차)는 상관 계산에 쓴 응답자로 구합니다. 목록별 제외는 한 변수라도 빈 칸인 응답자를 모든 계산에서 빼고, 쌍별 제외는 각 변수 쌍마다 두 값이 모두 있는 응답자를 씁니다. 결과는 Python scipy.stats.pearsonr과 대조해 시험했습니다.</p>
+  <p>Pearson 상관계수 <i>r</i>을 구하고 자유도 <i>n</i> − 2인 <i>t</i>분포로 양측 <i>p</i>를 계산합니다. 평균과 표준편차(<i>n</i> − 1로 나눈 표본표준편차)는 상관 계산에 쓴 응답자로 구합니다. 결과는 Python scipy.stats.pearsonr과 대조해 시험했습니다.</p>
+  <div class="formula"><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4726em;vertical-align:-0.93em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5426em;"><span style="top:-2.1966em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9134em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-2.8734em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1266em;"><span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8656em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">2</span></span></span><span style="top:-2.8256em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1744em;"><span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.93em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">df</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span></span></div>
 </details>
 
-<div class="related"><p>함께 읽을 글: <a href="../../guides/correlation-table-apa/">상관분석 결과를 APA 표로 만드는 법</a></p></div>
-<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+<section class="next" aria-labelledby="next-h"><h2 id="next-h">이어서 쓸 도구</h2><ul><li><a href="../apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg><span><strong>APA 결과 문장 생성기</strong><span>특정 상관 하나를 문장으로 다듬을 때</span></span></a></li><li><a href="../method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg><span><strong>통계 분석 방법 선택 도우미</strong><span>상관 다음 단계(회귀, 매개, 구조방정식) 고르기</span></span></a></li><li><a href="../cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg><span><strong>크론바흐 알파 계산기</strong><span>각 척도의 신뢰도 확인</span></span></a></li></ul></section>
+<section class="next" aria-labelledby="rel-h"><h2 id="rel-h">함께 읽을 글</h2><ul><li><a href="../../guides/correlation-table-apa/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>상관분석 결과를 APA 표로 만드는 법</strong></span></a></li></ul></section>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">운영: 상담과연구, 대학 상담센터 전임상담원 경력 3년, 교육학(교육상담) 전공</span></p>
 </div></main>
 <footer class="site"><div class="wrap">
-<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
-<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+<p>운영: 상담과연구. 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산은 시험 사례로 검증했지만, 논문에 쓰기 전에 쓰고 있는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
 </div></footer>
+<script src="../../assets/nav.js"></script>
 <script src="../../assets/stats.js"></script>
 <script src="../../assets/js/correlation-table.js"></script>
 </body>

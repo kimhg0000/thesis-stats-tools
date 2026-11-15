@@ -3,94 +3,129 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>통계 분석 방법 선택 도우미 (t검정, 분산분석, 상관, 회귀, χ²) | 논문 통계 도구</title>
-<meta name="description" content="연구 질문과 변수 유형, 집단 수, 반복 측정 여부를 고르면 쓸 수 있는 통계 분석 방법과 그 이유, 가정이 깨졌을 때의 대안을 알려 줍니다. 논문 연구방법을 정할 때 출발점으로 쓰세요.">
+<title>통계 분석 방법 선택 도우미 (기초 검정부터 구조방정식, 잠재프로파일, 종단 모형까지) | 논문 통계 도구</title>
+<meta name="description" content="연구 질문, 변수 유형, 관측변수·잠재변수, 횡단·종단, 위계 구조를 고르면 t검정·회귀부터 구조방정식, 측정동일성, 잠재프로파일분석, 잠재성장모형, 교차지연 패널모형, 다층모형까지 맞는 분석과 보고 지표를 출처와 함께 안내합니다.">
 <link rel="canonical" href="https://kimhg0000.github.io/thesis-stats-tools/tools/method-chooser/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="통계 분석 방법 선택 도우미 (t검정, 분산분석, 상관, 회귀, χ²)">
-<meta property="og:description" content="연구 질문과 변수 유형, 집단 수, 반복 측정 여부를 고르면 쓸 수 있는 통계 분석 방법과 그 이유, 가정이 깨졌을 때의 대안을 알려 줍니다. 논문 연구방법을 정할 때 출발점으로 쓰세요.">
+<meta property="og:title" content="통계 분석 방법 선택 도우미 (기초 검정부터 구조방정식, 잠재프로파일, 종단 모형까지)">
+<meta property="og:description" content="연구 질문, 변수 유형, 관측변수·잠재변수, 횡단·종단, 위계 구조를 고르면 t검정·회귀부터 구조방정식, 측정동일성, 잠재프로파일분석, 잠재성장모형, 교차지연 패널모형, 다층모형까지 맞는 분석과 보고 지표를 출처와 함께 안내합니다.">
 <meta property="og:url" content="https://kimhg0000.github.io/thesis-stats-tools/tools/method-chooser/">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="논문 통계 도구">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/style.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"통계 분석 방법 선택 도우미","description":"연구 질문과 변수 유형, 집단 수, 반복 측정 여부를 고르면 쓸 수 있는 통계 분석 방법과 그 이유, 가정이 깨졌을 때의 대안을 알려 줍니다. 논문 연구방법을 정할 때 출발점으로 쓰세요.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/method-chooser/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
+<link rel="stylesheet" href="../../assets/site.css?v=dd25398d">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"통계 분석 방법 선택 도우미","description":"연구 질문, 변수 유형, 관측변수·잠재변수, 횡단·종단, 위계 구조를 고르면 t검정·회귀부터 구조방정식, 측정동일성, 잠재프로파일분석, 잠재성장모형, 교차지연 패널모형, 다층모형까지 맞는 분석과 보고 지표를 출처와 함께 안내합니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/method-chooser/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
 </head>
 <body>
-<header class="site"><div class="wrap">
-<a class="brand" href="../../">논문 통계 도구</a>
-<nav aria-label="주 메뉴"><a href="../../#tools" aria-current="page">도구</a><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
-</div></header>
-<main><div class="wrap">
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="site-header">
+<div class="wrap bar">
+<a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="7" fill="#2445a6"/><path d="M8 23h16M8 9h16" stroke="#fff" stroke-width="2"/><path d="M8 15.5h16" stroke="#fff" stroke-width="1" opacity=".75"/></svg>논문 통계 도구</a>
+<nav class="top-links" aria-label="사이트"><a href="../../guides/">안내 글</a><a href="../../about/">소개</a></nav>
+<button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <line x1="4" x2="20" y1="12" y2="12" /> <line x1="4" x2="20" y1="6" y2="6" /> <line x1="4" x2="20" y1="18" y2="18" /> </svg><span class="lbl">메뉴</span></button>
+</div>
+<div class="wrap"><nav class="tool-tabs" aria-label="도구"><a href="../../tools/cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a><a href="../../tools/correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a><a href="../../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a><a href="../../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a><a href="../../tools/method-chooser/" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a><a href="../../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a><a href="../../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a><a href="../../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></nav></div>
+<div class="wrap mobile-menu" id="mobile-menu" data-open="false">
+<h2>도구</h2><ul><li><a href="../../tools/cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg>신뢰도 α</a></li><li><a href="../../tools/correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg>상관표</a></li><li><a href="../../tools/apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg>APA 문장</a></li><li><a href="../../tools/effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg>효과크기</a></li><li><a href="../../tools/method-chooser/" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg>방법 선택</a></li><li><a href="../../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기</a></li><li><a href="../../tools/reverse-scoring/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /> </svg>역채점</a></li><li><a href="../../tools/mediation-sobel/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="4.5" r="2.5" /> <path d="m10.2 6.3-3.9 3.9" /> <circle cx="4.5" cy="12" r="2.5" /> <path d="M7 12h10" /> <circle cx="19.5" cy="12" r="2.5" /> <path d="m13.8 17.7 3.9-3.9" /> <circle cx="12" cy="19.5" r="2.5" /> </svg>매개효과</a></li></ul>
+<h2>그 밖에</h2><ul><li><a href="../../"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /> <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> </svg>처음 화면</a></li><li><a href="../../guides/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg>안내 글</a></li><li><a href="../../about/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /> <path d="M12 17h.01" /> </svg>소개</a></li></ul>
+</div>
+</header>
+<main id="main" tabindex="-1"><div class="wrap">
 <p class="crumb"><a href="../../">처음</a> / 도구</p>
+<div class="tool-head">
 <h1>통계 분석 방법 선택 도우미</h1>
-<p class="lead">질문에 차례로 답하면 기본 분석 방법과 대안을 보여 줍니다. 변수가 하나의 종속변수와 하나의 독립변수(또는 집단 변수)로 정리되는 경우를 다룹니다.</p>
+<p class="lead">질문에 서너 번 답하면 맞는 분석 방법과 자료 조건, 보고할 지표, 흔한 실수를 보여 줍니다. 기초 검정부터 구조방정식, 잠재프로파일분석, 종단 모형, 다층모형까지 다룹니다.</p>
+</div>
+<script>window.GUIDE_TITLES = {"cronbach-alpha-60s":"크론바흐 알파가 .60대일 때 논문에 쓰는 법","reverse-items-scale-score":"역문항 처리와 척도 점수, 합계와 평균 중 무엇을 쓰나","t-test-report":"t검정 결과를 표와 문장으로 쓰는 법","correlation-table-apa":"상관분석 결과를 APA 표로 만드는 법","regression-table-report":"회귀분석 결과표에 B, SE, β를 어떻게 쓰나","effect-size-interpretation":"효과크기 d, η², r 어떻게 읽고 보고하나","sample-size-justification":"연구방법에 표본 크기 근거를 쓰는 법","small-sample-analysis":"표본이 작을 때 쓸 수 있는 분석","normality-skew-kurtosis":"정규성 검정, 왜도·첨도 기준은 무엇을 적나","mediation-bootstrap-vs-sobel":"매개효과 검증, Sobel 검정보다 부트스트랩을 권하는 이유","sem-fit-indices":"구조방정식 적합도 지수를 논문에 쓰는 법","measurement-invariance":"집단 비교 전에 측정동일성을 확인하는 이유와 방법","lpa-number-of-classes":"잠재프로파일분석에서 프로파일 수를 정하는 법","cluster-vs-lpa":"군집분석과 잠재프로파일분석 중 무엇을 쓸까"};</script>
+<div class="tool-grid">
+<section class="pane" id="form" aria-labelledby="in-h">
+  <h2 class="pane-title" id="in-h"><span class="step" aria-hidden="true">1</span>연구에 맞는 답 고르기</h2>
+  <div id="qs"></div>
+  <noscript><p>이 도우미는 자바스크립트가 필요합니다.</p></noscript>
+  <div class="btn-row"><a class="btn jump" id="jump" href="#result" hidden>추천 분석 보기</a><button type="button" class="btn quiet" id="restart"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /> </svg>처음부터</button></div>
+</section>
 
-<div class="panel" id="form">
-  <fieldset style="border:0;padding:0;margin:0">
-    <legend><label style="margin-top:0">무엇을 알고 싶나요?</label></legend>
-    <label class="inline"><input type="radio" name="goal" value="diff"> 집단(또는 시점) 사이에 차이가 있는지</label><br>
-    <label class="inline"><input type="radio" name="goal" value="rel"> 두 변수가 함께 변하는지 (관계)</label><br>
-    <label class="inline"><input type="radio" name="goal" value="pred"> 여러 변수로 결과 변수를 설명·예측하는지</label>
-  </fieldset>
-
-  <fieldset style="border:0;padding:0;margin:0" data-q="dv">
-    <legend><label id="dvLabel">결과(종속)변수는 어떤 값인가요?</label></legend>
-    <label class="inline"><input type="radio" name="dv" value="cont"> 연속형 (점수, 척도 평균, 시간 등)</label><br>
-    <label class="inline"><input type="radio" name="dv" value="ord"> 순서형 (순위, 3~4단계 등급)</label><br>
-    <label class="inline"><input type="radio" name="dv" value="bin"> 두 범주 (예/아니오, 합격/불합격)</label><br>
-    <label class="inline"><input type="radio" name="dv" value="cat"> 세 범주 이상 (전공 계열, 선택한 진로 등)</label>
-  </fieldset>
-
-  <fieldset style="border:0;padding:0;margin:0" data-q="groups" hidden>
-    <legend><label>비교하는 집단(또는 시점)은 몇 개인가요?</label></legend>
-    <label class="inline"><input type="radio" name="groups" value="2"> 2개</label>
-    <label class="inline"><input type="radio" name="groups" value="3"> 3개 이상</label>
-  </fieldset>
-
-  <fieldset style="border:0;padding:0;margin:0" data-q="design" hidden>
-    <legend><label>같은 사람을 여러 번 측정했나요?</label></legend>
-    <label class="inline"><input type="radio" name="design" value="ind"> 아니요, 서로 다른 사람들 (독립)</label><br>
-    <label class="inline"><input type="radio" name="design" value="rep"> 예, 같은 사람의 사전·사후 등 (반복·대응)</label>
-  </fieldset>
-
-  <fieldset style="border:0;padding:0;margin:0" data-q="xtype" hidden>
-    <legend><label>다른 쪽 변수는 어떤 값인가요?</label></legend>
-    <label class="inline"><input type="radio" name="xtype" value="cont"> 연속형</label>
-    <label class="inline"><input type="radio" name="xtype" value="ord"> 순서형</label>
-    <label class="inline"><input type="radio" name="xtype" value="cat"> 범주형</label>
-  </fieldset>
-
-  <fieldset style="border:0;padding:0;margin:0" data-q="normal" hidden>
-    <legend><label>정규분포 가정이 의심스럽나요?</label>
-    <p class="hint">t검정·분산분석의 정규성은 집단별 분포(대응표본은 차이 점수)를 봅니다. 집단별 사례가 아주 적으면 순위 검정도 유의수준에 닿기 어렵습니다. 예를 들어 3명 대 3명의 Mann-Whitney 검정은 가장 극단적인 결과도 양측 <i>p</i> = .10입니다.</p></legend>
-    <label class="inline"><input type="radio" name="normal" value="no"> 아니요 (분포가 크게 치우치지 않음)</label><br>
-    <label class="inline"><input type="radio" name="normal" value="yes"> 예 (심하게 치우침, 이상값이 많음)</label>
-  </fieldset>
+<section class="out" aria-labelledby="out-h">
+  <h2 class="sr-only" id="out-h">추천 분석</h2>
+  <div class="empty" id="mempty"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg><p>질문에 답하면 여기에 추천 분석이 나옵니다. 고른 답은 주소에 남아서, 다른 도구에 갔다가 뒤로 돌아와도 그대로입니다.</p></div>
+  <div class="result" id="result" hidden>
+    <div class="card mres">
+      <span class="kind" id="kind"></span>
+      <h2 id="method" tabindex="-1"></h2>
+      <p class="warn" id="mnote" hidden></p>
+      <dl>
+        <div><dt>이 방법이 답하는 질문</dt><dd id="mq"></dd></div>
+        <div><dt>필요한 자료 조건</dt><dd id="mdata"></dd></div>
+        <div><dt>대표적인 프로그램</dt><dd id="mprog"></dd></div>
+        <div><dt>보고할 때 꼭 넣는 것</dt><dd id="mreport"></dd></div>
+        <div><dt>흔한 실수</dt><dd id="mmist"></dd></div>
+      </dl>
+      <div id="mtoolsWrap"><h3>이 사이트에서 이어서</h3><div class="btn-row" id="mtools"></div></div>
+      <div id="mguidesWrap"><h3>관련 안내 글</h3><ul id="mguides"></ul></div>
+    </div>
+    <div class="card">
+      <h3>선택을 바꾸면</h3>
+      <p class="note">지금 고른 답 가운데 하나만 바꿨을 때 달라지는 분석입니다.</p>
+      <ul class="changes" id="changes"></ul>
+    </div>
+  </div>
+  <p class="help-line" id="help" data-default="직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 &lt;a href=&quot;https://kmong.com/gig/430238&quot; rel=&quot;noopener&quot; target=&quot;_blank&quot;&gt;크몽에서 도와드립니다&lt;/a&gt;.&lt;span class=&quot;who&quot;&gt;운영: 상담과연구, 대학 상담센터 전임상담원 경력 3년, 교육학(교육상담) 전공&lt;/span&gt;" data-who="운영: 상담과연구, 대학 상담센터 전임상담원 경력 3년, 교육학(교육상담) 전공"></p>
+  <p class="sr-only" aria-live="polite" id="live"></p>
+</section>
 </div>
 
-<div class="result panel" id="result" hidden>
-  <p class="note">추천 분석</p>
-  <p class="big" id="method"></p>
-  <p id="why"></p>
-  <p id="alt"></p>
-  <p id="report"></p>
-  <p class="note" id="links"></p>
-</div>
-
-<details>
-  <summary>이 도우미가 다루지 않는 경우</summary>
-  <p>독립변수(집단 변수)가 둘 이상인 요인설계(이원분산분석), 공변량을 통제하는 공분산분석, 위계적 자료(학생이 학급에 속한 자료)의 다층모형, 잠재변수를 쓰는 구조방정식모형, 매개·조절 모형은 이 도우미의 범위 밖입니다. 이런 설계는 연구 질문과 자료 구조를 함께 놓고 판단해야 합니다.</p>
+<details class="method">
+  <summary>이 도우미가 다루지 않는 것과 참고문헌</summary>
+  <p>요인이 둘 이상인 실험설계(이원분산분석), 공분산분석, 생존분석, 메타분석은 다루지 않습니다. 도우미의 추천은 출발점이며, 연구 질문과 자료 구조를 함께 놓고 지도교수와 정하세요. 표본 크기 지침은 대략의 출발점이고, 실제로는 모형과 효과크기에 맞춘 검정력 분석이나 모의실험이 더 정확합니다.</p>
+  <ul class="refs">
+    <li>Aiken, L. S., &amp; West, S. G. (1991). <i>Multiple regression: Testing and interpreting interactions</i>. Sage.</li>
+    <li>Anderson, J. C., &amp; Gerbing, D. W. (1988). Structural equation modeling in practice: A review and recommended two-step approach. <i>Psychological Bulletin, 103</i>(3), 411–423.</li>
+    <li>Asparouhov, T., &amp; Muthén, B. (2014). Auxiliary variables in mixture modeling: Three-step approaches using Mplus. <i>Structural Equation Modeling, 21</i>(3), 329–341.</li>
+    <li>Baron, R. M., &amp; Kenny, D. A. (1986). The moderator–mediator variable distinction in social psychological research. <i>Journal of Personality and Social Psychology, 51</i>(6), 1173–1182.</li>
+    <li>Chen, F. F. (2007). Sensitivity of goodness of fit indexes to lack of measurement invariance. <i>Structural Equation Modeling, 14</i>(3), 464–504.</li>
+    <li>Cheung, G. W., &amp; Rensvold, R. B. (2002). Evaluating goodness-of-fit indexes for testing measurement invariance. <i>Structural Equation Modeling, 9</i>(2), 233–255.</li>
+    <li>Cochran, W. G. (1954). Some methods for strengthening the common χ² tests. <i>Biometrics, 10</i>(4), 417–451.</li>
+    <li>Cohen, J. (1992). A power primer. <i>Psychological Bulletin, 112</i>(1), 155–159.</li>
+    <li>Collins, L. M., &amp; Lanza, S. T. (2010). <i>Latent class and latent transition analysis</i>. Wiley.</li>
+    <li>Comrey, A. L., &amp; Lee, H. B. (1992). <i>A first course in factor analysis</i> (2nd ed.). Erlbaum.</li>
+    <li>Curran, P. J., Obeidat, K., &amp; Losardo, D. (2010). Twelve frequently asked questions about growth curve modeling. <i>Journal of Cognition and Development, 11</i>(2), 121–136.</li>
+    <li>Enders, C. K., &amp; Tofighi, D. (2007). Centering predictor variables in cross-sectional multilevel models. <i>Psychological Methods, 12</i>(2), 121–138.</li>
+    <li>Fabrigar, L. R., Wegener, D. T., MacCallum, R. C., &amp; Strahan, E. J. (1999). Evaluating the use of exploratory factor analysis in psychological research. <i>Psychological Methods, 4</i>(3), 272–299.</li>
+    <li>Fritz, M. S., &amp; MacKinnon, D. P. (2007). Required sample size to detect the mediated effect. <i>Psychological Science, 18</i>(3), 233–239.</li>
+    <li>Green, S. B. (1991). How many subjects does it take to do a regression analysis? <i>Multivariate Behavioral Research, 26</i>(3), 499–510.</li>
+    <li>Hamaker, E. L., Kuiper, R. M., &amp; Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model. <i>Psychological Methods, 20</i>(1), 102–116.</li>
+    <li>Hayes, A. F. (2015). An index and test of linear moderated mediation. <i>Multivariate Behavioral Research, 50</i>(1), 1–22.</li>
+    <li>Hu, L., &amp; Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis. <i>Structural Equation Modeling, 6</i>(1), 1–55.</li>
+    <li>Jung, T., &amp; Wickrama, K. A. S. (2008). An introduction to latent class growth analysis and growth mixture modeling. <i>Social and Personality Psychology Compass, 2</i>(1), 302–317.</li>
+    <li>Klein, A., &amp; Moosbrugger, H. (2000). Maximum likelihood estimation of latent interaction effects with the LMS method. <i>Psychometrika, 65</i>(4), 457–474.</li>
+    <li>Maas, C. J. M., &amp; Hox, J. J. (2005). Sufficient sample sizes for multilevel modeling. <i>Methodology, 1</i>(3), 86–92.</li>
+    <li>MacCallum, R. C., Widaman, K. F., Zhang, S., &amp; Hong, S. (1999). Sample size in factor analysis. <i>Psychological Methods, 4</i>(1), 84–99.</li>
+    <li>Marsh, H. W., Hau, K.-T., &amp; Wen, Z. (2004). In search of golden rules. <i>Structural Equation Modeling, 11</i>(3), 320–341.</li>
+    <li>McClelland, G. H., &amp; Judd, C. M. (1993). Statistical difficulties of detecting interactions and moderator effects. <i>Psychological Bulletin, 114</i>(2), 376–390.</li>
+    <li>Nylund, K. L., Asparouhov, T., &amp; Muthén, B. O. (2007). Deciding on the number of classes in latent class analysis and growth mixture modeling: A Monte Carlo simulation study. <i>Structural Equation Modeling, 14</i>(4), 535–569.</li>
+    <li>Nylund-Gibson, K., &amp; Choi, A. Y. (2018). Ten frequently asked questions about latent class analysis. <i>Translational Issues in Psychological Science, 4</i>(4), 440–461.</li>
+    <li>Peduzzi, P., Concato, J., Kemper, E., Holford, T. R., &amp; Feinstein, A. R. (1996). A simulation study of the number of events per variable in logistic regression analysis. <i>Journal of Clinical Epidemiology, 49</i>(12), 1373–1379.</li>
+    <li>Preacher, K. J., &amp; Hayes, A. F. (2008). Asymptotic and resampling strategies for assessing and comparing indirect effects in multiple mediator models. <i>Behavior Research Methods, 40</i>(3), 879–891.</li>
+    <li>Putnick, D. L., &amp; Bornstein, M. H. (2016). Measurement invariance conventions and reporting. <i>Developmental Review, 41</i>, 71–90.</li>
+    <li>Ram, N., &amp; Grimm, K. J. (2009). Growth mixture modeling: A method for identifying differences in longitudinal change among unobserved groups. <i>International Journal of Behavioral Development, 33</i>(6), 565–576.</li>
+    <li>Vandenberg, R. J., &amp; Lance, C. E. (2000). A review and synthesis of the measurement invariance literature. <i>Organizational Research Methods, 3</i>(1), 4–70.</li>
+    <li>Vittinghoff, E., &amp; McCulloch, C. E. (2007). Relaxing the rule of ten events per variable in logistic and Cox regression. <i>American Journal of Epidemiology, 165</i>(6), 710–718.</li>
+    <li>Wolf, E. J., Harrington, K. M., Clark, S. L., &amp; Miller, M. W. (2013). Sample size requirements for structural equation models. <i>Educational and Psychological Measurement, 73</i>(6), 913–934.</li>
+  </ul>
 </details>
 
-<div class="related"><p>함께 읽을 글: <a href="../../guides/small-sample-analysis/">표본이 작을 때 쓸 수 있는 분석</a>, <a href="../../guides/normality-skew-kurtosis/">정규성 검정, 왜도·첨도 기준은 무엇을 적나</a></p></div>
-<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
+<section class="next" aria-labelledby="next-h"><h2 id="next-h">이어서 쓸 도구</h2><ul><li><a href="../sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg><span><strong>표본 크기·검정력 계산기</strong><span>정한 분석에 필요한 표본 수 계산</span></span></a></li><li><a href="../apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg><span><strong>APA 결과 문장 생성기</strong><span>분석 결과를 논문 문장으로</span></span></a></li></ul></section>
+<section class="next" aria-labelledby="rel-h"><h2 id="rel-h">함께 읽을 글</h2><ul><li><a href="../../guides/small-sample-analysis/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>표본이 작을 때 쓸 수 있는 분석</strong></span></a></li><li><a href="../../guides/normality-skew-kurtosis/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>정규성 검정, 왜도·첨도 기준은 무엇을 적나</strong></span></a></li><li><a href="../../guides/sem-fit-indices/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>구조방정식 적합도 지수를 논문에 쓰는 법</strong></span></a></li><li><a href="../../guides/measurement-invariance/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>집단 비교 전에 측정동일성을 확인하는 이유와 방법</strong></span></a></li><li><a href="../../guides/lpa-number-of-classes/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>잠재프로파일분석에서 프로파일 수를 정하는 법</strong></span></a></li><li><a href="../../guides/cluster-vs-lpa/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>군집분석과 잠재프로파일분석 중 무엇을 쓸까</strong></span></a></li></ul></section>
+
 </div></main>
 <footer class="site"><div class="wrap">
-<p>운영: 상담과연구. 이 사이트는 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
-<p>계산 결과는 시험 사례로 검증했지만, 논문에 쓰기 전에 사용하는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
+<p>운영: 상담과연구. 개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
+<p>계산은 시험 사례로 검증했지만, 논문에 쓰기 전에 쓰고 있는 통계 프로그램의 출력과 한 번 더 대조하세요. <a href="../../about/">소개와 검증 방법</a></p>
 </div></footer>
+<script src="../../assets/nav.js"></script>
 <script src="../../assets/stats.js"></script>
+<script src="../../assets/js/method-data.js"></script>
 <script src="../../assets/js/method-chooser.js"></script>
 </body>
 </html>
