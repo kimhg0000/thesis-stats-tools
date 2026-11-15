@@ -54,9 +54,9 @@
   function visible(s) {
     var v = ['goal'];
     var g = s.goal;
-    if (g === 'diff') { v.push('dv'); if (s.dv) v.push('gd'); if ((s.dv === 'cont' || s.dv === 'skew') && (s.gd === '2ind' || s.gd === '3ind')) v.push('nest'); }
+    if (g === 'diff') { v.push('dv'); if (s.dv) v.push('gd'); if (s.dv && (s.gd === '2ind' || s.gd === '3ind')) v.push('nest'); }
     if (g === 'rel') { v.push('dv'); if (s.dv) v.push('xtype'); }
-    if (g === 'pred') { v.push('dv'); if (s.dv === 'cont' || s.dv === 'skew') v.push('lat', 'nest'); if (s.dv === 'bin') v.push('nest'); }
+    if (g === 'pred') { v.push('dv'); if (s.dv === 'cont' || s.dv === 'skew') v.push('lat'); if (s.dv) v.push('nest'); }
     if (g === 'mech') v.push('mtype', 'lat');
     if (g === 'measure') v.push('mpurpose');
     if (g === 'people') v.push('ind', 'ptime');
@@ -71,6 +71,7 @@
     var g = s.goal, dv = s.dv, r = function (key, note) { return { key: key, note: note || '' }; };
     if (g === 'diff') {
       var ind = s.gd === '2ind' || s.gd === '3ind', two = s.gd === '2ind' || s.gd === '2rep';
+      if (s.nest === 'nested' && (dv === 'bin' || dv === 'ord' || dv === 'cat')) return r('mlm', '결과가 ' + (dv === 'bin' ? '두 범주' : dv === 'ord' ? '순서형' : '세 범주 이상의 명목형') + '이고 응답자가 학급처럼 묶여 있으면, 일반 카이제곱이나 순위 검정은 같은 학급 학생끼리 닮은 정도를 무시해 표준오차를 작게 잡습니다. 집단 변수를 넣은 다층 로지스틱 모형(일반화 선형 혼합모형' + (dv === 'ord' ? ', 누적 로짓' : dv === 'cat' ? ', 다항 로짓' : '') + ')을 씁니다.');
       if (s.nest === 'nested') return r('mlm', '응답자가 학급처럼 묶여 있으면, 처치나 집단이 학급 단위든 개인 단위든 같은 학급 학생끼리 닮아 있어 일반 t검정이나 분산분석은 표준오차를 작게 잡습니다. 집단 변수를 다층모형의 예측변수로 넣어 검정합니다.');
       if (dv === 'cont') return r(s.gd === '2ind' ? 'indt' : s.gd === '2rep' ? 'pairedt' : s.gd === '3ind' ? 'anova' : 'rmanova', ind ? '사전 점수가 있는 실험·통제 설계라면 사후 점수만 비교하지 말고, 사전 점수를 공변량으로 넣은 공분산분석(ANCOVA)이나 집단 × 시점 혼합설계 분산분석을 씁니다. 이 도우미는 그 설계를 자세히 다루지 않습니다.' : '');
       if (dv === 'skew' || dv === 'ord') return r(s.gd === '2ind' ? 'mwu' : s.gd === '2rep' ? 'wilcoxon' : s.gd === '3ind' ? 'kw' : 'friedman');
@@ -93,6 +94,7 @@
         return r('regression', dv === 'skew' ? '잔차가 크게 치우치면 변환이나 강건 표준오차를 검토합니다.' : '');
       }
       if (dv === 'bin') return r(s.nest === 'nested' ? 'mlm' : 'logit', s.nest === 'nested' ? '결과가 두 범주이므로 다층 로지스틱 회귀(일반화 선형 혼합모형)를 씁니다.' : '');
+      if (s.nest === 'nested') return r('mlm', '결과가 ' + (dv === 'ord' ? '순서형' : '세 범주 이상의 명목형') + '이고 응답자가 학급·조직에 묶여 있으면 다층 ' + (dv === 'ord' ? '순서형(누적 로짓)' : '다항 로짓') + ' 모형(일반화 선형 혼합모형)을 씁니다. 일반 ' + (dv === 'ord' ? '순서형' : '다항') + ' 로지스틱 회귀는 표준오차를 작게 잡습니다.');
       return r(dv === 'ord' ? 'ologit' : 'mlogit');
     }
     if (g === 'mech') {
