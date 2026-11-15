@@ -59,32 +59,31 @@
     return o;
   }
 
-  // 기준별 판정: ok = true(기준 안), false(벗어남)
+  // 기준별 판정: ok = true(기준 안), false(기준 밖). level: ok(심각한 위반 아님), check(확인 필요), severe(심각한 위반 가능)
+  var LABEL = { ok: '심각한 위반 아님', check: '확인 필요', severe: '심각한 위반 가능' };
   function judge(o) {
     var as = Math.abs(o.skew), ak = Math.abs(o.kurt), g = function (v) { return S.fmt(v, 2); };
-    var west = { ok: as < 2 && ak < 7 };
-    west.text = west.ok ? '충족 (|왜도| ' + g(as) + ' < 2, |첨도| ' + g(ak) + ' < 7)' :
-      '벗어남 (' + [as >= 2 ? '|왜도| ' + g(as) + ' ≥ 2' : '', ak >= 7 ? '|첨도| ' + g(ak) + ' ≥ 7' : ''].filter(Boolean).join(', ') + ')';
-    var kline = { ok: as <= 3 && ak <= 10 };
-    kline.text = kline.ok ? '충족 (|왜도| ' + g(as) + ' ≤ 3, |첨도| ' + g(ak) + ' ≤ 10)' :
-      [as > 3 ? '왜도 심함 (|왜도| ' + g(as) + ' > 3)' : '', ak > 20 ? '첨도 심각 (|첨도| ' + g(ak) + ' > 20)' : ak > 10 ? '첨도 문제 (|첨도| ' + g(ak) + ' > 10)' : ''].filter(Boolean).join(', ');
+    var mk = function (level, detail) { return { ok: level === 'ok', level: level, text: LABEL[level] + ' (' + detail + ')' }; };
+    // Kline(2016): 왜도 지수 절댓값 3 초과는 심하게 치우침, 첨도 지수 10 초과는 문제 가능, 20 초과는 더 심각
+    var kl = as > 3 || ak > 20 ? 'severe' : ak > 10 ? 'check' : 'ok';
+    var kline = mk(kl, '|왜도| ' + g(as) + (as > 3 ? ' > ' : ' ≤ ') + '3, |첨도| ' + g(ak) + (ak > 20 ? ' > 20' : ak > 10 ? ' > 10' : ' ≤ 10'));
+    // West 등(1995): 왜도 2, 첨도 7 이상이면 상당한 비정규
+    var west = mk(as < 2 && ak < 7 ? 'ok' : 'severe', '|왜도| ' + g(as) + (as < 2 ? ' < ' : ' ≥ ') + '2, |첨도| ' + g(ak) + (ak < 7 ? ' < ' : ' ≥ ') + '7');
     var kim, zs = Math.abs(o.zs), zk = Math.abs(o.zk);
     if (o.n < 300) {
-      var lim = o.n < 50 ? 1.96 : 3.29, sOk = zs < lim, kOk = zk < lim;
-      kim = { ok: sOk && kOk };
-      kim.text = kim.ok ? '충족 (왜도 |z| = ' + g(zs) + ', 첨도 |z| = ' + g(zk) + ' < ' + lim + ')' :
-        '벗어남 (' + [!sOk ? '왜도 |z| = ' + g(zs) + ' ≥ ' + lim : '', !kOk ? '첨도 |z| = ' + g(zk) + ' ≥ ' + lim : ''].filter(Boolean).join(', ') + ')';
+      // z 기준은 유의성 검정이라 기준을 넘으면 크기를 따로 확인해야 한다
+      var lim = o.n < 50 ? 1.96 : 3.29;
+      kim = mk(zs < lim && zk < lim ? 'ok' : 'check', '왜도 |z| = ' + g(zs) + (zs < lim ? ' < ' : ' ≥ ') + lim + ', 첨도 |z| = ' + g(zk) + (zk < lim ? ' < ' : ' ≥ ') + lim);
     } else {
-      kim = { ok: as < 2 && ak < 7 };
-      kim.text = (kim.ok ? '충족' : '벗어남') + ' (300명 이상: |왜도| ' + g(as) + (as < 2 ? ' < ' : ' ≥ ') + '2, |첨도| ' + g(ak) + (ak < 7 ? ' < ' : ' ≥ ') + '7)';
+      kim = mk(as < 2 && ak < 7 ? 'ok' : 'severe', '300명 이상: |왜도| ' + g(as) + (as < 2 ? ' < ' : ' ≥ ') + '2, |첨도| ' + g(ak) + (ak < 7 ? ' < ' : ' ≥ ') + '7');
     }
     return { west: west, kline: kline, kim: kim };
   }
 
   var CRIT = {
-    west: { cite: 'West 등(1995)의 기준(왜도 절댓값 2 미만, 첨도 절댓값 7 미만)' },
-    kline: { cite: 'Kline(2016)의 기준(왜도 절댓값 3 이하, 첨도 절댓값 10 이하)' },
-    kim: { cite: 'Kim(2013)이 표본 크기에 따라 제안한 기준' }
+    kline: { cite: 'Kline(2016)이 제시한 기준(왜도 절댓값 3, 첨도 절댓값 10)', abs: true },
+    west: { cite: 'West 등(1995)이 제시한 기준(왜도 절댓값 2, 첨도 절댓값 7)', abs: true },
+    kim: { cite: 'Kim(2013)이 표본 크기에 따라 제안한 기준', abs: false }
   };
 
   function run(e) {
@@ -118,7 +117,7 @@
         '<td class="w" data-value="' + (o.sw ? o.sw.w : '') + '">' + (o.sw ? S.fmt0(o.sw.w, 3) : '–') + '</td><td class="swp" data-value="' + (o.sw ? o.sw.p : '') + '">' + swp + '</td></tr>';
     }).join('');
     $('judge').tBodies[0].innerHTML = res.map(function (o) {
-      return '<tr data-var="' + S.esc(o.name) + '"><td>' + S.esc(o.name) + '</td><td class="west" data-ok="' + o.j.west.ok + '">' + o.j.west.text + '</td><td class="kline" data-ok="' + o.j.kline.ok + '">' + o.j.kline.text + '</td><td class="kim" data-ok="' + o.j.kim.ok + '">' + o.j.kim.text + '</td></tr>';
+      return '<tr data-var="' + S.esc(o.name) + '"><td>' + S.esc(o.name) + '</td><td class="kline" data-ok="' + o.j.kline.ok + '" data-level="' + o.j.kline.level + '">' + o.j.kline.text + '</td><td class="west" data-ok="' + o.j.west.ok + '" data-level="' + o.j.west.level + '">' + o.j.west.text + '</td><td class="kim" data-ok="' + o.j.kim.ok + '" data-level="' + o.j.kim.level + '">' + o.j.kim.text + '</td></tr>';
     }).join('');
 
     var crit = $('crit').value, bad = res.filter(function (o) { return !o.j[crit].ok; });
@@ -127,13 +126,15 @@
       return res.length === 1 ? f(lo, 2) : f(lo, 2) + '~' + f(hi, 2);
     };
     var subj = res.length === 1 ? S.esc(res[0].name) + '의' : '주요 변수의';
-    var kr = range('kurt'), s = subj + ' 왜도는 ' + range('skew') + ', 첨도는 ' + S.josa(kr, '으로', '로', true) + ', ' + CRIT[crit].cite + '에 따르면 ';
-    if (!bad.length) s += (res.length === 1 ? '' : '모든 변수가 ') + '정규분포에서 크게 벗어나지 않았다.';
-    else if (bad.length === res.length) s += (res.length === 1 ? '' : '모든 변수가 ') + '정규분포에서 상당히 벗어났다.';
+    var kr = range('kurt'), C = CRIT[crit], what = C.abs ? '왜도와 첨도의 절댓값이 ' : '왜도와 첨도가 ';
+    var s = subj + ' 왜도는 ' + range('skew') + ', 첨도는 ' + S.josa(kr, '으로', '로', true) + ', ';
+    var badList = function () { return bad.map(function (o) { return S.esc(o.name) + ' 왜도 ' + f(o.skew, 2) + ', 첨도 ' + f(o.kurt, 2); }).join('; '); };
+    if (!bad.length) s += (res.length === 1 ? '' : '모든 변수에서 ') + what + C.cite + '을 넘지 않아 정규성 가정을 심각하게 위반하지는 않는 것으로 판단하였다.';
+    else if (bad.length === res.length) s += (res.length === 1 ? '' : '모든 변수에서 ') + what + C.cite + '을 넘어 정규성 가정을 위반했을 가능성이 있다' + (res.length === 1 ? '.' : '(' + badList() + ').');
     else {
       var last = bad[bad.length - 1].name;
-      s += bad.map(function (o) { return S.esc(o.name); }).join(', ') + S.esc(S.josa(last, '을', '를').slice(last.length)) + ' 제외한 변수는 정규분포에서 크게 벗어나지 않았다(기준을 벗어난 변수: ' +
-        bad.map(function (o) { return S.esc(o.name) + ' 왜도 ' + f(o.skew, 2) + ', 첨도 ' + f(o.kurt, 2); }).join('; ') + ').';
+      s += bad.map(function (o) { return S.esc(o.name); }).join(', ') + S.esc(S.josa(last, '을', '를').slice(last.length)) + ' 제외한 변수는 ' + what + C.cite + '을 넘지 않아 정규성 가정을 심각하게 위반하지는 않는 것으로 판단하였다. ' +
+        bad.map(function (o) { return S.esc(o.name); }).join(', ') + S.esc(S.josa(last, '은', '는').slice(last.length)) + ' 기준을 넘어 정규성 가정을 위반했을 가능성이 있다(' + badList() + ').';
     }
     // Shapiro-Wilk가 유의한 변수: 덧붙일 문장을 따로 제안한다
     var swSig = res.filter(function (o) { return o.sw && o.sw.p < 0.05; });
@@ -144,7 +145,7 @@
     $('sentence2').innerHTML = s2.join(' ');
     $('sw-box').hidden = !s2.length;
     var tiny = res.filter(function (o) { return o.n < 50; });
-    if (tiny.length) warns.push('50명 미만인 변수가 있습니다(' + tiny.map(function (o) { return o.name + ' ' + o.n + '명'; }).join(', ') + '). 표본이 작으면 왜도·첨도 추정이 불안정하고 Shapiro-Wilk 검정의 검정력도 낮습니다. 절댓값 기준만 쓰기보다 z값 기준(Kim, 2013)을 함께 보고, 기준을 충족해도 정규성이 확인되었다고 쓰지는 마세요.');
+    if (tiny.length) warns.push('50명 미만인 변수가 있습니다(' + tiny.map(function (o) { return o.name + ' ' + o.n + '명'; }).join(', ') + '). 표본이 작으면 왜도·첨도 추정이 불안정하고 Shapiro-Wilk 검정의 검정력도 낮습니다. 절댓값 기준만 쓰기보다 z값 기준(Kim, 2013)을 함께 보고, 기준 안에 있어도 정규성이 확인되었다고 쓰지는 마세요.');
     $('sentence').innerHTML = s;
     if (crit === 'kim') warns.push('Kim(2013) 기준은 변수마다 표본 크기에 따라 쓰는 규칙이 다릅니다(기준별 판정 표의 괄호). 문장에 규칙을 구체적으로 적으세요.');
     $('warns').innerHTML = warns.map(function (w) { return '<p style="margin:0 0 6px">' + S.esc(w) + '</p>'; }).join('');
