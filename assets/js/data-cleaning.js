@@ -280,6 +280,7 @@
 <fieldset class="chips"><legend>문항 <span class="note">${s.items.length}개</span></legend>${chk(s.items, 'item', items) || '<p class="note">"척도 문항" 역할인 열이 없습니다.</p>'}</fieldset>
 <fieldset class="chips rev"><legend>역문항 <span class="note">${s.reverse.length}개, 고른 문항 가운데서</span></legend>${s.items.length ? `<div class="revnum"><label for="${id}rn">문항 번호로 고르기</label><input type="text" id="${id}rn" data-s="${i}" data-sk="revnum" placeholder="예: 4, 9, 14" inputmode="numeric" autocomplete="off"></div>` : ''}${chk(s.reverse, 'rev', s.items) || '<p class="note">먼저 문항을 고르세요.</p>'}</fieldset>
 ${s.items.some((it) => (S.rules.columns.find((c) => c.name === it) || {}).confirm) ? `<div class="warn scale-confirm"><p>이 척도 문항 가운데 몇 점 척도인지 자료만으로 확실하지 않은 것이 있습니다. 위 "응답 범위"가 설문지와 같은지 보고 확인하세요. 진단에서 열마다 범위가 달랐다면 길이가 다른 척도가 섞였을 수 있으니, 그때는 척도를 나누세요.</p><label class="check"><input type="checkbox" data-s="${i}" data-sk="confirm"> 응답 범위 ${s.min ?? '?'}~${s.max ?? '?'}가 맞습니다(문항 전체에 적용)</label></div>` : ''}
+${s.confirm ? `<div class="warn scale-confirm"><p>같은 지시문(그리드) 아래에 있다는 것만으로 묶은 척도입니다. 한 그리드에 하위요인이 여럿 들어 있으면 합계·평균·알파가 틀립니다. 설문지와 대조해 서로 다른 하위요인이면 위 "문항"에서 빼고 척도를 추가해 나누세요.</p><label class="check"><input type="checkbox" data-s="${i}" data-sk="group"> 이 문항 ${s.items.length}개는 한 척도가 맞습니다</label></div>` : ''}
 <div class="scale-foot"><label class="check"><input type="checkbox" data-s="${i}" data-sk="sum"${s.sum !== false ? ' checked' : ''}> 합계 만들기</label><label class="check"><input type="checkbox" data-s="${i}" data-sk="mean"${s.mean !== false ? ' checked' : ''}> 평균 만들기</label><button type="button" class="btn quiet sm" data-del="${i}">이 척도 지우기</button></div></fieldset>`;
     }).join('') : '<p class="note">척도가 없습니다. 척도 문항을 묶으려면 척도를 추가하세요.</p>';
     $$('#scales [data-del]').forEach((b) => { b.innerHTML = ICON_TRASH + '이 척도 지우기'; });
@@ -303,6 +304,7 @@ ${s.items.some((it) => (S.rules.columns.find((c) => c.name === it) || {}).confir
       s.items.forEach((it) => { const c = S.rules.columns.find((x) => x.name === it); if (!c) return; c.range = [s.min, s.max]; delete c.confirm; if (c.dictionary && E.DICTS[c.dictionary] && (E.DICTS[c.dictionary].min !== s.min || E.DICTS[c.dictionary].max !== s.max)) { const lang = /^en/.test(c.dictionary) ? 'en' : 'agree'; const alt = Object.keys(E.DICTS).find((k2) => k2.startsWith(lang) && E.DICTS[k2].min === s.min && E.DICTS[k2].max === s.max); c.dictionary = alt; } });
       renderRules(); live('척도 문항의 응답 범위를 확인했습니다.'); return;
     }
+    if (k === 'group' && el.checked) { delete s.confirm; renderScales(); live('척도 묶음을 확인했습니다.'); return; }
     if (k === 'name') s.name = el.value.trim(); if (k === 'label') { s.label = el.value; el.closest('fieldset.scale').querySelector('legend').textContent = s.label || s.name; }
     if (k === 'min' || k === 'max') s[k] = el.value === '' ? undefined : +el.value;
     if (k === 'ratio') s.meanMinRatio = +el.value; if (k === 'sum') s.sum = el.checked; if (k === 'mean') s.mean = el.checked;
@@ -323,7 +325,7 @@ ${s.items.some((it) => (S.rules.columns.find((c) => c.name === it) || {}).confir
     const idOpts = R.columns.filter((c) => ['id', 'drop', 'text', 'category'].includes(c.role)).map((c) => `<option value="${esc(c.source)}"${f.duplicateId.column === c.source ? ' selected' : ''}>${esc(c.source)}</option>`).join('');
     const row = (k, title, body, why, dis) => `<div class="flag${dis ? ' off' : ''}"><label class="check"><input type="checkbox" data-f="${k}"${f[k].on && !dis ? ' checked' : ''}${dis ? ' disabled' : ''}> <strong>${title}</strong></label><div class="flag-body">${body}<p class="hint">${why}</p></div></div>`;
     $('#flags').innerHTML = [
-      row('longstring', '같은 값이 길게 이어짐(일자 응답)', `<label for="fl1">같은 값이 연속</label> <input type="number" id="fl1" data-fv="longstring.min" value="${f.longstring.min}" min="2" step="1" class="w5"> 문항 이상`, `척도 문항 ${nItems}개를 열 순서대로 봅니다(주의확인 문항 제외, 응답 범위가 다른 척도가 이어지는 곳에서는 새로 셈). 기본값은 문항이 10개 이하면 모든 문항, 그보다 많으면 절반(최소 10)입니다. 정해진 기준은 없으니 연구방법에 쓴 값을 밝히세요.`),
+      row('longstring', '같은 값이 길게 이어짐(일자 응답)', `<label for="fl1">같은 값이 연속</label> <input type="number" id="fl1" data-fv="longstring.min" value="${f.longstring.min}" min="2" step="1" class="w5"> 문항 이상`, `척도 문항 ${nItems}개를 열 순서대로 봅니다(주의확인 문항 제외, 응답 범위가 다른 척도가 이어지는 곳에서는 새로 셈). 기본값은 문항이 10개 이하면 모든 문항, 그보다 많으면 절반(최소 10)이고, 6개보다 적으면 성실한 응답자도 같은 값으로만 답하는 일이 흔해 기본으로 끕니다. 정해진 기준은 없으니 연구방법에 쓴 값을 밝히세요.`),
       row('attention', '주의확인 문항 오답', att.length ? `정답: ${att.map((c) => `${esc(c.name)} = ${c.pass ?? '(정답을 위 표에 적으세요)'}`).join(', ')}` : '', att.length ? '정답이 아닌 값을 고르면 표시합니다. 빈 칸은 오답으로 보지 않습니다.' : '역할이 "주의확인 문항"인 열이 없습니다.', !att.length),
       row('missingItems', '결측이 많은 응답', `<label for="fl3">척도 문항의</label> <input type="number" id="fl3" data-fv="missingItems.minRatio" value="${Math.round(f.missingItems.minRatio * 100)}" min="1" max="100" step="1" class="w5"> % 이상이 빔<br><label class="check sm"><input type="checkbox" data-fv="missingItems.countAsCareless"${f.missingItems.countAsCareless ? ' checked' : ''}> 불성실 의심에도 넣기</label>`, '중간에 그만둔 응답을 "결측과다"로 따로 표시합니다. 무응답은 불성실 응답과 다른 현상이라 기본으로는 불성실 의심에 넣지 않습니다. 범위 밖이라 결측 처리한 칸도 셉니다.'),
       row('duplicateAll', '같은 응답 전체(중복 제출)', `척도 문항을 <input type="number" id="fl4" data-fv="duplicateAll.minAnswered" value="${f.duplicateAll.minAnswered}" min="1" step="1" class="w5" aria-label="중복 판정에 필요한 최소 응답 문항 수"> 개 이상 답했고, 앞선 응답과 모든 답이 같음`, '시각과 식별값 열은 비교하지 않습니다. 첫 응답은 그대로 두고 뒤의 응답을 표시합니다.'),
@@ -343,7 +345,7 @@ ${s.items.some((it) => (S.rules.columns.find((c) => c.name === it) || {}).confir
     let m = path.match(/^columns\[(\d+)\]\.?(\w*)/);
     if (m) { const c = (R.columns || [])[+m[1]]; const f = { name: '변수명', role: '역할', range: '응답 범위', confirm: '응답 범위 확인', source: '원자료 머리글', valueMap: '대응표', pass: '주의확인 정답', dictionary: '사전', missingCodes: '결측 코드', options: '보기 목록', outOfRange: '범위 밖 처리' }[m[2]] || m[2]; return `${+m[1] + 1}번째 열${c && c.source ? `(${c.source})` : ''}${f ? '의 ' + f : ''}`; }
     m = path.match(/^scales\[(\d+)\]\.?([\w/]*)(?:\[(\d+)\])?/);
-    if (m) { const s = (R.scales || [])[+m[1]]; const f = { name: '이름', items: '문항', reverse: '역문항', 'min/max': '범위', meanMinRatio: '평균 최소 응답' }[m[2]] || m[2]; return `${+m[1] + 1}번째 척도${s && s.name ? `(${s.name})` : ''}${f ? '의 ' + f : ''}`; }
+    if (m) { const s = (R.scales || [])[+m[1]]; const f = { name: '이름', items: '문항', reverse: '역문항', 'min/max': '범위', meanMinRatio: '평균 최소 응답', confirm: '묶음 확인' }[m[2]] || m[2]; return `${+m[1] + 1}번째 척도${s && s.name ? `(${s.name})` : ''}${f ? '의 ' + f : ''}`; }
     m = path.match(/^flags\.(\w+)/);
     if (m) return '불성실 응답 표시 규칙(' + m[1] + ')';
     return path;
@@ -499,11 +501,11 @@ ${s.items.some((it) => (S.rules.columns.find((c) => c.name === it) || {}).confir
     const f = r.rules.flags; const crit = [];
     if (f.longstring.on && s.itemCount) crit.push(`${f.longstring.min}문항 이상 같은 값으로 연속 응답`);
     if (f.attention.on && r.order.includes('주의확인불합격')) crit.push('주의확인 문항 오답');
-    if (f.missingItems.on && f.missingItems.countAsCareless) crit.push(`척도 문항의 ${Math.round(f.missingItems.minRatio * 100)}% 이상 결측`);
+    if (f.missingItems.on && f.missingItems.countAsCareless) crit.push(`척도 문항의 ${Math.round(f.missingItems.minRatio * 1000) / 10}% 이상 결측`);
     if (f.speed.on && r.order.includes('빠른응답')) crit.push(`응답 시간 ${f.speed.minSeconds}초 미만`);
     const parts = [];
     if (crit.length) parts.push(`불성실 응답 판정 기준(${crit.join(', ')}) 가운데 하나 이상에 해당한 응답이 ${s.careless}부`);
-    if (f.missingItems.on && !f.missingItems.countAsCareless) parts.push(`척도 문항의 ${Math.round(f.missingItems.minRatio * 100)}% 이상이 결측인 응답이 ${s.missingRule}부`);
+    if (f.missingItems.on && !f.missingItems.countAsCareless) parts.push(`척도 문항의 ${Math.round(f.missingItems.minRatio * 1000) / 10}% 이상이 결측인 응답이 ${s.missingRule}부`);
     if (f.duplicateAll.on) parts.push(`모든 응답이 앞선 응답과 동일한 응답이 ${s.duplicates}부`);
     if (f.duplicateId.on) parts.push(`같은 식별값으로 다시 제출된 응답이 ${s.idDuplicates}부`);
     const revTxt = r.rules.scales.filter((x) => x.reverse.length).map((x) => `${x.label || x.name} ${x.reverse.length}문항`);
@@ -567,7 +569,7 @@ ${s.items.some((it) => (S.rules.columns.find((c) => c.name === it) || {}).confir
     const tb = (rows, cols) => `<table><thead><tr>${cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows.map((x) => `<tr>${cols.map((c) => `<td>${esc(fmt(x[c]))}</td>`).join('')}</tr>`).join('') || `<tr><td colspan="${cols.length}">없음</td></tr>`}</tbody></table>`;
     const f = r.rules.flags;
     const rulesTxt = [
-      f.longstring.on ? `같은 값 ${f.longstring.min}문항 이상 연속(응답 범위가 다른 척도 경계에서는 새로 셈)` : null, f.attention.on ? '주의확인 문항 오답(빈 칸은 오답으로 보지 않음)' : null, f.missingItems.on && f.missingItems.countAsCareless ? `척도 문항 ${Math.round(f.missingItems.minRatio * 100)}% 이상 결측` : null, f.speed.on ? `응답 시간 ${f.speed.minSeconds}초 미만(척도 문항 수 기준)` : null,
+      f.longstring.on ? `같은 값 ${f.longstring.min}문항 이상 연속(응답 범위가 다른 척도 경계에서는 새로 셈)` : null, f.attention.on ? '주의확인 문항 오답(빈 칸은 오답으로 보지 않음)' : null, f.missingItems.on && f.missingItems.countAsCareless ? `척도 문항 ${Math.round(f.missingItems.minRatio * 1000) / 10}% 이상 결측` : null, f.speed.on ? `응답 시간 ${f.speed.minSeconds}초 미만` : null,
     ].filter(Boolean);
     return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>처리 내역 보고서: ${esc(r.rules.title || baseName())}</title>
 <style>body{font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#17202b;max-width:980px;margin:32px auto;padding:0 20px;line-height:1.6;word-break:keep-all}h1{font-size:1.6rem}h2{font-size:1.15rem;margin-top:2rem;border-bottom:1px solid #d6dde6;padding-bottom:4px}table{border-collapse:collapse;font-size:.85rem;margin:8px 0;font-variant-numeric:tabular-nums}th,td{border-bottom:1px solid #d6dde6;padding:4px 8px;text-align:left;vertical-align:top}th{background:#f3f5f8}.meta{color:#4a5666;font-size:.9rem}code{font-size:.8rem;white-space:pre-wrap;word-break:break-all}@media print{body{margin:0}h2{break-after:avoid}}</style></head><body>
@@ -578,7 +580,7 @@ ${s.items.some((it) => (S.rules.columns.find((c) => c.name === it) || {}).confir
 <li>글자로 적힌 응답을 숫자로 바꾼 칸 ${s.textConverted}, 범주 표기를 코드로 바꾼 칸 ${s.recoded}.</li>
 <li>범위 밖이라 결측으로 바꾼 칸 ${s.outOfRange}, 읽을 수 없어 결측으로 둔 칸 ${s.unreadable}, 결측 코드 ${s.missingCode}. 범위를 넘었지만 값을 유지하고 표시만 한 칸 ${s.rangeChecked}.</li>
 <li>원래 비어 있던 척도 문항 칸 ${s.blankItemCells}: 채우지 않음.</li>
-${s.missingRule !== null ? `<li>척도 문항의 ${Math.round(f.missingItems.minRatio * 100)}% 이상이 결측인 응답 ${s.missingRule}행(결측과다)${s.missingCountsAsCareless ? ', 불성실 의심에 포함' : ', 불성실 의심과 따로 표시'}.</li>` : ''}
+${s.missingRule !== null ? `<li>척도 문항의 ${Math.round(f.missingItems.minRatio * 1000) / 10}% 이상이 결측인 응답 ${s.missingRule}행(결측과다)${s.missingCountsAsCareless ? ', 불성실 의심에 포함' : ', 불성실 의심과 따로 표시'}.</li>` : ''}
 ${Object.keys(s.prorated || {}).length ? `<li>척도 평균을 응답한 문항만으로 환산(proration)한 경우: ${Object.entries(s.prorated).map(([k, v]) => `${esc(k)} ${v}건`).join(', ')}.</li>` : ''}
 <li>불성실 의심 ${s.careless}행(기준: ${esc(rulesTxt.join(', ') || '사용 안 함')}), 중복 의심 ${s.duplicates}행${s.idDuplicates ? `, 같은 식별값 ${s.idDuplicates}행` : ''}. 표시만 했고 제외는 연구자가 정함.</li>
 ${s.dropped.length ? `<li>정리본에서 뺀 열(개인정보 등) ${s.dropped.length}개: ${esc(s.dropped.join(', '))}</li>` : ''}</ul>

@@ -231,19 +231,37 @@
   // 예전 이름(시험용)
   function chooseDict(labels, numRange) { const r = decideScale(numRange ? [numRange[0], numRange[1]] : [], labels); return r && r.dict ? { key: r.dict, unseenLevels: r.unseen || [], unmatched: r.unmatched || [] } : null; }
 
+  // 머리글 글에서 앞의 문항 번호("2.", "Q2)", "문2-")와 끝의 지시 문구를 뗀다. num 은 뗀 문항 번호
+  function cleanHeadText(x) {
+    let s = String(x).trim();
+    const qn = s.match(/^\s*(?:Q|문항|문)?\s*(\d+)\s*[.)\-]\s*/i);
+    s = s.replace(/^\s*(Q|문항|문)?\s*\d+\s*[.)\-]\s*/i, '').replace(/\([^)]*\)\s*$/, '').trim();
+    s = s.replace(/\s*(을|를|은|는)?\s*(선택|입력|기입|체크|표시|골라|적어|써)\s*(해|하여)?\s*주(십시오|세요|시기 바랍니다)\.?\s*$/, '').replace(/[?？]\s*$/, '').trim();
+    return { s, num: qn ? +qn[1] : null };
+  }
+  // 그리드 지시문이 "학업소진"처럼 짧은 이름이면 그 글(구성개념 이름으로 봄), "다음 문항을 읽고…" 같은 문장이면 null
+  function stemName(stem) {
+    const t = cleanHeadText(stem).s.replace(/[^A-Za-z0-9가-힣_]/g, '');
+    return /^[A-Za-z가-힣]/.test(t) && t.length <= 8 && !RESERVED.includes(t.toUpperCase()) ? t : null;
+  }
+  const GENERIC_ROW = /^(문항|문|질문|항목|q|item|question|no)$/i; // "[문항 1]"의 "문항"은 구성개념 단서가 아님
   function suggestName(h, j) {
     let s = String(h).trim();
     const br = s.match(/\[([^\]]+)\]\s*$/); // 구글폼 객관식 그리드: "질문 [행]"
     if (br) s = br[1];
-    s = s.replace(/^\s*(Q|문항|문)?\s*\d+\s*[.)\-]\s*/i, '').replace(/\([^)]*\)\s*$/, '').trim();
-    s = s.replace(/\s*(을|를|은|는)?\s*(선택|입력|기입|체크|표시|골라|적어|써)\s*(해|하여)?\s*주(십시오|세요|시기 바랍니다)\.?\s*$/, '').replace(/[?？]\s*$/, '').trim();
+    else { const mx = s.match(/^.*\S\s+-\s+(.*[A-Za-z가-힣].*)$/); if (mx) s = mx[1]; } // SurveyMonkey 행렬: "질문 - 행"
+    const ch = cleanHeadText(s); s = ch.s;
     const m = s.match(/^([A-Za-z가-힣][A-Za-z가-힣0-9]*?)[\s_\-.]+0*(\d+)$/) || s.match(/^([A-Za-z가-힣]+)0*(\d+)$/);
     if (m) return { prefix: m[1], num: +m[2], sep: /[\s_\-.]0*\d+$/.test(s) };
     let t = s.replace(/[^A-Za-z0-9가-힣_]/g, '');
     if (/^\d/.test(t)) t = 'V' + t;
-    if (!t || t.length > 8) t = 'Q' + (j + 1);
+    let fallback = false;
+    // StartDate, ResponseId 처럼 이미 변수명 꼴인 영문 머리글은 그대로 쓴다
+    if (/^[A-Za-z][A-Za-z0-9_]{0,31}$/.test(s)) t = s;
+    // 문장 머리글: 열 위치로 "Q3"을 만들면 설문지의 3번 문항처럼 보여 헷갈린다. 머리글의 문항 번호가 있으면 "문2", 없으면 열 위치임을 드러내는 "열3"
+    else if (!t || t.length > 8) { t = ch.num !== null ? '문' + ch.num : '열' + (j + 1); fallback = true; }
     if (RESERVED.includes(t.toUpperCase())) t = t + '_1';
-    return { name: t };
+    return { name: t, fallback };
   }
   // 같은 문항 묶음(척도 후보) 열쇠: "질문 [행]", "질문 - 항목", "접두어+번호"
   function groupKey(h, sugg) {
@@ -285,6 +303,8 @@
       const anyDictHit = strs.filter((x) => Object.values(DICTS).some((d) => d.map[x] !== undefined)).length;
       const label = table.labels ? table.labels[j] : '';
       const c = { index: j, source: h, label, n: nb.length, missing: n - nb.length, distinct: distinct.slice(0, 30), distinctCount: distinct.length, issues: [], group: gsize[gkeys[j]] >= 2 ? gkeys[j] : null };
+      // 그리드·행렬 묶음("지시문 [행]", "지시문 - 행")에서 행 이름이 "소진1", "효능2"처럼 접두어를 가지면 그 접두어(구성개념 단서)
+      if (c.group && /^[gm]:/.test(c.group)) { c.subgroup = sugg[j].prefix && !GENERIC_ROW.test(sugg[j].prefix) ? sugg[j].prefix : null; c.groupNamed = !!stemName(c.group.slice(2)); }
       c._strs = strs; c._nums = reads.filter((r) => r.v !== null).map((r) => r.v);
       const hn = norm(h);
       const dates = nb.filter((v) => dateFrom(v)).length;
@@ -316,10 +336,11 @@
     });
     // 2차: 척도 길이. 묶음 전체로 판단하되, 열마다 확신한 길이가 서로 다르면(5점과 7점이 한 묶음) 열마다 따른다.
     // 확신이 없는 열은 rangeUnsure 로 표시해 3단계에서 연구자가 확인하게 한다.
+    // 그리드·행렬 행("[나는 수업 시간이 즐겁다]")은 보기가 같은 객관식이라, 행 글에 "시간", "기간"이 있어도 숫자 열로 떼지 않는다.
     // 그리드 지시문을 여러 열이 나눠 가지면 그 지시문은 주의확인 문항 판정에 쓰지 않는다.
     cols.forEach((c) => { if (c.attention && c.group && ATT_RE.test(String(c.group).slice(2))) c.attention = false; });
     const groups = new Map();
-    cols.forEach((c) => { if (c.kind === 'numeric?') { const single = !c.group || NUM_HINT.test(c.source + ' ' + c.label); const g = single ? 'one:' + c.index : c.group; if (!groups.has(g)) groups.set(g, []); groups.get(g).push(c); } });
+    cols.forEach((c) => { if (c.kind === 'numeric?') { const single = !c.group || (!/^[gm]:/.test(c.group) && NUM_HINT.test(c.source + ' ' + c.label)); const g = single ? 'one:' + c.index : c.group; if (!groups.has(g)) groups.set(g, []); groups.get(g).push(c); } });
     const setScale = (c, dec, item) => {
       c.kind = item ? 'item' : 'number';
       c.range = item ? dec.range.slice() : null; c.dict = item ? dec.dict : null;
@@ -401,9 +422,22 @@
     const groupSize = {};
     sugg.forEach((s) => { if (s.prefix) groupSize[s.prefix] = (groupSize[s.prefix] || 0) + 1; });
     const used = new Set();
+    // 그리드 행이 문장이라 이름을 못 만든 열: 지시문(짧으면 그 글, 문항 번호가 있으면 "문N", 아니면 "묶음N") + 그리드 안 순번
+    const gridBase = new Map(); const gridPos = {}; const gridMembers = {};
+    gkeys.forEach((g) => { if (g && /^[gm]:/.test(g) && gsize[g] >= 2) gridMembers[g] = (gridMembers[g] || 0) + 1; });
+    const gridHasSentence = new Set(gkeys.filter((g, j) => g && gridMembers[g] && sugg[j].fallback)); // 한 행이라도 문장이면 그 그리드의 접두어 없는 행은 모두 묶음+순번(이름이 섞이지 않게)
+    const gridName = (g) => {
+      if (gridBase.has(g)) return gridBase.get(g);
+      const ch = cleanHeadText(g.slice(2));
+      const b = stemName(g.slice(2)) || (ch.num !== null ? '문' + ch.num : '묶음' + (gridBase.size + 1));
+      gridBase.set(g, b); return b;
+    };
     cols.forEach((c, j) => {
-      const s = sugg[j];
+      const s = sugg[j]; const g = gkeys[j];
+      if (g && gridMembers[g]) gridPos[g] = (gridPos[g] || 0) + 1;
       let name = s.prefix ? (groupSize[s.prefix] >= 2 ? `${s.prefix}_${String(s.num).padStart(groupSize[s.prefix] >= 10 || s.num >= 10 ? 2 : 1, '0')}` : s.prefix + s.num) : s.name;
+      if (s.prefix && GENERIC_ROW.test(s.prefix) && g && gridMembers[g]) name = `${gridName(g)}_${String(s.num).padStart(gridMembers[g] >= 10 || s.num >= 10 ? 2 : 1, '0')}`; // "불안 [문항 3]" → 불안_3
+      if (!s.prefix && g && gridHasSentence.has(g)) name = `${gridName(g)}_${String(gridPos[g]).padStart(gridMembers[g] >= 10 ? 2 : 1, '0')}`;
       if (c.kind === 'timestamp') name = '응답시각';
       if (c.attention) name = '주의확인';
       let base = name, k = 2; while (used.has(name)) name = base + '_' + (k++);
@@ -485,13 +519,24 @@
     });
     const items = columns.filter((c) => c.role === 'item');
     const byGroup = new Map();
-    items.forEach((c) => { const d = dg.cols.find((x) => x.source === c.source); if (!d || !d.group) return; const m = c.name.match(/^(.*?)_?\d+$/); const key = d.group + '|' + c.range.join(','); if (!byGroup.has(key)) byGroup.set(key, { name: m ? m[1] : c.name, cs: [] }); byGroup.get(key).cs.push(c); });
+    // 척도 초안: 같은 묶음 + 같은 범위. 그리드·행렬 묶음은 행 이름의 접두어("소진1", "효능1")가 다르면 나눈다.
+    // 행 이름에 접두어가 없고 지시문도 "학업소진" 같은 이름이 아닌 문장이면, 같은 지시문 아래에 있다는 것밖에 근거가 없어
+    // (여러 구성개념을 한 그리드에 넣는 일이 흔함) 연구자 확인(confirm) 전에는 정리하지 않는다.
+    items.forEach((c) => {
+      const d = dg.cols.find((x) => x.source === c.source); if (!d || !d.group) return;
+      const grid = /^[gm]:/.test(d.group);
+      const m = c.name.match(/^(.*?)_?\d+$/); const key = d.group + '|' + (grid ? d.subgroup || '' : '') + '|' + c.range.join(',');
+      if (!byGroup.has(key)) byGroup.set(key, { name: grid ? d.subgroup || stemName(d.group.slice(2)) || (m ? m[1] : '') : m ? m[1] : c.name, cs: [], confirm: grid && !d.subgroup && !d.groupNamed });
+      byGroup.get(key).cs.push(c);
+    });
     const scaleNames = new Set();
     const scales = [...byGroup.values()].filter((g) => g.cs.length >= 2).map((g, i) => {
       let nm = /^[A-Za-z가-힣]/.test(g.name) && g.name.length <= 12 ? g.name : '척도' + (i + 1);
       while (scaleNames.has(nm) || columns.some((c) => c.name === nm + '_합' || c.name === nm + '_평균')) nm += '_';
       scaleNames.add(nm);
-      return { name: nm, items: g.cs.map((c) => c.name), reverse: [], min: g.cs[0].range[0], max: g.cs[0].range[1], sum: true, mean: true, meanMinRatio: 0.8 };
+      const s = { name: nm, items: g.cs.map((c) => c.name), reverse: [], min: g.cs[0].range[0], max: g.cs[0].range[1], sum: true, mean: true, meanMinRatio: 0.8 };
+      if (g.confirm) s.confirm = true;
+      return s;
     });
     const att = columns.find((c) => c.role === 'attention');
     const nItems = items.length;
@@ -602,6 +647,7 @@
       const bad = validName(s.name); if (bad) err(p + '.name', `척도 이름 "${s.name ?? ''}": ${bad}`);
       if (scaleNames.has(s.name)) err(p + '.name', `척도 이름 "${s.name}"이 겹칩니다.`); scaleNames.add(s.name);
       if (!Array.isArray(s.items) || s.items.length < 2) { err(p + '.items', '문항이 두 개 이상 있어야 합니다.'); return; }
+      if (s.confirm) err(p + '.confirm', `"${s.name}"은 같은 지시문(그리드) 아래에 있다는 것만으로 문항 ${s.items.length}개를 묶은 초안입니다. 한 그리드에 여러 하위요인이 들어 있으면 점수와 알파가 틀리니, 설문지와 대조해 한 척도가 맞으면 "한 척도가 맞습니다"에 표시하고 아니면 척도를 나누세요.`);
       s.items = s.items.map((it, k) => {
         if (colByName.has(it)) return it;
         if (colBySource.has(it) && colBySource.get(it).role !== 'drop') { warn(`${p}.items[${k}]`, `원자료 머리글 "${it}"를 변수명 "${colBySource.get(it).name}"로 바꿔 읽었습니다.`); return colBySource.get(it).name; }
@@ -637,6 +683,7 @@
     if (f.missingItems.on && !(f.missingItems.minRatio > 0 && f.missingItems.minRatio <= 1)) err('flags.missingItems.minRatio', '결측 비율 기준은 0~1 사이 비율입니다(예: 0.2).');
     if (typeof f.missingItems.countAsCareless !== 'boolean') f.missingItems.countAsCareless = false;
     const nItemsV = r.columns.filter((c) => c.role === 'item').length;
+    if (f.longstring.on && nItemsV && nItemsV < LONGSTRING_MIN_ITEMS) warn('flags.longstring.on', `척도 문항이 ${nItemsV}개뿐입니다. 문항이 ${LONGSTRING_MIN_ITEMS}개보다 적으면 성실한 응답자도 모두 같은 값으로 답하는 일이 흔해, 일자 응답 표시는 불성실의 근거가 약합니다. 연구자가 정한 기준이 아니면 끄는 것을 권합니다.`);
     if (f.longstring.on && nItemsV && f.longstring.min > nItemsV) warn('flags.longstring.min', `기준(${f.longstring.min}문항)이 척도 문항 수(${nItemsV}개)보다 커서 아무도 표시되지 않습니다.`);
     if (f.speed.on && !(f.speed.minSeconds > 0)) err('flags.speed.minSeconds', '최소 응답 시간(초)은 0보다 커야 합니다.');
     if (f.duplicateId.on) {
@@ -1217,6 +1264,15 @@
     if (f.missingItems.on && f.missingItems.countAsCareless) conds.push('d$결측과다 == 1');
     if (f.speed.on && (dur || (st && en))) conds.push('d$빠른응답 == 1');
     L.push(`d$불성실의심 <- as.integer(${conds.length ? conds.join(' | ') : 'rep(FALSE, n)'})`);
+    // 불성실사유: 도구와 같은 문장, 같은 순서("; "로 이음)
+    L.push('reason <- rep("", n)');
+    L.push('add_reason <- function(cond, txt) { cond[is.na(cond)] <- FALSE; txt <- rep_len(txt, n); reason[cond] <<- ifelse(reason[cond] == "", txt[cond], paste0(reason[cond], "; ", txt[cond])) }');
+    L.push('num_txt <- function(x) sub("\\\\.?0+$", "", formatC(x, format = "f", digits = 6))   # 3, 12.5 처럼 도구와 같은 숫자 표기');
+    if (f.longstring.on) L.push(`add_reason(d$연속동일응답 >= ${f.longstring.min}, paste0("연속 동일 응답 ", d$연속동일응답, "문항"))`);
+    if (f.attention.on && atts.length) L.push('add_reason(d$주의확인불합격 == 1, "주의확인 문항 불일치")');
+    if (f.missingItems.on && f.missingItems.countAsCareless) L.push('add_reason(d$결측과다 == 1, paste0("문항 결측 ", floor(d$결측비율 + 0.5), "%"))');
+    if ((dur || (st && en)) && f.speed.on) L.push(`add_reason(d$빠른응답 == 1, paste0("응답 시간 ", num_txt(d$응답소요초), "초(기준 ${String(f.speed.minSeconds)}초 미만)"))`);
+    L.push('d$불성실사유 <- ifelse(reason == "", NA, reason)');
     L.push('d$제외결정 <- NA_character_');
     L.push('');
     if (R.scales.length) {
@@ -1282,7 +1338,7 @@
   - "options": 복수 선택(multi) 문항의 보기 글자 목록(설문지에 있는 그대로).
   - "pass": 주의확인(attention) 문항의 정답 숫자.
 - "scales": 척도나 하위요인마다 {"name", "label", "items"(columns의 name 목록), "reverse"(역문항의 name 목록, items 안에 있어야 함), "min", "max", "sum": true, "mean": true, "meanMinRatio": 0.8}. 하위요인 점수와 척도 전체 점수가 모두 필요하면 각각 따로 만듭니다(전체 점수 이름은 "척도이름_전체"). 역문항은 설문지·코드북·설명에 근거가 있을 때만 넣습니다.
-- "flags": {"longstring": {"on": true, "min": 정수}, "attention": {"on": true/false}, "missingItems": {"on": true, "minRatio": 0.2, "countAsCareless": false}, "duplicateAll": {"on": true, "minAnswered": 정수}, "duplicateId": {"on": false, "column": null}, "speed": {"on": false, "minSeconds": 정수}}. 연구자 설명에 기준이 있으면 따르고, 없으면 longstring.min은 척도 문항(item)이 10개 이하이면 그 문항 수, 10개보다 많으면 문항 수의 절반을 올림한 값(최소 10), minAnswered는 척도 문항 수의 2/3을 올림한 값, speed.minSeconds는 척도 문항 수 × 2초로 합니다. missingItems.countAsCareless는 연구자가 결측 많은 응답도 불성실 의심에 넣으라고 한 경우에만 true(기본 false, 결측과다는 따로 표시됨). speed는 duration 열이나 start·end 열이 있을 때만 on. 꺼 둔 규칙도 키는 남깁니다.
+- "flags": {"longstring": {"on": true, "min": 정수}, "attention": {"on": true/false}, "missingItems": {"on": true, "minRatio": 0.2, "countAsCareless": false}, "duplicateAll": {"on": true, "minAnswered": 정수}, "duplicateId": {"on": false, "column": null}, "speed": {"on": false, "minSeconds": 정수}}. 연구자 설명에 기준이 있으면 따르고, 없으면 longstring.on은 척도 문항(item)이 6개 미만이면 false(문항이 적으면 성실한 응답자도 모두 같은 값으로 답하는 일이 흔함), longstring.min은 척도 문항(item)이 10개 이하이면 그 문항 수, 10개보다 많으면 문항 수의 절반을 올림한 값(최소 10), minAnswered는 척도 문항 수의 2/3을 올림한 값, speed.minSeconds는 척도 문항 수 × 2초로 합니다. missingItems.countAsCareless는 연구자가 결측 많은 응답도 불성실 의심에 넣으라고 한 경우에만 true(기본 false, 결측과다는 따로 표시됨). speed는 duration 열이나 start·end 열이 있을 때만 on. 꺼 둔 규칙도 키는 남깁니다.
   - duplicateId.column에는 원자료 머리글(source)을 그대로 씁니다. 이메일·학번처럼 role이 "drop"인 열도 쓸 수 있습니다(정리본에서는 빠지고 중복 확인에만 쓰임).
 - "notes": 확실하지 않아서 연구자가 확인해야 할 점을 짧은 문장 배열로(예: "문서에 소진 4번이 역문항인지 나오지 않음"). 근거 없는 추측으로 규칙을 채우지 말고 여기에 적습니다.
 

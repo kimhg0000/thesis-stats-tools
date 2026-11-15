@@ -72,7 +72,7 @@
     if (g === 'diff') {
       var ind = s.gd === '2ind' || s.gd === '3ind', two = s.gd === '2ind' || s.gd === '2rep';
       if (s.nest === 'nested') return r('mlm', '응답자가 학급처럼 묶여 있으면, 처치나 집단이 학급 단위든 개인 단위든 같은 학급 학생끼리 닮아 있어 일반 t검정이나 분산분석은 표준오차를 작게 잡습니다. 집단 변수를 다층모형의 예측변수로 넣어 검정합니다.');
-      if (dv === 'cont') return r(s.gd === '2ind' ? 'indt' : s.gd === '2rep' ? 'pairedt' : s.gd === '3ind' ? 'anova' : 'rmanova');
+      if (dv === 'cont') return r(s.gd === '2ind' ? 'indt' : s.gd === '2rep' ? 'pairedt' : s.gd === '3ind' ? 'anova' : 'rmanova', ind ? '사전 점수가 있는 실험·통제 설계라면 사후 점수만 비교하지 말고, 사전 점수를 공변량으로 넣은 공분산분석(ANCOVA)이나 집단 × 시점 혼합설계 분산분석을 씁니다. 이 도우미는 그 설계를 자세히 다루지 않습니다.' : '');
       if (dv === 'skew' || dv === 'ord') return r(s.gd === '2ind' ? 'mwu' : s.gd === '2rep' ? 'wilcoxon' : s.gd === '3ind' ? 'kw' : 'friedman');
       if (ind) return r('chisq');
       if (dv === 'bin') return r(two ? 'mcnemar' : 'cochranq');
@@ -81,8 +81,8 @@
     if (g === 'rel') {
       var x = s.xtype;
       if ((dv === 'cont' || dv === 'skew' || dv === 'ord') && x !== 'cat') return r(dv === 'cont' && x === 'cont' ? 'pearson' : 'spearman');
-      if ((dv === 'cont' || dv === 'skew') && x === 'cat') return r('groupcmp');
-      if (dv === 'ord' && x === 'cat') return r('rankgroups');
+      if (dv === 'cont' && x === 'cat') return r('groupcmp');
+      if ((dv === 'skew' || dv === 'ord') && x === 'cat') return r('rankgroups');
       if (x === 'cat') return r('chisq');
       return r(dv === 'bin' ? 'logit' : 'mlogit');
     }
