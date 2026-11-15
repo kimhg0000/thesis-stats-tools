@@ -15,7 +15,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
-<link rel="stylesheet" href="../../assets/site.css?v=e4517008">
+<link rel="stylesheet" href="../../assets/site.css?v=f9bba4a8">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"상관행렬 APA 표 만들기","description":"엑셀에서 변수 점수를 복사해 붙여 넣으면 Pearson 상관계수, 평균, 표준편차와 유의 표시(*)를 담은 APA 7판 형식 상관표를 만들어 한글·워드에 붙여 넣을 수 있게 합니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/correlation-table/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
 </head>
 <body>
@@ -43,10 +43,21 @@
   <h2 class="pane-title" id="in-h">변수 점수 붙여 넣기</h2>
   <div class="field">
     <label for="data">한 행 = 응답자 한 명, 한 열 = 변수 하나</label>
-    <div class="paste-zone">
-      <textarea id="data" spellcheck="false" aria-describedby="data-hint" placeholder="자기효능감&#9;학업스트레스&#9;학업만족&#10;3.8&#9;2.4&#9;4.0&#10;3.2&#9;3.1&#9;3.3"></textarea>
+    <div class="src-tabs" role="tablist" aria-label="자료 넣는 방법"><button type="button" role="tab" id="data-tab-paste" aria-selected="true" aria-controls="data-paste"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>붙여 넣기</button><button type="button" role="tab" id="data-tab-file" aria-selected="false" aria-controls="data-file" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M8 13h2" /> <path d="M14 13h2" /> <path d="M8 17h2" /> <path d="M14 17h2" /> </svg>파일 올리기</button></div>
+<div role="tabpanel" id="data-paste" aria-labelledby="data-tab-paste"><div class="paste-zone"><textarea data-upload-lib="../../assets/vendor/sheetjs/xlsx.core.min.js" id="data" data-upload="run" spellcheck="false" aria-describedby="data-hint" placeholder="자기효능감&#9;학업스트레스&#9;학업만족&#10;3.8&#9;2.4&#9;4.0&#10;3.2&#9;3.1&#9;3.3"></textarea>
       <span class="paste-tag" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>붙여 넣기</span>
-    </div>
+    </div></div>
+<div role="tabpanel" id="data-file" aria-labelledby="data-tab-file" class="file-panel" hidden>
+<div class="file-pick"><input type="file" id="data-input" accept=".xlsx,.xls,.xlsm,.csv" class="sr-only"><label for="data-input" class="btn ghost"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" /> </svg>파일 고르기</label><span class="file-name" id="data-name">xlsx, xls, csv</span></div>
+<p class="hint">파일은 이 브라우저 안에서만 읽고 어디에도 보내지 않습니다.</p>
+<p class="note" id="data-msg" role="status"></p>
+<div class="file-opts" id="data-opts" hidden>
+<div class="field" id="data-sheet-wrap" hidden><label for="data-sheet">시트</label><select id="data-sheet"></select></div>
+<label class="check"><input type="checkbox" id="data-head"> 첫 줄을 머리글(변수 이름)로 쓰기</label>
+<fieldset class="file-cols"><legend class="label">계산에 쓸 열</legend><div id="data-cols"></div><p class="hint">학번·이름처럼 응답이 아닌 열은 처음부터 빼 두었습니다.</p></fieldset>
+<button type="button" class="btn" id="data-go"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <polygon points="6 3 20 12 6 21 6 3" /> </svg>이 자료로 계산하기</button>
+</div>
+</div>
     <p class="hint" id="data-hint">첫 줄의 변수 이름이 표의 변수 이름이 됩니다.</p>
     <p class="error" id="err" role="alert"></p>
   </div>
@@ -119,7 +130,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 
 <section class="next" aria-labelledby="next-h"><h2 id="next-h">이어서 쓸 도구</h2><ul><li><a href="../apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg><span><strong>APA 결과 문장 생성기</strong><span>특정 상관 하나를 문장으로 다듬을 때</span></span></a></li><li><a href="../method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg><span><strong>통계 분석 방법 선택 도우미</strong><span>상관 다음 단계(회귀, 매개, 구조방정식) 고르기</span></span></a></li><li><a href="../cronbach-alpha/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /> </svg><span><strong>크론바흐 알파 계산기</strong><span>각 척도의 신뢰도 확인</span></span></a></li></ul></section>
 <section class="next" aria-labelledby="rel-h"><h2 id="rel-h">함께 읽을 글</h2><ul><li><a href="../../guides/correlation-table-apa/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>상관분석 결과를 APA 표로 만드는 법</strong></span></a></li><li><a href="../../guides/multicollinearity/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>상관이 높은 예측변수, VIF 몇이면 문제이고 어떻게 다루나</strong></span></a></li></ul></section>
-<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">운영: 상담과연구, 대학 상담센터 전임상담원 경력 3년, 교육학(교육상담) 전공</span></p>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
 </div></main>
 <footer class="site"><div class="wrap">
 <p>개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
@@ -128,5 +139,6 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 <script src="../../assets/nav.js"></script>
 <script src="../../assets/stats.js"></script>
 <script src="../../assets/js/correlation-table.js"></script>
+<script src="../../assets/upload.js"></script>
 </body>
 </html>

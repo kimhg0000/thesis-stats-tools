@@ -15,7 +15,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
-<link rel="stylesheet" href="../../assets/site.css?v=e4517008">
+<link rel="stylesheet" href="../../assets/site.css?v=f9bba4a8">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"정규성 판단 계산기","description":"엑셀에서 변수 점수를 붙여 넣으면 SPSS와 같은 방식의 왜도·첨도와 표준오차, z값, Shapiro-Wilk 검정을 계산하고 West 등(1995), Kline(2016), Kim(2013) 기준별로 판정해 논문 문장을 만들어 줍니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/normality/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Shapiro-Wilk 검정이 유의하게 나왔는데 t검정을 쓰면 안 되나요?","acceptedAnswer":{"@type":"Answer","text":"표본이 수백 명이면 실질적으로 문제없는 작은 이탈도 유의하게 나옵니다. 이럴 때는 왜도·첨도의 크기와 Q-Q 도표로 판단하고, 검정 결과가 유의했지만 표본이 커서 민감하게 반응했다는 점과 판단 근거를 함께 적습니다. 반대로 표본이 20명 안팎이면 검정이 유의하지 않아도 정규성이 확인된 것은 아닙니다."}},{"@type":"Question","name":"SPSS 첨도와 이 화면의 첨도가 다르면 무엇을 확인하나요?","acceptedAnswer":{"@type":"Answer","text":"먼저 같은 응답자가 들어갔는지 봅니다. SPSS의 기술통계는 변수마다 결측을 빼지만, 탐색(Explore)은 기본 설정에서 한 변수라도 비어 있는 응답자를 모두 뺍니다. 정규분포 첨도를 3으로 정의하는 프로그램(일부 R 함수 등)을 썼다면 그 값에서 3을 뺀 근사값과 비교합니다."}},{"@type":"Question","name":"세 기준 중 무엇을 써야 하나요?","acceptedAnswer":{"@type":"Answer","text":"정해진 하나는 없습니다. 이 화면은 Kline(2016)을 기본으로 둡니다. West 등(1995)은 더 엄격하고 오래된 기준이며 국내 논문에서 여전히 많이 인용됩니다. 표본이 작은 연구에서는 z값 기준(Kim, 2013)을 함께 보기도 합니다. 지도교수나 학과의 선행 논문이 쓰는 기준을 따르고, 어떤 기준을 누구에게서 가져왔는지 밝힙니다."}},{"@type":"Question","name":"정규성에서 벗어나면 무엇을 하나요?","acceptedAnswer":{"@type":"Answer","text":"극단값이 입력 오류인지부터 확인합니다. 그다음 분석에 따라 비모수 검정, 강건 표준오차, 구조방정식이라면 MLR 같은 보정 추정법이나 부트스트랩을 고릅니다. 변환(로그 등)은 해석이 바뀌므로 꼭 필요할 때만 씁니다."}}]}</script>
 </head>
@@ -44,10 +44,21 @@
   <h2 class="pane-title" id="in-h">변수 점수 붙여 넣기</h2>
   <div class="field">
     <label for="data">한 행 = 응답자 한 명, 한 열 = 변수 하나</label>
-    <div class="paste-zone">
-      <textarea id="data" spellcheck="false" aria-describedby="data-hint" placeholder="학습몰입&#9;학업스트레스&#10;3.8&#9;2.4&#10;3.2&#9;3.1"></textarea>
+    <div class="src-tabs" role="tablist" aria-label="자료 넣는 방법"><button type="button" role="tab" id="data-tab-paste" aria-selected="true" aria-controls="data-paste"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>붙여 넣기</button><button type="button" role="tab" id="data-tab-file" aria-selected="false" aria-controls="data-file" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M8 13h2" /> <path d="M14 13h2" /> <path d="M8 17h2" /> <path d="M14 17h2" /> </svg>파일 올리기</button></div>
+<div role="tabpanel" id="data-paste" aria-labelledby="data-tab-paste"><div class="paste-zone"><textarea data-upload-lib="../../assets/vendor/sheetjs/xlsx.core.min.js" id="data" data-upload="run" spellcheck="false" aria-describedby="data-hint" placeholder="학습몰입&#9;학업스트레스&#10;3.8&#9;2.4&#10;3.2&#9;3.1"></textarea>
       <span class="paste-tag" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>붙여 넣기</span>
-    </div>
+    </div></div>
+<div role="tabpanel" id="data-file" aria-labelledby="data-tab-file" class="file-panel" hidden>
+<div class="file-pick"><input type="file" id="data-input" accept=".xlsx,.xls,.xlsm,.csv" class="sr-only"><label for="data-input" class="btn ghost"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" /> </svg>파일 고르기</label><span class="file-name" id="data-name">xlsx, xls, csv</span></div>
+<p class="hint">파일은 이 브라우저 안에서만 읽고 어디에도 보내지 않습니다.</p>
+<p class="note" id="data-msg" role="status"></p>
+<div class="file-opts" id="data-opts" hidden>
+<div class="field" id="data-sheet-wrap" hidden><label for="data-sheet">시트</label><select id="data-sheet"></select></div>
+<label class="check"><input type="checkbox" id="data-head"> 첫 줄을 머리글(변수 이름)로 쓰기</label>
+<fieldset class="file-cols"><legend class="label">계산에 쓸 열</legend><div id="data-cols"></div><p class="hint">학번·이름처럼 응답이 아닌 열은 처음부터 빼 두었습니다.</p></fieldset>
+<button type="button" class="btn" id="data-go"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <polygon points="6 3 20 12 6 21 6 3" /> </svg>이 자료로 계산하기</button>
+</div>
+</div>
     <p class="hint" id="data-hint">빈 칸은 그 변수에서만 빼고 계산합니다. 집단 비교를 할 거라면 집단별로 나누어 붙여 넣으세요.</p>
     <p class="error" id="err" role="alert"></p>
   </div>
@@ -160,7 +171,7 @@ s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,1
 
 <section class="next" aria-labelledby="next-h"><h2 id="next-h">이어서 쓸 도구</h2><ul><li><a href="../method-chooser/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18 6a2 2 0 0 1 1.387.56l2.307 2.22a1 1 0 0 1 0 1.44l-2.307 2.22A2 2 0 0 1 18 13H6a2 2 0 0 1-1.387-.56l-2.306-2.22a1 1 0 0 1 0-1.44l2.306-2.22A2 2 0 0 1 6 6z" /> </svg><span><strong>통계 분석 방법 선택 도우미</strong><span>정규성에 크게 어긋나면 비모수 방법이나 다른 추정법 고르기</span></span></a></li><li><a href="../apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg><span><strong>APA 결과 문장 생성기</strong><span>분석을 마친 뒤 결과를 APA 문장으로</span></span></a></li><li><a href="../correlation-table/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /> </svg><span><strong>상관행렬 APA 표 만들기</strong><span>변수 점수로 상관표 만들기</span></span></a></li></ul></section>
 <section class="next" aria-labelledby="rel-h"><h2 id="rel-h">함께 읽을 글</h2><ul><li><a href="../../guides/normality-skew-kurtosis/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>정규성 검정, 왜도·첨도 기준은 무엇을 적나</strong></span></a></li></ul></section>
-<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">운영: 상담과연구, 대학 상담센터 전임상담원 경력 3년, 교육학(교육상담) 전공</span></p>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
 </div></main>
 <footer class="site"><div class="wrap">
 <p>개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
@@ -169,5 +180,6 @@ s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,1
 <script src="../../assets/nav.js"></script>
 <script src="../../assets/stats.js"></script>
 <script src="../../assets/js/normality.js"></script>
+<script src="../../assets/upload.js"></script>
 </body>
 </html>

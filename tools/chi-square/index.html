@@ -15,7 +15,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
-<link rel="stylesheet" href="../../assets/site.css?v=e4517008">
+<link rel="stylesheet" href="../../assets/site.css?v=f9bba4a8">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"카이제곱 검정·Cramér's V 계산기","description":"엑셀에서 교차표 빈도를 복사해 붙여 넣으면 Pearson 카이제곱 검정, Cramér's V, 기대빈도 5 미만 칸 비율, 2×2 표의 Yates 교정과 Fisher 정확검정, 칸별 조정된 잔차를 계산하고 APA 형식 논문 문장을 만들어 줍니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/chi-square/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"SPSS 결과의 \"기대빈도가 5보다 작은 셀\" 각주가 20%를 넘으면 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"2×2 표라면 관례적으로 Fisher의 정확검정 p를 보고합니다. 이 화면이 함께 계산합니다. 그보다 큰 표라면 의미가 비슷한 범주를 합쳐 칸 수를 줄이거나, SPSS 정확검정(Exact) 모듈이나 R의 fisher.test로 Fisher-Freeman-Halton 검정을 합니다. 범주를 합쳤다면 어떻게 합쳤는지 연구방법에 적습니다."}},{"@type":"Question","name":"Cramér's V와 파이 계수(φ) 중 무엇을 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"2×2 표에서는 둘의 크기가 같고, 관련의 방향까지 보이려면 φ를 씁니다. 행이나 열이 셋 이상이면 Cramér's V를 씁니다. 어느 쪽이든 표 크기에 따라 같은 값의 의미가 달라지므로 자유도와 함께 해석합니다."}},{"@type":"Question","name":"카이제곱 검정이 유의하면 어느 칸에서 차이가 나는지 어떻게 말하나요?","acceptedAnswer":{"@type":"Answer","text":"전체 검정은 두 변수가 관련이 있다는 것까지만 알려 줍니다. 어느 칸이 기대보다 많거나 적은지는 조정된 잔차로 봅니다. 절댓값 1.96을 넘는 칸을 짚되, 칸이 많을수록 우연히 넘는 칸도 생기므로 칸 수로 Bonferroni 보정한 기준을 함께 적는 것이 안전합니다."}},{"@type":"Question","name":"같은 사람을 두 번 조사한 응답(사전·사후)에도 쓸 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"쓸 수 없습니다. 카이제곱 독립성 검정은 칸마다 서로 다른 사람이 들어간다고 가정합니다. 같은 사람의 두 시점 이분 응답은 McNemar 검정, 범주가 셋 이상이면 Bowker 대칭성 검정을 씁니다."}}]}</script>
 </head>
@@ -44,10 +44,21 @@
   <h2 class="pane-title" id="in-h">교차표 빈도 붙여 넣기</h2>
   <div class="field">
     <label for="data">칸마다 사람 수를 센 교차표</label>
-    <div class="paste-zone">
-      <textarea id="data" spellcheck="false" aria-describedby="data-hint" placeholder="&#9;미결정&#9;탐색&#9;결정&#10;1학년&#9;22&#9;18&#9;10&#10;2학년&#9;15&#9;20&#9;15"></textarea>
+    <div class="src-tabs" role="tablist" aria-label="자료 넣는 방법"><button type="button" role="tab" id="data-tab-paste" aria-selected="true" aria-controls="data-paste"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>붙여 넣기</button><button type="button" role="tab" id="data-tab-file" aria-selected="false" aria-controls="data-file" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M8 13h2" /> <path d="M14 13h2" /> <path d="M8 17h2" /> <path d="M14 17h2" /> </svg>파일 올리기</button></div>
+<div role="tabpanel" id="data-paste" aria-labelledby="data-tab-paste"><div class="paste-zone"><textarea data-upload-lib="../../assets/vendor/sheetjs/xlsx.core.min.js" id="data" data-upload="run" spellcheck="false" aria-describedby="data-hint" placeholder="&#9;미결정&#9;탐색&#9;결정&#10;1학년&#9;22&#9;18&#9;10&#10;2학년&#9;15&#9;20&#9;15"></textarea>
       <span class="paste-tag" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>붙여 넣기</span>
-    </div>
+    </div></div>
+<div role="tabpanel" id="data-file" aria-labelledby="data-tab-file" class="file-panel" hidden>
+<div class="file-pick"><input type="file" id="data-input" accept=".xlsx,.xls,.xlsm,.csv" class="sr-only"><label for="data-input" class="btn ghost"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" /> </svg>파일 고르기</label><span class="file-name" id="data-name">xlsx, xls, csv</span></div>
+<p class="hint">파일은 이 브라우저 안에서만 읽고 어디에도 보내지 않습니다.</p>
+<p class="note" id="data-msg" role="status"></p>
+<div class="file-opts" id="data-opts" hidden>
+<div class="field" id="data-sheet-wrap" hidden><label for="data-sheet">시트</label><select id="data-sheet"></select></div>
+<label class="check"><input type="checkbox" id="data-head"> 첫 줄을 머리글(변수 이름)로 쓰기</label>
+<fieldset class="file-cols"><legend class="label">계산에 쓸 열</legend><div id="data-cols"></div><p class="hint">학번·이름처럼 응답이 아닌 열은 처음부터 빼 두었습니다.</p></fieldset>
+<button type="button" class="btn" id="data-go"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <polygon points="6 3 20 12 6 21 6 3" /> </svg>이 자료로 계산하기</button>
+</div>
+</div>
     <p class="hint" id="data-hint">첫 열에 행 범주 이름, 첫 줄에 열 범주 이름을 두고 나머지 칸에 빈도를 넣습니다. 응답자 한 명당 한 줄인 원자료는 넣을 수 없습니다. 범주 이름 없이 숫자만 넣어도 됩니다. 합계 행과 합계 열은 빼고 붙여 넣으세요.</p>
     <p class="error" id="err" role="alert"></p>
   </div>
@@ -162,7 +173,7 @@ M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 
 <section class="next" aria-labelledby="next-h"><h2 id="next-h">이어서 쓸 도구</h2><ul><li><a href="../p-adjust/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M10 12h11" /> <path d="M10 18h11" /> <path d="M10 6h11" /> <path d="M4 10h2" /> <path d="M4 6h1v4" /> <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" /> </svg><span><strong>다중비교 p값 보정 계산기</strong><span>조정된 잔차로 여러 칸을 사후 비교했다면 p값 보정</span></span></a></li><li><a href="../apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg><span><strong>APA 결과 문장 생성기</strong><span>χ² 값만 있을 때 문장 만들기</span></span></a></li><li><a href="../effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg><span><strong>효과크기 계산기</strong><span>다른 효과크기로 바꾸거나 비교하기</span></span></a></li></ul></section>
 <section class="next" aria-labelledby="rel-h"><h2 id="rel-h">함께 읽을 글</h2><ul><li><a href="../../guides/chi-square-expected-counts/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>기대빈도 5 미만인 칸이 있을 때 카이제곱 검정 대신 무엇을 쓰나</strong></span></a></li></ul></section>
-<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">운영: 상담과연구, 대학 상담센터 전임상담원 경력 3년, 교육학(교육상담) 전공</span></p>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
 </div></main>
 <footer class="site"><div class="wrap">
 <p>개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
@@ -171,5 +182,6 @@ M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 <script src="../../assets/nav.js"></script>
 <script src="../../assets/stats.js"></script>
 <script src="../../assets/js/chi-square.js"></script>
+<script src="../../assets/upload.js"></script>
 </body>
 </html>

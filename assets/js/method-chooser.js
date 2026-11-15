@@ -199,7 +199,7 @@
     $('help').hidden = false;
     // 크몽 안내 한 줄: 고급 분석이면 그 분석 이름으로
     $('help').innerHTML = m.premium
-      ? '이 분석을 직접 하기 어렵다면 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">' + $('help').getAttribute('data-who') + '</span>'
+      ? '이 분석을 직접 하기 어렵다면 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.'
       : $('help').getAttribute('data-default');
   }
 

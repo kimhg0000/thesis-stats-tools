@@ -328,3 +328,16 @@ input::placeholder, textarea::placeholder { color: #8b95a3; }
 .tm-also a { font-weight: 650; }
 .tg-also { grid-column: 2; margin: 2px 0 0; font-size: 0.875rem; color: var(--ink-2); }
 @media (max-width: 959px) { .tg-also { grid-column: auto; } }
+/* 붙여 넣기 | 파일 올리기 탭 */
+.src-tabs { display: flex; gap: 4px; margin: 0 0 8px; border-bottom: 1px solid var(--line); }
+.src-tabs [role="tab"] { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 0.9375rem; font-weight: 600; color: var(--ink-2); background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 10px 12px; min-height: 44px; cursor: pointer; }
+.src-tabs [role="tab"]:hover { color: var(--ink); }
+.src-tabs [role="tab"][aria-selected="true"] { color: var(--blue); border-bottom-color: var(--blue); font-weight: 700; }
+.file-panel { border: 1.5px dashed var(--line-strong); border-radius: 8px; padding: 14px; background: var(--surface); }
+.file-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.file-pick .file-name { font-size: 0.875rem; color: var(--ink-2); overflow-wrap: anywhere; min-width: 0; }
+.file-pick input:focus-visible + label { outline: 3px solid var(--blue); outline-offset: 2px; }
+.file-panel .note:empty { display: none; }
+.file-opts { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+.file-cols { border: 0; padding: 0; margin: 8px 0 12px; min-width: 0; }
+.file-cols > div { display: flex; flex-wrap: wrap; gap: 0 4px; max-height: 220px; overflow-y: auto; }

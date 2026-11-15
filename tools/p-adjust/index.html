@@ -15,7 +15,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
-<link rel="stylesheet" href="../../assets/site.css?v=e4517008">
+<link rel="stylesheet" href="../../assets/site.css?v=f9bba4a8">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"다중비교 p값 보정 계산기","description":"여러 번 검정한 p값을 붙여 넣으면 Bonferroni, Holm, Benjamini-Hochberg(FDR) 방법으로 보정한 p값과 유의 여부를 한 표로 보여 주고, 고른 방법으로 논문 문장을 만들어 줍니다.","url":"https://kimhg0000.github.io/thesis-stats-tools/tools/p-adjust/","applicationCategory":"EducationalApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"상담과연구"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"하위요인 5개로 t검정을 각각 했는데 보정해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"하위요인 가운데 하나라도 차이가 나면 \"차이가 있다\"고 결론 내리는 구조라면 보정합니다. 실제 차이가 하나도 없어도 5번 검정하면 적어도 하나가 .05 아래로 나올 확률이 검정이 서로 독립일 때 약 23%(1 − .95⁵)입니다. 하위요인마다 따로 세운 가설을 각각 확인하는 연구라면 보정하지 않는 쪽을 택하는 연구자도 있으니, 어느 쪽이든 이유를 적습니다."}},{"@type":"Question","name":"SPSS 사후검정의 Bonferroni 결과와 이 화면의 값이 다릅니다.","acceptedAnswer":{"@type":"Answer","text":"SPSS 일원분산분석의 사후검정은 모든 집단의 오차분산을 합쳐 쓴 t검정의 p에 비교 수를 곱합니다. 따로 돌린 t검정의 p를 넣으면 출발점이 달라 값이 어긋납니다. 사후검정이라면 SPSS 출력의 보정 결과를 그대로 쓰고, 이 화면은 서로 다른 분석에서 나온 p값을 묶어 보정할 때 씁니다."}},{"@type":"Question","name":"Bonferroni, Holm, BH 중 무엇을 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"소수의 확증 가설이면 Holm을 권합니다. Bonferroni와 같은 오류율을 지키면서 더 많이 찾아냅니다. 심사위원이 Bonferroni를 요구하면 Bonferroni를 씁니다. 문항이나 상관처럼 검정이 수십 개인 탐색 분석이면 Benjamini-Hochberg로 거짓발견률을 통제합니다."}},{"@type":"Question","name":"보정한 p값을 논문에 어떻게 적나요?","acceptedAnswer":{"@type":"Answer","text":"어떤 방법으로 몇 개의 검정을 보정했는지 먼저 밝히고, 표에는 원래 p와 보정 p를 함께 적거나 보정 p만 적고 표 아래에 방법을 씁니다. 보정 p값이 1로 잘린 경우 1.000으로 적습니다."}}]}</script>
 </head>
@@ -44,10 +44,21 @@
   <h2 class="pane-title" id="in-h"><span><i>p</i>값 목록 넣기</span></h2>
   <div class="field">
     <label for="data">한 줄에 검정 하나: 이름과 <i>p</i>값</label>
-    <div class="paste-zone">
-      <textarea id="data" spellcheck="false" aria-describedby="data-hint" placeholder="자기효능감&#9;.004&#10;학업스트레스&#9;.012&#10;학업만족&#9;.030"></textarea>
+    <div class="src-tabs" role="tablist" aria-label="자료 넣는 방법"><button type="button" role="tab" id="data-tab-paste" aria-selected="true" aria-controls="data-paste"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>붙여 넣기</button><button type="button" role="tab" id="data-tab-file" aria-selected="false" aria-controls="data-file" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M8 13h2" /> <path d="M14 13h2" /> <path d="M8 17h2" /> <path d="M14 17h2" /> </svg>파일 올리기</button></div>
+<div role="tabpanel" id="data-paste" aria-labelledby="data-tab-paste"><div class="paste-zone"><textarea data-upload-lib="../../assets/vendor/sheetjs/xlsx.core.min.js" id="data" data-upload="run" data-upload-header="omit" spellcheck="false" aria-describedby="data-hint" placeholder="자기효능감&#9;.004&#10;학업스트레스&#9;.012&#10;학업만족&#9;.030"></textarea>
       <span class="paste-tag" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10" /> <path d="m17 10 4 4-4 4" /> </svg>붙여 넣기</span>
-    </div>
+    </div></div>
+<div role="tabpanel" id="data-file" aria-labelledby="data-tab-file" class="file-panel" hidden>
+<div class="file-pick"><input type="file" id="data-input" accept=".xlsx,.xls,.xlsm,.csv" class="sr-only"><label for="data-input" class="btn ghost"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" /> </svg>파일 고르기</label><span class="file-name" id="data-name">xlsx, xls, csv</span></div>
+<p class="hint">파일은 이 브라우저 안에서만 읽고 어디에도 보내지 않습니다.</p>
+<p class="note" id="data-msg" role="status"></p>
+<div class="file-opts" id="data-opts" hidden>
+<div class="field" id="data-sheet-wrap" hidden><label for="data-sheet">시트</label><select id="data-sheet"></select></div>
+<label class="check"><input type="checkbox" id="data-head"> 첫 줄을 머리글(변수 이름)로 쓰기</label>
+<fieldset class="file-cols"><legend class="label">계산에 쓸 열</legend><div id="data-cols"></div><p class="hint">학번·이름처럼 응답이 아닌 열은 처음부터 빼 두었습니다.</p></fieldset>
+<button type="button" class="btn" id="data-go"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <polygon points="6 3 20 12 6 21 6 3" /> </svg>이 자료로 계산하기</button>
+</div>
+</div>
     <p class="hint" id="data-hint">이름은 빼도 됩니다. 이름 없이 ".01, .04, .03"처럼 한 줄에 쉼표로 이어 써도 됩니다. "&lt; .001"이 아니라 출력에 나온 정확한 <i>p</i>값을 넣으세요(SPSS 표의 값을 두 번 누르면 더 많은 자리가 보입니다).</p>
     <p class="error" id="err" role="alert"></p>
   </div>
@@ -121,7 +132,7 @@
 
 <section class="next" aria-labelledby="next-h"><h2 id="next-h">이어서 쓸 도구</h2><ul><li><a href="../chi-square/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <rect width="18" height="18" x="3" y="3" rx="2" /> <path d="M3 9h18" /> <path d="M3 15h18" /> <path d="M9 3v18" /> <path d="M15 3v18" /> </svg><span><strong>카이제곱 검정·Cramér's V 계산기</strong><span>교차표의 칸별 잔차를 사후 비교할 때</span></span></a></li><li><a href="../apa-results/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /> </svg><span><strong>APA 결과 문장 생성기</strong><span>보정 전 검정 결과를 문장으로</span></span></a></li><li><a href="../effect-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" /> <path d="m14.5 12.5 2-2" /> <path d="m11.5 9.5 2-2" /> <path d="m8.5 6.5 2-2" /> <path d="m17.5 15.5 2-2" /> </svg><span><strong>효과크기 계산기</strong><span>유의 여부와 함께 효과크기 보고</span></span></a></li></ul></section>
 <section class="next" aria-labelledby="rel-h"><h2 id="rel-h">함께 읽을 글</h2><ul><li><a href="../../guides/multiple-comparisons/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M16 12h2" /> <path d="M16 8h2" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /> <path d="M6 12h2" /> <path d="M6 8h2" /> </svg><span><strong>여러 번 검정할 때 Bonferroni, Holm, Benjamini-Hochberg 중 무엇을 쓰나</strong></span></a></li></ul></section>
-<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.<span class="who">운영: 상담과연구, 대학 상담센터 전임상담원 경력 3년, 교육학(교육상담) 전공</span></p>
+<p class="help-line">직접 하기 어려운 분석(구조방정식, 매개·조절, 잠재프로파일 등)은 <a href="https://kmong.com/gig/430238" rel="noopener" target="_blank">크몽에서 도와드립니다</a>.</p>
 </div></main>
 <footer class="site"><div class="wrap">
 <p>개인정보를 수집하지 않으며, 도구에 입력한 자료는 브라우저 안에서만 계산되고 어디로도 전송되지 않습니다. 광고와 방문 추적 스크립트가 없습니다.</p>
@@ -130,5 +141,6 @@
 <script src="../../assets/nav.js"></script>
 <script src="../../assets/stats.js"></script>
 <script src="../../assets/js/p-adjust.js"></script>
+<script src="../../assets/upload.js"></script>
 </body>
 </html>
