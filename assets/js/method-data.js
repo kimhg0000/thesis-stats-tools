@@ -7,7 +7,7 @@ window.METHODS = {
     prog: 'SPSS, jamovi, R(t.test)',
     report: ['집단별 M, SD, n', 't(df), 정확한 p', 'Cohen\'s d와 95% 신뢰구간'],
     mistakes: ['등분산 검정 결과를 보고 검정을 고르는 절차보다, 처음부터 Welch 검정을 쓰는 편이 오류율이 안정적입니다.', '셋 이상의 집단을 t검정으로 여러 번 비교하면 1종 오류가 늘어납니다.', '척도 점수로 집단을 비교하면서 집단 간 측정동일성을 생각하지 않는 것(잠재변수 모형이라면 확인 가능)'],
-    tools: ['apa-results', 'effect-size', 'sample-size'], guides: ['t-test-report', 'effect-size-interpretation']
+    tools: ['apa-results', 'effect-size', 'sample-size', 'normality'], guides: ['t-test-report', 'effect-size-interpretation']
   },
   mwu: {
     name: 'Mann-Whitney U 검정', level: '기초',
@@ -43,7 +43,7 @@ window.METHODS = {
     prog: 'SPSS, jamovi, R(aov, oneway.test)',
     report: ['집단별 M, SD, n', 'F(df1, df2), p, η²', '사후검정(Tukey HSD, 등분산이 아니면 Games-Howell)'],
     mistakes: ['유의한 F만 보고하고 어느 집단 사이에 차이가 있는지 사후검정을 빠뜨리는 것', '등분산이 크게 깨졌는데 일반 F를 쓰는 것(Welch의 분산분석을 고려)'],
-    tools: ['apa-results', 'effect-size', 'sample-size'], guides: ['effect-size-interpretation']
+    tools: ['apa-results', 'effect-size', 'sample-size', 'normality', 'p-adjust'], guides: ['effect-size-interpretation', 'multiple-comparisons']
   },
   kw: {
     name: 'Kruskal-Wallis 검정', level: '기초',
@@ -52,7 +52,7 @@ window.METHODS = {
     prog: 'SPSS(비모수 검정), jamovi, R(kruskal.test)',
     report: ['집단별 중앙값', 'H(df), p', '다중비교를 보정한 사후검정(예: Dunn 검정)'],
     mistakes: ['사후검정에서 다중비교 보정을 하지 않는 것'],
-    tools: ['apa-results'], guides: ['small-sample-analysis']
+    tools: ['apa-results', 'p-adjust'], guides: ['small-sample-analysis']
   },
   rmanova: {
     name: '반복측정 분산분석', level: '기초',
@@ -61,7 +61,7 @@ window.METHODS = {
     prog: 'SPSS(일반선형모형 반복측정), jamovi, R(afex, ez)',
     report: ['시점별 M, SD', 'F, p, η²p', '구형성 보정 방식(Greenhouse-Geisser 등)'],
     mistakes: ['Mauchly 검정 결과에 따라 보정 여부를 바꾸는 것. 구형성이 깨지는 경우가 많아 보정값을 함께 보고하는 방식이 무난합니다.'],
-    tools: ['apa-results', 'effect-size'], guides: []
+    tools: ['apa-results', 'effect-size', 'p-adjust'], guides: []
   },
   friedman: {
     name: 'Friedman 검정', level: '기초',
@@ -79,7 +79,7 @@ window.METHODS = {
     prog: 'SPSS(교차분석), jamovi, R(chisq.test, fisher.test)',
     report: ['교차표(빈도와 백분율, 어느 쪽 백분율인지)', 'χ²(df, N), p', 'Cramér\'s V'],
     mistakes: ['같은 사람을 두 번 잰 자료에 쓰는 것(McNemar 검정이 맞음)'],
-    tools: ['apa-results'], guides: ['small-sample-analysis']
+    tools: ['apa-results', 'chi-square'], guides: ['small-sample-analysis', 'chi-square-expected-counts']
   },
   mcnemar: {
     name: 'McNemar 검정', level: '기초',
@@ -124,7 +124,7 @@ window.METHODS = {
     prog: 'SPSS, jamovi, R(cor.test)',
     report: ['변수별 M, SD', 'r(df), p (변수가 여럿이면 상관표)', '목록별·쌍별 제외 여부와 N'],
     mistakes: ['산점도를 보지 않아 곡선 관계나 이상값을 놓치는 것', '상관을 인과로 해석하는 것'],
-    tools: ['correlation-table', 'apa-results', 'sample-size'], guides: ['correlation-table-apa']
+    tools: ['correlation-table', 'apa-results', 'sample-size', 'normality'], guides: ['correlation-table-apa']
   },
   spearman: {
     name: 'Spearman 순위상관', level: '기초',
@@ -160,7 +160,7 @@ window.METHODS = {
     prog: 'SPSS, jamovi, R(lm)',
     report: ['B, SE, β, t, p', 'R², 수정된 R², F(df1, df2)', '위계적 회귀라면 단계별 ΔR²와 ΔF', '다중공선성(VIF)'],
     mistakes: ['횡단 자료의 계수를 "영향"이라는 인과 표현으로 쓰는 것', '표준화 계수 β만 보고 비표준화 계수 B와 표준오차를 빠뜨리는 것'],
-    tools: ['apa-results', 'sample-size', 'correlation-table'], guides: ['regression-table-report', 'sample-size-justification']
+    tools: ['apa-results', 'sample-size', 'correlation-table', 'normality'], guides: ['regression-table-report', 'sample-size-justification', 'multicollinearity', 'dummy-variables', 'hierarchical-regression-controls']
   },
   logit: {
     name: '이항 로지스틱 회귀분석', level: '기초',
@@ -214,7 +214,7 @@ window.METHODS = {
     prog: 'Mplus, R(lavaan), AMOS, jamovi, JASP',
     report: ['χ²(df), CFI, TLI, RMSEA(90% CI), SRMR', '표준화 요인부하량', '신뢰도(ω 등)'],
     mistakes: ['수정지수만 보고 이론적 근거 없이 오차 공분산을 추가하는 것', 'Hu와 Bentler(1999)의 기준을 절대 규칙처럼 적용하는 것(Marsh et al., 2004)'],
-    tools: ['cronbach-alpha'], guides: ['sem-fit-indices'], premium: true
+    tools: ['cronbach-alpha', 'ave-cr', 'sem-fit'], guides: ['sem-fit-indices', 'ave-cr-validity', 'common-method-bias'], premium: true
   },
   invariance: {
     name: '다집단 확인적 요인분석과 측정동일성', level: '고급',
@@ -223,7 +223,7 @@ window.METHODS = {
     prog: 'Mplus, R(lavaan, semTools), AMOS',
     report: ['단계별 적합도와 변화량(ΔCFI, ΔRMSEA, ΔSRMR)', '판단 기준: CFI 감소폭 .01 이하면 동일성 유지(Cheung & Rensvold, 2002). Chen(2007)은 전체 N이 300을 넘고 집단 크기가 비슷할 때 CFI가 .010 이상 줄면서 RMSEA가 .015 이상 또는 SRMR이 .030 이상(절편 단계는 .010 이상) 늘면 비동일로 보았고, 표본이 작거나 집단 크기가 다르면 더 엄격한 값(.005, .010, .025)을 권했습니다.', '부분 동일성이면 풀어 준 모수(요인마다 동일한 문항이 적어도 둘)'],
     mistakes: ['측정동일성 확인 없이 집단 평균을 비교하는 것. 척도 평균 점수로 t검정이나 분산분석을 할 때도 절편 동일성이 전제됩니다.', '표본이 클 때 민감한 χ² 차이 검정만으로 판단하는 것'],
-    tools: [], guides: ['measurement-invariance', 'sem-fit-indices'], premium: true
+    tools: ['sem-fit'], guides: ['measurement-invariance', 'sem-fit-indices'], premium: true
   },
   sem: {
     name: '구조방정식모형 (측정모형과 구조모형)', level: '고급',
@@ -232,7 +232,7 @@ window.METHODS = {
     prog: 'Mplus, R(lavaan), AMOS, jamovi(SEMLj)',
     report: ['측정모형과 구조모형의 적합도(χ², CFI, TLI, RMSEA, SRMR)', '표준화 경로계수와 R²', '간접효과와 부트스트랩 95% 신뢰구간'],
     mistakes: ['횡단 자료의 경로를 인과로 단정하는 것', '측정모형을 확인하지 않고 바로 구조모형을 보고하는 것'],
-    tools: ['mediation-sobel'], guides: ['sem-fit-indices', 'mediation-bootstrap-vs-sobel'], premium: true
+    tools: ['mediation-sobel', 'sem-fit', 'ave-cr'], guides: ['sem-fit-indices', 'mediation-bootstrap-vs-sobel', 'ave-cr-validity', 'common-method-bias'], premium: true
   },
   medobs: {
     name: '매개분석 (회귀 기반, 부트스트랩)', level: '고급',
@@ -241,7 +241,7 @@ window.METHODS = {
     prog: 'SPSS·SAS PROCESS macro(model 4), R(lavaan, mediation), jamovi(jAMM)',
     report: ['경로 a, b, 직접효과 c\'', '간접효과 ab와 부트스트랩 95% 신뢰구간, 반복 횟수'],
     mistakes: ['Baron과 Kenny(1986)의 단계 검정이나 Sobel 검정만으로 판단하는 것', '횡단 자료로 인과적 매개를 단정하는 것'],
-    tools: ['mediation-sobel'], guides: ['mediation-bootstrap-vs-sobel'], premium: true
+    tools: ['mediation-sobel'], guides: ['mediation-bootstrap-vs-sobel', 'mediation-no-total-effect'], premium: true
   },
   modobs: {
     name: '조절분석 (상호작용 회귀)', level: '고급',
@@ -250,7 +250,7 @@ window.METHODS = {
     prog: 'SPSS·SAS PROCESS macro(model 1), jamovi, R(lm)',
     report: ['상호작용항의 B, SE, p와 ΔR²', '단순기울기(조절변수 수준별 X의 효과, Aiken & West, 1991)', '필요하면 Johnson-Neyman 구간'],
     mistakes: ['평균중심화가 상호작용 검정 결과를 바꾼다고 오해하는 것(해석만 쉬워짐)', '조절변수로 집단을 나눠 상관을 따로 비교하는 것'],
-    tools: [], guides: [], premium: true
+    tools: ['simple-slopes'], guides: ['simple-slopes-interpretation'], premium: true
   },
   modmed: {
     name: '조절된 매개분석', level: '고급',
@@ -268,7 +268,7 @@ window.METHODS = {
     prog: 'Mplus(XWITH: LMS), R(modsem: LMS·QML, semTools: 곱 지표 방식, lavaan: 다집단), AMOS(다집단)',
     report: ['집단별 경로와 동일성 제약 비교(Δχ²) 또는 잠재 상호작용 계수'],
     mistakes: ['측정동일성 확인 없이 집단 간 경로를 비교하는 것'],
-    tools: [], guides: ['measurement-invariance'], premium: true
+    tools: ['sem-fit'], guides: ['measurement-invariance'], premium: true
   },
   lpa: {
     name: '잠재프로파일분석 (LPA)', level: '고급',

@@ -148,7 +148,7 @@
   }
 
   function list(arr) { return '<ul>' + arr.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; }
-  var TOOLS = { 'apa-results': 'APA 결과 문장 생성기', 'effect-size': '효과크기 계산기', 'correlation-table': '상관행렬 APA 표', 'sample-size': '표본 크기 계산기', 'cronbach-alpha': '크론바흐 알파 계산기', 'mediation-sobel': '매개효과 간접효과 검정', 'reverse-scoring': '역채점 계산기' };
+  var TOOLS = { 'apa-results': 'APA 결과 문장 생성기', 'effect-size': '효과크기 계산기', 'correlation-table': '상관행렬 APA 표', 'sample-size': '표본 크기 계산기', 'cronbach-alpha': '크론바흐 알파 계산기', 'mediation-sobel': '매개효과 간접효과 검정', 'reverse-scoring': '역채점 계산기', 'normality': '정규성 판단', 'chi-square': '카이제곱 검정', 'p-adjust': '다중비교 p값 보정', 'simple-slopes': '단순기울기 계산기', 'sem-fit': '구조방정식 적합도 판정표', 'ave-cr': 'AVE·CR 계산기' };
   var GUIDES = window.GUIDE_TITLES || {};
 
   function renderResult() {
