@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="논문 통계 도구">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/site.css?v=5087f77c">
+<link rel="stylesheet" href="../../assets/site.css?v=55a5b399">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"여러 번 검정할 때 Bonferroni, Holm, Benjamini-Hochberg 중 무엇을 쓰나","description":"하위요인별 t검정처럼 검정을 여러 번 할 때 생기는 1종 오류 문제, 가족별 오류율(FWER)과 거짓발견율(FDR)의 차이, 세 보정법의 계산 예시, 분산분석 사후검정과의 관계, 보정한 결과를 쓰는 문장을 정리했습니다.","inLanguage":"ko","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Organization","name":"상담과연구"},"publisher":{"@type":"Organization","name":"상담과연구"},"mainEntityOfPage":"https://kimhg0000.github.io/thesis-stats-tools/guides/multiple-comparisons/"}</script>
 </head>
 <body>
@@ -81,7 +81,8 @@
 </ul>
 
 <div class="inline-tool"><p>이 글의 내용을 바로 계산해 보세요.</p><a class="btn" href="../../tools/p-adjust/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M10 12h11" /> <path d="M10 18h11" /> <path d="M10 6h11" /> <path d="M4 10h2" /> <path d="M4 6h1v4" /> <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" /> </svg>다중비교 p값 보정 계산기 열기</a></div>
-<section class="related" aria-labelledby="rel-h"><h2 id="rel-h">이어서 읽을 글</h2><ul class="guide-list"><li><a href="../t-test-report/">t검정 결과를 표와 문장으로 쓰는 법<span class="d">독립표본 t검정 결과를 APA 7판 형식의 표와 문장으로 옮기는 방법. 평균과 표준편차, 자유도, 정확한 p값, 효과크기 d, Welch 검정의 소수 자유도까지 다룹니다.</span></a></li><li><a href="../effect-size-interpretation/">효과크기 d, η², r 어떻게 읽고 보고하나<span class="d">Cohen의 d, 에타제곱(η²)과 부분 에타제곱, 상관계수 r의 해석 기준과 그 한계, Hedges' g 보정, 신뢰구간과 함께 보고하는 방법을 정리했습니다.</span></a></li><li><a href="../chi-square-expected-counts/">기대빈도 5 미만인 칸이 있을 때 카이제곱 검정 대신 무엇을 쓰나<span class="d">SPSS 교차분석 각주의 '기대빈도 5 미만 셀' 비율을 읽는 법, Cochran(1954) 기준, 2×2 표의 Fisher 정확검정과 N−1 카이제곱, 큰 표의 정확검정과 범주 합치기, Cramér's V와 조정된 잔차 보고를 예시로 정리했습니다.</span></a></li></ul></section>
+
+<section class="related" aria-labelledby="rel-h"><h2 id="rel-h">이어서 읽을 글</h2><ul class="guide-list"><li><a href="../anova-apa-report/">일원분산분석 결과를 APA 형식 문장과 표로 쓰는 법<span class="d">SPSS 일원분산분석 출력에서 F(2, 42) = 20.98처럼 자유도를 적는 법, η²와 ω², Levene 검정과 Welch F, 사후검정까지 결과 문장과 표 예시를 45명 자료로 정리했습니다.</span></a></li><li><a href="../t-test-report/">t검정 결과를 표와 문장으로 쓰는 법<span class="d">독립표본 t검정 결과를 APA 7판 형식의 표와 문장으로 옮기는 방법. 평균과 표준편차, 자유도, 정확한 p값, 효과크기 d, Welch 검정의 소수 자유도까지 다룹니다.</span></a></li><li><a href="../effect-size-interpretation/">효과크기 d, η², r 어떻게 읽고 보고하나<span class="d">Cohen의 d, 에타제곱(η²)과 부분 에타제곱, 상관계수 r의 해석 기준과 그 한계, Hedges' g 보정, 신뢰구간과 함께 보고하는 방법을 정리했습니다.</span></a></li><li><a href="../chi-square-expected-counts/">기대빈도 5 미만인 칸이 있을 때 카이제곱 검정 대신 무엇을 쓰나<span class="d">SPSS 교차분석 각주의 '기대빈도 5 미만 셀' 비율을 읽는 법, Cochran(1954) 기준, 2×2 표의 Fisher 정확검정과 N−1 카이제곱, 큰 표의 정확검정과 범주 합치기, Cramér's V와 조정된 잔차 보고를 예시로 정리했습니다.</span></a></li></ul></section>
 </article>
 <aside class="side-tool" aria-label="관련 도구"><p>이 글과 함께 쓰는 도구</p><a class="btn" href="../../tools/p-adjust/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M10 12h11" /> <path d="M10 18h11" /> <path d="M10 6h11" /> <path d="M4 10h2" /> <path d="M4 6h1v4" /> <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" /> </svg>p값 보정 열기</a></aside>
 </div>

@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="논문 통계 도구">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/site.css?v=5087f77c">
+<link rel="stylesheet" href="../../assets/site.css?v=55a5b399">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"조절효과 그래프 그리기와 단순기울기 해석","description":"상호작용항이 유의한 뒤 조절변수 평균 ±1SD에서 단순기울기를 구하고 그래프를 그리는 법, Johnson-Neyman 구간, 평균중심화가 바꾸는 것과 바꾸지 않는 것, 상호작용은 유의한데 단순기울기가 유의하지 않을 때 쓰는 법을 예시로 정리했습니다.","inLanguage":"ko","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Organization","name":"상담과연구"},"publisher":{"@type":"Organization","name":"상담과연구"},"mainEntityOfPage":"https://kimhg0000.github.io/thesis-stats-tools/guides/simple-slopes-interpretation/"}</script>
 </head>
 <body>
@@ -93,7 +93,8 @@
 </ul>
 
 <div class="inline-tool"><p>이 글의 내용을 바로 계산해 보세요.</p><a class="btn" href="../../tools/simple-slopes/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="m19 9-5 5-4-4-3 3" /> </svg>단순기울기·조절효과 그래프 열기</a></div>
-<section class="related" aria-labelledby="rel-h"><h2 id="rel-h">이어서 읽을 글</h2><ul class="guide-list"><li><a href="../multicollinearity/">상관이 높은 예측변수, VIF 몇이면 문제이고 어떻게 다루나<span class="d">다중공선성이 회귀계수의 표준오차에 미치는 영향, VIF와 공차의 뜻, VIF 10·5 기준의 출처와 한계, 변수를 합치거나 빼는 기준, 평균중심화가 도움이 되는 경우와 아닌 경우를 예시로 정리했습니다.</span></a></li><li><a href="../hierarchical-regression-controls/">위계적 회귀분석에서 통제변수를 고르는 기준과 ΔR² 보고<span class="d">성별, 학년, 나이를 습관처럼 통제변수로 넣기 전에 확인할 질문(Becker, 2005; Spector &amp; Brannick, 2011; Bernerth &amp; Aguinis, 2016), 매개변수를 통제하면 생기는 문제, ΔR²와 ΔF 계산 예와 단계별 결과표 작성법을 정리했습니다.</span></a></li><li><a href="../regression-table-report/">회귀분석 결과표에 B, SE, β를 어떻게 쓰나<span class="d">다중회귀분석 결과표의 열 구성(B, SE, β, t, p), 모형 적합도(R², 수정된 R², F) 보고, 계수 해석과 '영향' 표현의 주의점을 예시로 정리했습니다.</span></a></li><li><a href="../mediation-bootstrap-vs-sobel/">매개효과 검증, Sobel 검정보다 부트스트랩을 권하는 이유<span class="d">Baron과 Kenny의 단계 검증, Sobel 검정, 부트스트랩 신뢰구간, 몬테카를로 신뢰구간의 차이와 간접효과를 논문에 보고하는 형식을 정리했습니다.</span></a></li></ul></section>
+
+<section class="related" aria-labelledby="rel-h"><h2 id="rel-h">이어서 읽을 글</h2><ul class="guide-list"><li><a href="../mean-centering-moderation/">조절효과 분석에서 평균중심화를 꼭 해야 하나<span class="d">평균중심화를 하면 상호작용항의 계수와 검정은 그대로이고 주효과 계수의 뜻만 바뀝니다. 220명 예시로 중심화 전후 회귀계수, VIF, 단순기울기를 비교하고 논문 문장을 정리했습니다.</span></a></li><li><a href="../multicollinearity/">상관이 높은 예측변수, VIF 몇이면 문제이고 어떻게 다루나<span class="d">다중공선성이 회귀계수의 표준오차에 미치는 영향, VIF와 공차의 뜻, VIF 10·5 기준의 출처와 한계, 변수를 합치거나 빼는 기준, 평균중심화가 도움이 되는 경우와 아닌 경우를 예시로 정리했습니다.</span></a></li><li><a href="../hierarchical-regression-controls/">위계적 회귀분석에서 통제변수를 고르는 기준과 ΔR² 보고<span class="d">성별, 학년, 나이를 습관처럼 통제변수로 넣기 전에 확인할 질문(Becker, 2005; Spector &amp; Brannick, 2011; Bernerth &amp; Aguinis, 2016), 매개변수를 통제하면 생기는 문제, ΔR²와 ΔF 계산 예와 단계별 결과표 작성법을 정리했습니다.</span></a></li><li><a href="../regression-table-report/">회귀분석 결과표에 B, SE, β를 어떻게 쓰나<span class="d">다중회귀분석 결과표의 열 구성(B, SE, β, t, p), 모형 적합도(R², 수정된 R², F) 보고, 계수 해석과 '영향' 표현의 주의점을 예시로 정리했습니다.</span></a></li></ul></section>
 </article>
 <aside class="side-tool" aria-label="관련 도구"><p>이 글과 함께 쓰는 도구</p><a class="btn" href="../../tools/simple-slopes/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="m19 9-5 5-4-4-3 3" /> </svg>단순기울기 열기</a></aside>
 </div>

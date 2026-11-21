@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="논문 통계 도구">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/site.css?v=5087f77c">
+<link rel="stylesheet" href="../../assets/site.css?v=55a5b399">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"연구방법에 표본 크기 근거를 쓰는 법","description":"사전 검정력 분석으로 표본 크기를 정하고 연구방법에 적는 방법. 효과크기 근거, 검정력 .80, G*Power 인용, Green(1991)의 경험칙, 탈락률 보정, 사후 검정력의 문제를 다룹니다.","inLanguage":"ko","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Organization","name":"상담과연구"},"publisher":{"@type":"Organization","name":"상담과연구"},"mainEntityOfPage":"https://kimhg0000.github.io/thesis-stats-tools/guides/sample-size-justification/"}</script>
 </head>
 <body>
@@ -64,7 +64,8 @@
 </ul>
 
 <div class="inline-tool"><p>이 글의 내용을 바로 계산해 보세요.</p><a class="btn" href="../../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기·검정력 계산기 열기</a></div>
-<section class="related" aria-labelledby="rel-h"><h2 id="rel-h">이어서 읽을 글</h2><ul class="guide-list"><li><a href="../small-sample-analysis/">표본이 작을 때 쓸 수 있는 분석<span class="d">집단당 10~20명 정도의 작은 표본에서 쓸 수 있는 비모수 검정, Fisher 정확검정, 효과크기와 신뢰구간 보고, 피해야 할 분석과 한계 기술 방법을 정리했습니다.</span></a></li><li><a href="../effect-size-interpretation/">효과크기 d, η², r 어떻게 읽고 보고하나<span class="d">Cohen의 d, 에타제곱(η²)과 부분 에타제곱, 상관계수 r의 해석 기준과 그 한계, Hedges' g 보정, 신뢰구간과 함께 보고하는 방법을 정리했습니다.</span></a></li><li><a href="../mediation-no-total-effect/">매개효과가 유의한데 총효과가 유의하지 않을 때<span class="d">X와 Y의 총효과(c)가 유의하지 않은데 간접효과(ab)의 신뢰구간은 0을 포함하지 않을 때, Baron과 Kenny의 1단계 조건, Zhao 등(2010)의 매개 유형, 비일관적 매개와 검정력 차이를 숫자 예와 논문 문장으로 정리했습니다.</span></a></li></ul></section>
+
+<section class="related" aria-labelledby="rel-h"><h2 id="rel-h">이어서 읽을 글</h2><ul class="guide-list"><li><a href="../regression-sample-size/">회귀분석 표본 크기, G*Power에서 f² = 0.15로 구하는 법<span class="d">다중회귀 표본 크기를 전체 R² 검정과 특정 예측변수 검정으로 나눠 구하는 법, f² = 0.15일 때 92명과 55명이 나오는 이유, Green(1991) 경험칙과 연구계획서 문장을 정리했습니다.</span></a></li><li><a href="../small-sample-analysis/">표본이 작을 때 쓸 수 있는 분석<span class="d">집단당 10~20명 정도의 작은 표본에서 쓸 수 있는 비모수 검정, Fisher 정확검정, 효과크기와 신뢰구간 보고, 피해야 할 분석과 한계 기술 방법을 정리했습니다.</span></a></li><li><a href="../effect-size-interpretation/">효과크기 d, η², r 어떻게 읽고 보고하나<span class="d">Cohen의 d, 에타제곱(η²)과 부분 에타제곱, 상관계수 r의 해석 기준과 그 한계, Hedges' g 보정, 신뢰구간과 함께 보고하는 방법을 정리했습니다.</span></a></li><li><a href="../mediation-no-total-effect/">매개효과가 유의한데 총효과가 유의하지 않을 때<span class="d">X와 Y의 총효과(c)가 유의하지 않은데 간접효과(ab)의 신뢰구간은 0을 포함하지 않을 때, Baron과 Kenny의 1단계 조건, Zhao 등(2010)의 매개 유형, 비일관적 매개와 검정력 차이를 숫자 예와 논문 문장으로 정리했습니다.</span></a></li></ul></section>
 </article>
 <aside class="side-tool" aria-label="관련 도구"><p>이 글과 함께 쓰는 도구</p><a class="btn" href="../../tools/sample-size/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /> </svg>표본 크기 열기</a></aside>
 </div>

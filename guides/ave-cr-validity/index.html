@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="논문 통계 도구">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/site.css?v=5087f77c">
+<link rel="stylesheet" href="../../assets/site.css?v=55a5b399">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AVE와 CR로 수렴타당도·판별타당도를 보고하는 법","description":"표준화 요인부하량으로 평균분산추출(AVE)과 개념신뢰도(CR)를 계산하는 예, AVE .50과 CR .70(.60) 기준의 출처, Fornell-Larcker 기준과 HTMT의 차이, AVE가 .50에 못 미칠 때 쓰는 문장을 정리했습니다.","inLanguage":"ko","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Organization","name":"상담과연구"},"publisher":{"@type":"Organization","name":"상담과연구"},"mainEntityOfPage":"https://kimhg0000.github.io/thesis-stats-tools/guides/ave-cr-validity/"}</script>
 </head>
 <body>
@@ -88,7 +88,8 @@
 </ul>
 
 <div class="inline-tool"><p>이 글의 내용을 바로 계산해 보세요.</p><a class="btn" href="../../tools/ave-cr/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <circle cx="12" cy="12" r="6" /> <circle cx="12" cy="12" r="2" /> </svg>AVE·CR 계산기와 판별타당도 열기</a></div>
-<section class="related" aria-labelledby="rel-h"><h2 id="rel-h">이어서 읽을 글</h2><ul class="guide-list"><li><a href="../sem-fit-indices/">구조방정식 적합도 지수를 논문에 쓰는 법<span class="d">구조방정식모형의 χ², CFI, TLI, RMSEA(90% 신뢰구간), SRMR을 보고하는 방법과 Hu와 Bentler(1999) 등 기준값의 출처와 한계를 정리했습니다.</span></a></li><li><a href="../common-method-bias/">공통방법편의를 논문에서 다루는 법: Harman 단일요인 검정 다음에 할 것<span class="d">한 번의 자기보고 설문으로 모든 변수를 쟀을 때 공통방법편의를 줄이는 설계상 방법(Podsakoff et al., 2003, 2012), Harman 단일요인 검정의 한계, 단일요인 CFA 비교, 표지변수와 잠재 방법요인을 연구방법과 한계에 쓰는 법을 정리했습니다.</span></a></li><li><a href="../measurement-invariance/">집단 비교 전에 측정동일성을 확인하는 이유와 방법<span class="d">남녀나 학년 집단의 잠재평균이나 경로를 비교하기 전에 형태, 측정(부하량), 절편 동일성을 차례로 검증하는 방법과 ΔCFI·ΔRMSEA·ΔSRMR 기준, 부분 동일성 처리를 정리했습니다.</span></a></li><li><a href="../cronbach-alpha-60s/">크론바흐 알파가 .60대일 때 논문에 쓰는 법<span class="d">신뢰도 계수가 .70에 못 미칠 때 먼저 점검할 것과, 연구방법과 연구의 한계에 정직하게 적는 문장 예시를 정리했습니다.</span></a></li></ul></section>
+
+<section class="related" aria-labelledby="rel-h"><h2 id="rel-h">이어서 읽을 글</h2><ul class="guide-list"><li><a href="../discriminant-validity-fail/">AVE 제곱근이 요인 간 상관보다 작을 때 판별타당도는 어떻게 하나<span class="d">Fornell-Larcker 기준을 못 넘었을 때 상관이 잠재요인 상관인지부터 확인하고, 한 요인 모형 비교와 HTMT로 다시 보는 순서, 논문에 쓰는 문장을 예시 계산과 함께 정리했습니다.</span></a></li><li><a href="../sem-fit-indices/">구조방정식 적합도 지수를 논문에 쓰는 법<span class="d">구조방정식모형의 χ², CFI, TLI, RMSEA(90% 신뢰구간), SRMR을 보고하는 방법과 Hu와 Bentler(1999) 등 기준값의 출처와 한계를 정리했습니다.</span></a></li><li><a href="../common-method-bias/">공통방법편의를 논문에서 다루는 법: Harman 단일요인 검정 다음에 할 것<span class="d">한 번의 자기보고 설문으로 모든 변수를 쟀을 때 공통방법편의를 줄이는 설계상 방법(Podsakoff et al., 2003, 2012), Harman 단일요인 검정의 한계, 단일요인 CFA 비교, 표지변수와 잠재 방법요인을 연구방법과 한계에 쓰는 법을 정리했습니다.</span></a></li><li><a href="../measurement-invariance/">집단 비교 전에 측정동일성을 확인하는 이유와 방법<span class="d">남녀나 학년 집단의 잠재평균이나 경로를 비교하기 전에 형태, 측정(부하량), 절편 동일성을 차례로 검증하는 방법과 ΔCFI·ΔRMSEA·ΔSRMR 기준, 부분 동일성 처리를 정리했습니다.</span></a></li></ul></section>
 </article>
 <aside class="side-tool" aria-label="관련 도구"><p>이 글과 함께 쓰는 도구</p><a class="btn" href="../../tools/ave-cr/"><svg class="icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <circle cx="12" cy="12" r="6" /> <circle cx="12" cy="12" r="2" /> </svg>AVE·CR 열기</a></aside>
 </div>
